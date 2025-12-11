@@ -28,6 +28,7 @@ interface HeroProps {
 // Reusable Shader Background Hook
 const useShaderBackground = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  // @ts-ignore
   const animationFrameRef = useRef<number>();
   const rendererRef = useRef<WebGLRenderer | null>(null);
   const pointersRef = useRef<PointerHandler | null>(null);
@@ -179,7 +180,9 @@ void main(){gl_Position=position;}`;
       
       gl.uniform2f((program as any).resolution, this.canvas.width, this.canvas.height);
       gl.uniform1f((program as any).time, now * 1e-3);
+      //@ts-ignore
       gl.uniform2f((program as any).move, ...this.mouseMove);
+      //@ts-ignore
       gl.uniform2f((program as any).touch, ...this.mouseCoords);
       gl.uniform1i((program as any).pointerCount, this.nbrOfPointers);
       gl.uniform2fv((program as any).pointers, this.pointerCoords);

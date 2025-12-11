@@ -22,14 +22,11 @@ export const Navbar = () => {
                 <Link href="/browse" className="hover:text-emerald-400 transition">Course</Link>
                 <Link href="/about" className="hover:text-emerald-400 transition">About Us</Link>
             </div>
-        <div className="space-x-4 md:block md:w-auto flex items-center justify-between w-full">
+        <div className="space-x-4 md:block md:w-auto flex items-center justify-between w-auto">
             
             <div className="flex items-center gap-x-2">
       
                 <AuthModal />
-                <Button size="sm" variant="default" className="bg-emerald-600 hover:bg-emerald-700 text-white border-0">
-                    Get Started
-                </Button>
             </div>
         </div>
       </div>

@@ -37,7 +37,7 @@ export default function MarketingLayout({
   return (
     <div className="h-full bg-slate-900">
       <Navbar />
-      <main className="h-full pt-20">
+      <main className="h-full ">
         {children}
       </main>
       <Footer />

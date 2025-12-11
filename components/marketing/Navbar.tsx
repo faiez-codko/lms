@@ -17,14 +17,15 @@ export const Navbar = () => {
                 <span className="font-bold text-xl text-white">Quantum</span>
             </div>
         </Link>
-        <div className="space-x-4 md:block md:w-auto flex items-center justify-between w-full">
-            <div className="hidden md:flex items-center gap-x-6 mr-6 text-slate-300">
-                <Link href="#features" className="hover:text-emerald-400 transition">Features</Link>
-                <Link href="#testimonials" className="hover:text-emerald-400 transition">Success Stories</Link>
-                <Link href="#pricing" className="hover:text-emerald-400 transition">Pricing</Link>
+        <div className="hidden md:flex items-center gap-x-6 mr-6 text-slate-300">
+                <Link href="/" className="hover:text-emerald-400 transition">Home</Link>
+                <Link href="/browse" className="hover:text-emerald-400 transition">Course</Link>
+                <Link href="/about" className="hover:text-emerald-400 transition">About Us</Link>
             </div>
+        <div className="space-x-4 md:block md:w-auto flex items-center justify-between w-full">
+            
             <div className="flex items-center gap-x-2">
-                <ModeToggle />
+      
                 <AuthModal />
                 <Button size="sm" variant="default" className="bg-emerald-600 hover:bg-emerald-700 text-white border-0">
                     Get Started

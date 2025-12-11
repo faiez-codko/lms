@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, BarChart2, TrendingUp, Shield, Star, CheckCircle } from "lucide-react";
+import {  Star, CheckCircle, BookOpen, Users, Zap, LineChart } from "lucide-react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import {
@@ -13,19 +13,7 @@ import {
 } from "@/components/ui/accordion";
 import Hero from "@/components/animated-shader-hero";
 export default function LandingPage() {
-  const fadeInUp = {
-    initial: { opacity: 0, y: 20 },
-    animate: { opacity: 1, y: 0 },
-    transition: { duration: 0.5 }
-  };
 
-  const staggerContainer = {
-    animate: {
-      transition: {
-        staggerChildren: 0.1
-      }
-    }
-  };
 
   return (
     <div className="flex flex-col min-h-screen bg-slate-900 text-white overflow-hidden">
@@ -75,6 +63,58 @@ export default function LandingPage() {
               </div>
             ))}
           </motion.div>
+        </div>
+      </section>
+
+      {/* What We Do Section */}
+      <section className="py-24 bg-slate-900 relative">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <h2 className="text-3xl md:text-5xl font-bold mb-6">What We Do</h2>
+            <p className="text-lg text-slate-400">
+              We provide a complete ecosystem for traders to learn, grow, and succeed.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {[
+              {
+                icon: BookOpen,
+                title: "Structured Education",
+                desc: "Comprehensive courses taking you from beginner to institutional competence."
+              },
+              {
+                icon: Users,
+                title: "Live Mentorship",
+                desc: "Daily live streams and Q&A sessions with professional traders."
+              },
+              {
+                icon: Zap,
+                title: "Real-time Signals",
+                desc: "High-probability trade setups and market analysis delivered daily."
+              },
+              {
+                icon: LineChart,
+                title: "Advanced Analytics",
+                desc: "Proprietary tools to track your performance and journal your trades."
+              }
+            ].map((item, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+                className="bg-slate-950 p-6 rounded-2xl border border-slate-800 hover:border-emerald-500/50 transition-colors group"
+              >
+                <div className="h-12 w-12 bg-emerald-500/10 rounded-lg flex items-center justify-center mb-4 group-hover:bg-emerald-500/20 transition-colors">
+                  <item.icon className="h-6 w-6 text-emerald-500" />
+                </div>
+                <h3 className="text-xl font-bold mb-2">{item.title}</h3>
+                <p className="text-slate-400 text-sm leading-relaxed">{item.desc}</p>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </section>
 

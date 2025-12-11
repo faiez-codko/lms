@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { MobileSidebar } from "@/components/MobileSidebar";
 import { AuthModal } from "@/components/AuthModal";
+import { ModeToggle } from "@/components/ModeToggle";
 
 export const Navbar = () => {
   return (
@@ -33,6 +34,7 @@ export const Navbar = () => {
         <Button variant="ghost" size="icon" className="md:hidden">
           <Search className="h-5 w-5" />
         </Button>
+        <ModeToggle />
         <AuthModal />
       </div>
     </div>

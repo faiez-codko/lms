@@ -23,15 +23,15 @@ export const CourseSidebar = ({ className }: CourseSidebarProps) => {
   }
 
   return (
-    <div className={cn("h-full border-r flex flex-col overflow-y-auto bg-white shadow-sm", className)}>
+    <div className={cn("h-full border-r flex flex-col overflow-y-auto bg-background shadow-sm", className)}>
       <div className="p-8 flex flex-col border-b">
         <h1 className="font-semibold mb-4">
           Prisma & Free Databases (MySQL, Postgres & Mongo)
         </h1>
         <div className="flex items-center gap-x-2 mb-2">
-            <span className="text-xs font-medium text-emerald-700">75% Complete</span>
+            <span className="text-xs font-medium text-emerald-700 dark:text-emerald-500">75% Complete</span>
         </div>
-        <Progress value={75} className="h-2" indicatorClassName="bg-emerald-700" />
+        <Progress value={75} className="h-2" indicatorClassName="bg-emerald-700 dark:bg-emerald-500" />
       </div>
       <div className="flex flex-col w-full">
         {chapters.map((chapter) => {
@@ -45,18 +45,18 @@ export const CourseSidebar = ({ className }: CourseSidebarProps) => {
               type="button"
               className={cn(
                 "flex items-center gap-x-2 text-slate-500 text-sm font-[500] pl-6 transition-all hover:text-slate-600 hover:bg-slate-300/20",
-                isActive && "text-slate-700 bg-slate-200/20 hover:bg-slate-200/20 hover:text-slate-700",
-                chapter.isCompleted && "text-emerald-700 hover:text-emerald-700",
-                chapter.isCompleted && isActive && "bg-emerald-200/20"
+                isActive && "text-slate-700 bg-slate-200/20 hover:bg-slate-200/20 hover:text-slate-700 dark:text-slate-200 dark:bg-slate-800/50 dark:hover:bg-slate-800/50",
+                chapter.isCompleted && "text-emerald-700 hover:text-emerald-700 dark:text-emerald-500 dark:hover:text-emerald-500",
+                chapter.isCompleted && isActive && "bg-emerald-200/20 dark:bg-emerald-900/20"
               )}
             >
               <div className="flex items-center gap-x-2 py-4">
                 {isLocked ? (
                   <Lock className="text-slate-500" size={22} />
                 ) : chapter.isCompleted ? (
-                  <CheckCircle className="text-emerald-700" size={22} />
+                  <CheckCircle className="text-emerald-700 dark:text-emerald-500" size={22} />
                 ) : (
-                  <PlayCircle className={cn("text-slate-500", isActive && "text-slate-700")} size={22} />
+                  <PlayCircle className={cn("text-slate-500", isActive && "text-slate-700 dark:text-slate-200")} size={22} />
                 )}
                 {chapter.title}
               </div>

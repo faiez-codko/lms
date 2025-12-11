@@ -72,7 +72,7 @@ export default function CourseIdPage({ params }: { params: Promise<{ courseId: s
   const [isEditingImage, setIsEditingImage] = useState(false);
   const [isCreatingChapter, setIsCreatingChapter] = useState(false);
 
-  const form = useForm<z.infer<typeof formSchema>>({
+  const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
       title: "Advanced Web Development",

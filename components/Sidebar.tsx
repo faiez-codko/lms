@@ -5,7 +5,8 @@ import Image from "next/image";
 import { cn } from "@/lib/utils";
 
 const sidebarItems = [
-  { icon: Compass, label: "Browse", href: "/" },
+  { icon: Compass, label: "Main", href: "/" },
+  { icon: Compass, label: "Browse", href: "/browse" },
   { icon: Mail, label: "Newsletter", href: "/newsletter" },
 ];
 
@@ -28,7 +29,7 @@ export const Sidebar = ({ className }: SidebarProps) => {
                 />
             </div>
             <div className="flex flex-col">
-                <span className="font-bold text-sm leading-tight text-primary">Code With Antonio</span>
+                <span className="font-bold text-sm leading-tight text-primary">Quantum</span>
                 <span className="text-xs text-muted-foreground">Build something great!</span>
             </div>
         </div>

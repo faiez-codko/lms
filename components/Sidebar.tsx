@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Compass, Mail } from "lucide-react";
+import { Compass, Mail, ListVideo, LayoutList } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
@@ -8,6 +8,7 @@ const sidebarItems = [
   { icon: Compass, label: "Main", href: "/" },
   { icon: Compass, label: "Browse", href: "/browse" },
   { icon: Mail, label: "Newsletter", href: "/newsletter" },
+  { icon: ListVideo, label: "Teacher Mode", href: "/teacher" },
 ];
 
 interface SidebarProps {

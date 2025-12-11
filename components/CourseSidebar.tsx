@@ -6,7 +6,11 @@ import { Progress } from "@/components/ui/progress";
 import { chapters } from "@/lib/mock-data";
 import { useParams, useRouter } from "next/navigation";
 
-export const CourseSidebar = () => {
+interface CourseSidebarProps {
+    className?: string;
+}
+
+export const CourseSidebar = ({ className }: CourseSidebarProps) => {
   const params = useParams();
   const router = useRouter();
   
@@ -19,7 +23,7 @@ export const CourseSidebar = () => {
   }
 
   return (
-    <div className="h-full border-r flex flex-col overflow-y-auto bg-white shadow-sm">
+    <div className={cn("h-full border-r flex flex-col overflow-y-auto bg-white shadow-sm", className)}>
       <div className="p-8 flex flex-col border-b">
         <h1 className="font-semibold mb-4">
           Prisma & Free Databases (MySQL, Postgres & Mongo)

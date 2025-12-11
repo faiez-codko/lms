@@ -14,7 +14,7 @@ interface CourseProps {
 
 export const CourseCard = ({ course }: { course: CourseProps }) => {
   return (
-    <Card className="overflow-hidden group hover:shadow-lg transition-all duration-300 border-0 shadow-sm bg-card">
+    <Card className="overflow-hidden group hover:shadow-lg transition-all duration-300 border-0 shadow-sm bg-card p-0 pb-2">
       <div className="relative aspect-video w-full overflow-hidden rounded-t-lg">
         <Image
           src={course.thumbnail}
@@ -28,7 +28,7 @@ export const CourseCard = ({ course }: { course: CourseProps }) => {
             </span> */}
         </div>
       </div>
-      <CardContent className="p-4">
+      <CardContent >
         <div className="flex items-start justify-between gap-2 mb-2">
             <h3 className="font-semibold line-clamp-2 leading-tight group-hover:text-primary transition-colors">
             {course.title}

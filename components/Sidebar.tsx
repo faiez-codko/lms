@@ -2,15 +2,20 @@ import Link from "next/link";
 import { Compass, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import { cn } from "@/lib/utils";
 
 const sidebarItems = [
   { icon: Compass, label: "Browse", href: "/" },
   { icon: Mail, label: "Newsletter", href: "/newsletter" },
 ];
 
-export const Sidebar = () => {
+interface SidebarProps {
+  className?: string;
+}
+
+export const Sidebar = ({ className }: SidebarProps) => {
   return (
-    <div className="hidden md:flex flex-col w-64 fixed inset-y-0 left-0 border-r bg-background z-50">
+    <div className={cn("flex flex-col h-full border-r bg-background", className)}>
       {/* Brand Section */}
       <div className="p-6">
         <div className="flex items-center gap-3">

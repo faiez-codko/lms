@@ -37,7 +37,7 @@ export default function ChapterIdPage({
   const { courseId, chapterId } = use(params);
   const router = useRouter();
   
-  const form = useForm<z.infer<typeof formSchema>>({
+  const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
       title: "Introduction",

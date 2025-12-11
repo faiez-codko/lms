@@ -114,7 +114,7 @@ export default function Home() {
             {categories.map((category) => (
               <button
                 key={category.id}
-                className={`px-3 py-1 ${category.isActive ? "bg-gray-100" : "bg-white"} border border-gray-300 rounded-md text-sm font-medium hover:bg-gray-100 ${category.isActive ? "bg-gray-100" : ""}`}
+                className={`px-3 py-1 ${category.isActive ? "bg-gray-100 dark:bg-gray-900" : "bg-white dark:bg-gray-600"} border border-gray-300 rounded-md text-sm font-medium hover:bg-gray-100 ${category.isActive ? "bg-gray-100 dark:bg-gray-800" : ""}`}
               >
                 {category.name}
               </button>

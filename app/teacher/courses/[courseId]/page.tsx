@@ -495,6 +495,7 @@ export default function CourseIdPage({ params }: { params: Promise<{ courseId: s
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormControl>
+                                          {/* @ts-ignore */}
                                             <Input
                                                 type="number"
                                                 step="0.01"

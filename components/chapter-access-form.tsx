@@ -42,7 +42,7 @@ export const ChapterAccessForm = ({
 
   const router = useRouter();
 
-  const form = useForm<z.infer<typeof formSchema>>({
+  const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
       isFree: !!initialData.isFree

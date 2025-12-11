@@ -6,35 +6,44 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import {
   Form,
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Badge } from "@/components/ui/badge";
-import { Grip, LayoutDashboard, ListChecks, Pencil, PlusCircle, Trash } from "lucide-react";
+import { Grip, LayoutDashboard, ListChecks, Pencil, PlusCircle, ImageIcon, DollarSign, Check } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
+import Image from "next/image";
+import { cn } from "@/lib/utils";
+import {
+    Command,
+    CommandEmpty,
+    CommandGroup,
+    CommandInput,
+    CommandItem,
+    CommandList,
+  } from "@/components/ui/command"
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/components/ui/popover"
+import { ChevronsUpDown } from "lucide-react";
+import { ChaptersList } from "@/components/ChaptersList";
 
 // Mock data
 const categories = [
-    { id: "1", name: "Computer Science" },
-    { id: "2", name: "Music" },
-    { id: "3", name: "Fitness" },
-    { id: "4", name: "Photography" },
-    { id: "5", name: "Accounting" },
-    { id: "6", name: "Engineering" },
-    { id: "7", name: "Filming" },
+    { label: "Computer Science", value: "1" },
+    { label: "Music", value: "2" },
+    { label: "Fitness", value: "3" },
+    { label: "Photography", value: "4" },
+    { label: "Accounting", value: "5" },
+    { label: "Engineering", value: "6" },
+    { label: "Filming", value: "7" },
   ];
 
 const chapters = [
@@ -48,12 +57,20 @@ const formSchema = z.object({
   description: z.string().optional(),
   categoryId: z.string().optional(),
   price: z.coerce.number().optional(),
+  imageUrl: z.string().optional(),
 });
 
 export default function CourseIdPage({ params }: { params: Promise<{ courseId: string }> }) {
   const { courseId } = use(params);
   const router = useRouter();
+  
+  // Edit States
   const [isEditingTitle, setIsEditingTitle] = useState(false);
+  const [isEditingDescription, setIsEditingDescription] = useState(false);
+  const [isEditingPrice, setIsEditingPrice] = useState(false);
+  const [isEditingCategory, setIsEditingCategory] = useState(false);
+  const [isEditingImage, setIsEditingImage] = useState(false);
+  const [isCreatingChapter, setIsCreatingChapter] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -61,13 +78,33 @@ export default function CourseIdPage({ params }: { params: Promise<{ courseId: s
       title: "Advanced Web Development",
       description: "Learn how to build modern web applications...",
       price: 99.99,
+      categoryId: "",
+      imageUrl: "https://trae-api-sg.mchost.guru/api/ide/v1/text_to_image?prompt=coding%20course%20cover&image_size=landscape_16_9",
     },
   });
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     console.log(values);
     setIsEditingTitle(false);
+    setIsEditingDescription(false);
+    setIsEditingPrice(false);
+    setIsEditingCategory(false);
+    setIsEditingImage(false);
   };
+
+  const onChapterCreate = () => {
+      // Simulate creating a chapter
+      setIsCreatingChapter(false);
+      router.push(`/teacher/courses/${courseId}/chapters/new-chapter-id`);
+  }
+
+  const onReorder = (updateData: { id: string; position: number }[]) => {
+    console.log("Reordering chapters:", updateData);
+  }
+
+  const onEdit = (id: string) => {
+    router.push(`/teacher/courses/${courseId}/chapters/${id}`);
+  }
 
   return (
     <div className="p-6">
@@ -150,46 +187,209 @@ export default function CourseIdPage({ params }: { params: Promise<{ courseId: s
             )}
           </div>
 
-          {/* Description Form (Placeholder) */}
+          {/* Description Form */}
           <div className="mt-6 border bg-slate-100 rounded-md p-4 dark:bg-slate-900">
             <div className="font-medium flex items-center justify-between">
               Course description
-              <Button variant="ghost">
-                <Pencil className="h-4 w-4 mr-2" />
-                Edit description
+              <Button onClick={() => setIsEditingDescription((prev) => !prev)} variant="ghost">
+                {isEditingDescription ? (
+                  <>Cancel</>
+                ) : (
+                  <>
+                    <Pencil className="h-4 w-4 mr-2" />
+                    Edit description
+                  </>
+                )}
               </Button>
             </div>
-            <p className="text-sm mt-2 text-slate-500 italic">
-                {form.getValues("description")}
-            </p>
+            {!isEditingDescription && (
+                <p className={cn("text-sm mt-2", !form.getValues("description") && "text-slate-500 italic")}>
+                    {form.getValues("description") || "No description"}
+                </p>
+            )}
+            {isEditingDescription && (
+                <Form {...form}>
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 mt-4">
+                        <FormField
+                            control={form.control}
+                            name="description"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormControl>
+                                        <Textarea
+                                            disabled={false}
+                                            placeholder="e.g. 'This course is about...'"
+                                            {...field}
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <div className="flex items-center gap-x-2">
+                            <Button disabled={false} type="submit">
+                                Save
+                            </Button>
+                        </div>
+                    </form>
+                </Form>
+            )}
           </div>
           
-          {/* Image Form (Placeholder) */}
+          {/* Image Form */}
           <div className="mt-6 border bg-slate-100 rounded-md p-4 dark:bg-slate-900">
             <div className="font-medium flex items-center justify-between">
               Course image
-              <Button variant="ghost">
-                <Pencil className="h-4 w-4 mr-2" />
-                Edit image
+              <Button onClick={() => setIsEditingImage((prev) => !prev)} variant="ghost">
+                {isEditingImage ? (
+                  <>Cancel</>
+                ) : (
+                  <>
+                    <Pencil className="h-4 w-4 mr-2" />
+                    Edit image
+                  </>
+                )}
               </Button>
             </div>
-             <div className="aspect-video mt-2 rounded-md bg-slate-200 flex items-center justify-center dark:bg-slate-800">
-                <span className="text-slate-500">No image</span>
-             </div>
+            {!isEditingImage && (
+                !form.getValues("imageUrl") ? (
+                    <div className="flex items-center justify-center h-60 bg-slate-200 rounded-md mt-2 dark:bg-slate-800">
+                        <ImageIcon className="h-10 w-10 text-slate-500" />
+                    </div>
+                ) : (
+                    <div className="relative aspect-video mt-2">
+                        <Image
+                            alt="Upload"
+                            fill
+                            className="object-cover rounded-md"
+                            src={form.getValues("imageUrl") || ""}
+                        />
+                    </div>
+                )
+            )}
+             {isEditingImage && (
+                 <Form {...form}>
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 mt-4">
+                        <FormField
+                            control={form.control}
+                            name="imageUrl"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormControl>
+                                        {/* Simplified Image Input (Text URL for now) */}
+                                        <Input
+                                            disabled={false}
+                                            placeholder="Paste image URL here"
+                                            {...field}
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                         <div className="text-xs text-muted-foreground">
+                            16:9 aspect ratio recommended
+                        </div>
+                        <div className="flex items-center gap-x-2">
+                            <Button disabled={false} type="submit">
+                                Save
+                            </Button>
+                        </div>
+                    </form>
+                </Form>
+             )}
           </div>
 
-           {/* Category Form (Placeholder) */}
+           {/* Category Form */}
            <div className="mt-6 border bg-slate-100 rounded-md p-4 dark:bg-slate-900">
             <div className="font-medium flex items-center justify-between">
               Course category
-              <Button variant="ghost">
-                <Pencil className="h-4 w-4 mr-2" />
-                Edit category
+              <Button onClick={() => setIsEditingCategory((prev) => !prev)} variant="ghost">
+                {isEditingCategory ? (
+                  <>Cancel</>
+                ) : (
+                  <>
+                    <Pencil className="h-4 w-4 mr-2" />
+                    Edit category
+                  </>
+                )}
               </Button>
             </div>
-             <p className="text-sm mt-2 text-slate-500 italic">
-                No category selected
-            </p>
+            {!isEditingCategory && (
+                <p className={cn("text-sm mt-2", !form.getValues("categoryId") && "text-slate-500 italic")}>
+                    {categories.find(category => category.value === form.getValues("categoryId"))?.label || "No category selected"}
+                </p>
+            )}
+            {isEditingCategory && (
+                <Form {...form}>
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 mt-4">
+                         <FormField
+                            control={form.control}
+                            name="categoryId"
+                            render={({ field }) => (
+                                <FormItem className="flex flex-col">
+                                    <Popover>
+                                        <PopoverTrigger asChild>
+                                        <FormControl>
+                                            <Button
+                                            variant="outline"
+                                            role="combobox"
+                                            className={cn(
+                                                "w-full justify-between",
+                                                !field.value && "text-muted-foreground"
+                                            )}
+                                            >
+                                            {field.value
+                                                ? categories.find(
+                                                    (category) => category.value === field.value
+                                                )?.label
+                                                : "Select category"}
+                                            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                                            </Button>
+                                        </FormControl>
+                                        </PopoverTrigger>
+                                        <PopoverContent className="w-[200px] p-0">
+                                        <Command>
+                                            <CommandInput placeholder="Search category..." />
+                                            <CommandList>
+                                                <CommandEmpty>No category found.</CommandEmpty>
+                                                <CommandGroup>
+                                                {categories.map((category) => (
+                                                    <CommandItem
+                                                    value={category.label}
+                                                    key={category.value}
+                                                    onSelect={() => {
+                                                        form.setValue("categoryId", category.value);
+                                                    }}
+                                                    >
+                                                    <Check
+                                                        className={cn(
+                                                        "mr-2 h-4 w-4",
+                                                        category.value === field.value
+                                                            ? "opacity-100"
+                                                            : "opacity-0"
+                                                        )}
+                                                    />
+                                                    {category.label}
+                                                    </CommandItem>
+                                                ))}
+                                                </CommandGroup>
+                                            </CommandList>
+                                        </Command>
+                                        </PopoverContent>
+                                    </Popover>
+                                    <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                        <div className="flex items-center gap-x-2">
+                            <Button disabled={false} type="submit">
+                                Save
+                            </Button>
+                        </div>
+                    </form>
+                </Form>
+            )}
           </div>
 
         </div>
@@ -205,30 +405,53 @@ export default function CourseIdPage({ params }: { params: Promise<{ courseId: s
             <div className="mt-6 border bg-slate-100 rounded-md p-4 dark:bg-slate-900">
                 <div className="font-medium flex items-center justify-between mb-4">
                   Course chapters
-                  <Button variant="ghost">
-                    <PlusCircle className="h-4 w-4 mr-2" />
-                    Add chapter
+                  <Button onClick={() => setIsCreatingChapter((prev) => !prev)} variant="ghost">
+                    {isCreatingChapter ? (
+                        <>Cancel</>
+                    ) : (
+                        <>
+                            <PlusCircle className="h-4 w-4 mr-2" />
+                            Add chapter
+                        </>
+                    )}
                   </Button>
                 </div>
+
+                {isCreatingChapter && (
+                     <div className="mb-4">
+                        <Form {...form}>
+                            <form className="space-y-4 mt-4">
+                                <FormField
+                                    control={form.control}
+                                    name="title"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormControl>
+                                                <Input
+                                                    disabled={false}
+                                                    placeholder="e.g. 'Introduction to the course'"
+                                                    {...field}
+                                                />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                                <Button disabled={false} onClick={onChapterCreate} type="button">
+                                    Create
+                                </Button>
+                            </form>
+                        </Form>
+                     </div>
+                )}
                 
-                <div className="flex flex-col gap-2">
-                    {chapters.map((chapter) => (
-                        <div key={chapter.id} 
-                            className="flex items-center gap-x-2 bg-background border-slate-200 border text-slate-700 rounded-md mb-2 text-sm p-2 cursor-pointer hover:bg-slate-200/20 transition dark:text-slate-300 dark:border-slate-800"
-                            onClick={() => router.push(`/teacher/courses/${courseId}/chapters/${chapter.id}`)}
-                        >
-                            <div className="px-2 py-3 border-r border-r-slate-200 hover:bg-slate-300 rounded-l-md transition">
-                                <Grip className="h-5 w-5" />
-                            </div>
-                            {chapter.title}
-                            <div className="ml-auto pr-2 flex items-center gap-x-2">
-                                <Badge variant={chapter.isPublished ? "default" : "secondary"}>
-                                    {chapter.isPublished ? "Published" : "Draft"}
-                                </Badge>
-                                <Pencil className="h-4 w-4 cursor-pointer hover:opacity-75 transition" />
-                            </div>
-                        </div>
-                    ))}
+                <div className={cn("text-sm mt-2", !chapters.length && "text-slate-500 italic")}>
+                    {!chapters.length && "No chapters"}
+                    <ChaptersList
+                        onEdit={onEdit}
+                        onReorder={onReorder}
+                        items={chapters || []}
+                    />
                 </div>
 
                 <p className="text-xs text-muted-foreground mt-4">
@@ -247,14 +470,51 @@ export default function CourseIdPage({ params }: { params: Promise<{ courseId: s
              <div className="mt-6 border bg-slate-100 rounded-md p-4 dark:bg-slate-900">
                 <div className="font-medium flex items-center justify-between">
                   Course price
-                  <Button variant="ghost">
-                    <Pencil className="h-4 w-4 mr-2" />
-                    Edit price
+                  <Button onClick={() => setIsEditingPrice((prev) => !prev)} variant="ghost">
+                    {isEditingPrice ? (
+                        <>Cancel</>
+                    ) : (
+                        <>
+                            <Pencil className="h-4 w-4 mr-2" />
+                            Edit price
+                        </>
+                    )}
                   </Button>
                 </div>
-                 <p className="text-sm mt-2 text-slate-500">
-                    ${form.getValues("price")}
-                </p>
+                {!isEditingPrice && (
+                    <p className={cn("text-sm mt-2", !form.getValues("price") && "text-slate-500 italic")}>
+                        {form.getValues("price") ? `$${form.getValues("price")}` : "No price"}
+                    </p>
+                )}
+                {isEditingPrice && (
+                     <Form {...form}>
+                        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 mt-4">
+                            <FormField
+                                control={form.control}
+                                name="price"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormControl>
+                                            <Input
+                                                type="number"
+                                                step="0.01"
+                                                disabled={false}
+                                                placeholder="Set a price for your course"
+                                                {...field}
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <div className="flex items-center gap-x-2">
+                                <Button disabled={false} type="submit">
+                                    Save
+                                </Button>
+                            </div>
+                        </form>
+                    </Form>
+                )}
             </div>
            </div>
 

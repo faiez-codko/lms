@@ -14,7 +14,7 @@ const courses = [
     price: "$99",
     isPublished: true,
     category: "Development",
-    imageUrl: "https://trae-api-sg.mchost.guru/api/ide/v1/text_to_image?prompt=react%20code%20abstract%20programming%20computer&image_size=landscape_16_9",
+    imageUrl: "/media/001.png",
     enrollments: 124,
   },
   {
@@ -23,7 +23,7 @@ const courses = [
     price: "$49",
     isPublished: false,
     category: "Finance",
-    imageUrl: "https://trae-api-sg.mchost.guru/api/ide/v1/text_to_image?prompt=blockchain%20crypto%20bitcoin%20network&image_size=landscape_16_9",
+    imageUrl: "/media/002.png",
     enrollments: 56,
   },
   {
@@ -32,7 +32,7 @@ const courses = [
     price: "$129",
     isPublished: true,
     category: "Trading",
-    imageUrl: "https://trae-api-sg.mchost.guru/api/ide/v1/text_to_image?prompt=stock%20market%20chart%20trading%20analysis&image_size=landscape_16_9",
+    imageUrl: "/media/003.png",
     enrollments: 890,
   },
 ];

@@ -12,9 +12,9 @@ export const Navbar = () => {
         <Link href="/">
             <div className="flex items-center gap-2">
                 <div className="h-8 w-8 bg-emerald-500 rounded-lg flex items-center justify-center">
-                    <span className="text-white font-bold text-lg">T</span>
+                    <span className="text-white font-bold text-lg">Q</span>
                 </div>
-                <span className="font-bold text-xl text-white">TradeMastery</span>
+                <span className="font-bold text-xl text-white">Quantum</span>
             </div>
         </Link>
         <div className="space-x-4 md:block md:w-auto flex items-center justify-between w-full">

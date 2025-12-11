@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "LMS Platform",
+  title: "Quantum",
   description: "Learn and build with us",
 };
 

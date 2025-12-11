@@ -84,7 +84,7 @@ export default function LandingPage() {
         title="Analyze Markets with Precision"
         description="Stop guessing. Learn to read the raw price action and identify high-probability setups with our proprietary institutional-grade charting strategies."
         points={["Advanced Candlestick Patterns", "Multi-Timeframe Analysis", "Volume Profile & Order Flow"]}
-        imageSrc="https://trae-api-sg.mchost.guru/api/ide/v1/text_to_image?prompt=technical%20analysis%20charts%20stock%20market%20screen%20dark%20mode&image_size=landscape_16_9"
+        imageSrc="/media/001.png"
         imageAlt="Technical Analysis Charts"
         reversed={false}
       />
@@ -95,7 +95,7 @@ export default function LandingPage() {
         title="Protect Capital like a Hedge Fund"
         description="The difference between gambling and trading is risk management. We provide the calculators, journals, and frameworks to keep your drawdown low and upside high."
         points={["Dynamic Position Sizing", "Portfolio Correlation Matrix", "Automated Stop-Loss Strategies"]}
-        imageSrc="https://trae-api-sg.mchost.guru/api/ide/v1/text_to_image?prompt=risk%20management%20dashboard%20analytics%20graphs%20dark%20mode&image_size=landscape_16_9"
+        imageSrc="/media/002.png"
         imageAlt="Risk Management Dashboard"
         reversed={true}
       />
@@ -106,7 +106,7 @@ export default function LandingPage() {
         title="Master Your Mindset"
         description="90% of trading is psychology. Learn how to control your emotions, eliminate FOMO, and execute your plan with robotic discipline."
         points={["Daily Mindfulness Routines", "Trade Journaling & Review", "Cognitive Bias Training"]}
-        imageSrc="https://trae-api-sg.mchost.guru/api/ide/v1/text_to_image?prompt=meditation%20focus%20mindset%20brain%20abstract%20art%20dark%20mode&image_size=landscape_16_9"
+        imageSrc="/media/003.png"
         imageAlt="Trading Psychology"
         reversed={false}
       />
@@ -127,6 +127,24 @@ export default function LandingPage() {
               author="Elena R."
               role="Swing Trader"
               avatar="https://trae-api-sg.mchost.guru/api/ide/v1/text_to_image?prompt=woman%20portrait%20professional&image_size=square"
+            />
+            <TestimonialCard
+              quote="The risk management tools alone saved me thousands during the last crash. Essential for any serious trader."
+              author="David K."
+              role="Crypto Investor"
+              avatar="https://trae-api-sg.mchost.guru/api/ide/v1/text_to_image?prompt=man%20portrait%20casual&image_size=square"
+            />
+            <TestimonialCard
+              quote="The risk management tools alone saved me thousands during the last crash. Essential for any serious trader."
+              author="David K."
+              role="Crypto Investor"
+              avatar="https://trae-api-sg.mchost.guru/api/ide/v1/text_to_image?prompt=man%20portrait%20casual&image_size=square"
+            />
+            <TestimonialCard
+              quote="The risk management tools alone saved me thousands during the last crash. Essential for any serious trader."
+              author="David K."
+              role="Crypto Investor"
+              avatar="https://trae-api-sg.mchost.guru/api/ide/v1/text_to_image?prompt=man%20portrait%20casual&image_size=square"
             />
             <TestimonialCard
               quote="The risk management tools alone saved me thousands during the last crash. Essential for any serious trader."

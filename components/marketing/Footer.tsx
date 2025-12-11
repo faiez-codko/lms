@@ -48,7 +48,7 @@ export const Footer = () => {
         {/* Bottom Bar */}
         <div className="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-gray-800 gap-4">
             <div className="text-gray-500 text-sm">
-                © 2025 TradeMastery. All rights reserved.
+                © 2025 {brandName}. All rights reserved.
             </div>
             
             <div className="flex gap-4">

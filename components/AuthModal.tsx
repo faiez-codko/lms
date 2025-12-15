@@ -11,9 +11,13 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { loginSchema, registerSchema, LoginSchema, RegisterSchema } from "@/schema/auth";
+import axios from "axios";
 
 export const AuthModal = () => {
   const [isLogin, setIsLogin] = useState(true);
+  const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const form = useForm<LoginSchema | RegisterSchema>({
     resolver: zodResolver(isLogin ? loginSchema : registerSchema),
@@ -24,9 +28,25 @@ export const AuthModal = () => {
     },
   });
 
-  const onSubmit = (data: LoginSchema | RegisterSchema) => {
-    console.log("Submitted data:", data);
-    // Here you would typically call your auth API
+  const onSubmit = async (data: LoginSchema | RegisterSchema) => {
+    setError(null);
+    setLoading(true);
+    try {
+      if (isLogin) {
+        await axios.post("/api/auth/login", data);
+      } else {
+        await axios.post("/api/auth/register", data);
+      }
+      setOpen(false);
+      window.location.reload();
+    } catch (e: any) {
+      const msg =
+        e?.response?.data?.error ||
+        "Something went wrong. Please try again.";
+      setError(msg);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const toggleMode = () => {
@@ -35,7 +55,7 @@ export const AuthModal = () => {
   };
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button variant="outline" className="gap-2 rounded-lg border-border/60 font-medium px-4 h-10 hover:bg-secondary/50">
             <LogIn className="h-4 w-4" />
@@ -121,7 +141,10 @@ export const AuthModal = () => {
                        <p className="text-sm text-destructive">{form.formState.errors.password?.message as string}</p>
                     )}
                 </div>
-                <Button className="w-full h-11 mt-2" type="submit">
+                {error && (
+                  <p className="text-sm text-destructive">{error}</p>
+                )}
+                <Button className="w-full h-11 mt-2" type="submit" disabled={loading}>
                     {isLogin ? "Login" : "Create Account"}
                 </Button>
             </form>

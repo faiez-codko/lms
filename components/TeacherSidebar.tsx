@@ -1,69 +1,79 @@
 "use client";
 
 import Link from "next/link";
-import { BarChart, List, Compass, LogOut } from "lucide-react";
+import { BarChart, List, LogOut, Compass } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { usePathname } from "next/navigation";
+import Image from "next/image";
 import { cn } from "@/lib/utils";
+import { usePathname } from "next/navigation";
 
 const sidebarItems = [
   { icon: BarChart, label: "Analytics", href: "/teacher" },
   { icon: List, label: "Courses", href: "/teacher/courses" },
   { icon: List, label: "Categories", href: "/teacher/categories" },
+  { icon: LogOut, label: "Exit Teacher Mode", href: "/" },
 ];
 
-export const TeacherSidebar = () => {
+interface TeacherSidebarProps {
+  className?: string;
+}
+
+export const TeacherSidebar = ({ className }: TeacherSidebarProps) => {
   const pathname = usePathname();
 
   return (
-    <div className="h-full border-r flex flex-col overflow-y-auto bg-white shadow-sm dark:bg-slate-900 dark:border-slate-800">
+    <div className={cn("flex flex-col h-full border-r bg-background", className)}>
+      {/* Brand Section */}
       <div className="p-6">
-        <Link href="/">
-             <div className="flex items-center gap-2 cursor-pointer">
-                <div className="h-8 w-8 bg-emerald-500 rounded-lg flex items-center justify-center">
-                    <span className="text-white font-bold text-lg">Q</span>
-                </div>
-                <span className="font-bold text-xl text-slate-900 dark:text-white">Quantum</span>
+        <div className="flex items-center gap-3">
+            <div className="relative h-10 w-10 rounded-full overflow-hidden border">
+                <Image 
+                    src="https://trae-api-sg.mchost.guru/api/ide/v1/text_to_image?prompt=developer%20avatar%20cartoon%20man%20coding&image_size=square"
+                    alt="Logo"
+                    fill
+                    className="object-cover"
+                />
             </div>
-        </Link>
+            <div className="flex flex-col">
+                <span className="font-bold text-sm leading-tight text-primary">Quantum</span>
+                <span className="text-xs text-muted-foreground">Teacher Dashboard</span>
+            </div>
+        </div>
       </div>
-      <div className="flex flex-col w-full">
-        {sidebarItems.map((item) => {
-          const isActive = pathname === item.href || pathname?.startsWith(`${item.href}/`);
 
+      {/* Navigation */}
+      <div className="flex flex-col gap-1 px-4 mt-4">
+        {sidebarItems.map((item) => {
+          const isActive = pathname === item.href || (item.href !== "/teacher" && pathname?.startsWith(`${item.href}/`));
+          
           return (
             <Button
               key={item.href}
               variant="ghost"
               className={cn(
-                "flex items-center gap-x-2 text-slate-500 text-sm font-[500] pl-6 transition-all hover:text-slate-600 hover:bg-slate-300/20",
-                isActive && "text-emerald-700 bg-emerald-200/20 hover:bg-emerald-200/20 hover:text-emerald-700 dark:text-emerald-400 dark:bg-slate-800"
+                "justify-start gap-4 px-4 h-12 rounded-lg hover:bg-secondary/50 text-muted-foreground hover:text-primary",
+                isActive && "bg-secondary/50 text-primary"
               )}
               asChild
             >
               <Link href={item.href}>
-                <div className="flex items-center gap-x-2 py-4">
-                  <item.icon
-                    size={22}
-                    className={cn(
-                      "text-slate-500",
-                      isActive && "text-emerald-700 dark:text-emerald-400"
-                    )}
-                  />
-                  {item.label}
-                </div>
+                <item.icon className="h-5 w-5" />
+                <span className="text-sm font-medium">{item.label}</span>
               </Link>
             </Button>
           );
         })}
       </div>
-      <div className="mt-auto p-6">
-        <Button size="sm" variant="outline" className="w-full" asChild>
-            <Link href="/">
-                <LogOut className="h-4 w-4 mr-2" />
-                Exit Teacher Mode
-            </Link>
-        </Button>
+      
+      {/* Footer */}
+      <div className="mt-auto p-6 border-t">
+        <div className="text-[10px] text-muted-foreground">
+          © 2024 BRNA d.o.o.
+        </div>
+        <div className="flex gap-1 mt-1">
+            <div className="h-1 w-1 rounded-full bg-muted-foreground/30"></div>
+            <div className="h-1 w-1 rounded-full bg-muted-foreground/30"></div>
+        </div>
       </div>
     </div>
   );

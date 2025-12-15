@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { use } from "react";
 import {
   Form,
   FormControl,
@@ -26,14 +27,24 @@ const formSchema = z.object({
   imageUrl: z.string().optional(),
 });
 
-export default function CreateCategoryPage() {
+export default function EditCategoryPage({ params }: { params: Promise<{ categoryId: string }> }) {
+  const { categoryId } = use(params);
   const router = useRouter();
+  
+  // Mock data - In a real app, fetch this from API
+  const category = {
+    id: categoryId,
+    name: "Computer Science",
+    description: "Learn programming, algorithms, and system design.",
+    imageUrl: "https://trae-api-sg.mchost.guru/api/ide/v1/text_to_image?prompt=computer%20science%20code%20abstract&image_size=landscape_4_3"
+  };
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
-      description: "",
-      imageUrl: "",
+      name: category.name,
+      description: category.description,
+      imageUrl: category.imageUrl,
     },
   });
 
@@ -41,7 +52,7 @@ export default function CreateCategoryPage() {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      console.log("Creating category:", values);
+      console.log("Updating category:", values);
       // Simulate API call
       await new Promise((resolve) => setTimeout(resolve, 1000));
       router.push(`/teacher/categories`);
@@ -53,9 +64,9 @@ export default function CreateCategoryPage() {
   return (
     <div className="max-w-5xl mx-auto flex md:items-center md:justify-center min-h-screen p-6">
       <div className="w-full">
-        <h1 className="text-2xl font-bold">Create Category</h1>
+        <h1 className="text-2xl font-bold">Edit Category</h1>
         <p className="text-sm text-slate-500">
-          Add a new category for your courses.
+          Update your category details.
         </p>
         <Form {...form}>
           <form
@@ -125,7 +136,7 @@ export default function CreateCategoryPage() {
                 </Button>
               </Link>
               <Button type="submit" disabled={!isValid || isSubmitting}>
-                Create
+                Save Changes
               </Button>
             </div>
           </form>

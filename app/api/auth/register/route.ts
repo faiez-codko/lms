@@ -54,7 +54,7 @@ export async function POST(req: Request) {
       secure: process.env.NODE_ENV === "production",
     });
     return res;
-  } catch (e) {
-    return NextResponse.json({ error: "Server error || " + e.message }, { status: 500 });
+  } catch {
+    return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 }

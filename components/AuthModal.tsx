@@ -5,19 +5,36 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { LogIn } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { loginSchema, registerSchema, LoginSchema, RegisterSchema } from "@/schema/auth";
 import axios from "axios";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import Link from "next/link";
 
 export const AuthModal = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [user, setUser] = useState<{
+    id: string;
+    name: string | null;
+    email: string | null;
+    role: string;
+    image: string | null;
+  } | null>(null);
 
   const form = useForm<LoginSchema | RegisterSchema>({
     resolver: zodResolver(isLogin ? loginSchema : registerSchema),
@@ -27,6 +44,23 @@ export const AuthModal = () => {
       ...(isLogin ? {} : { name: "" }),
     },
   });
+
+  useEffect(() => {
+    let active = true;
+    axios
+      .get("/api/auth/me")
+      .then((res) => {
+        if (!active) return;
+        setUser(res.data.user);
+      })
+      .catch(() => {
+        if (!active) return;
+        setUser(null);
+      });
+    return () => {
+      active = false;
+    };
+  }, []);
 
   const onSubmit = async (data: LoginSchema | RegisterSchema) => {
     setError(null);
@@ -53,6 +87,55 @@ export const AuthModal = () => {
     setIsLogin(!isLogin);
     form.reset(); // Reset form when switching modes
   };
+
+  const logout = async () => {
+    try {
+      await axios.post("/api/auth/logout");
+      window.location.reload();
+    } catch {
+    }
+  };
+
+  if (user) {
+    const initial =
+      (user.name?.[0] || user.email?.[0] || "U").toUpperCase();
+    return (
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="ghost" className="px-2">
+            <Avatar>
+              <AvatarImage src={user.image || undefined} alt={user.name || "Profile"} />
+              <AvatarFallback>{initial}</AvatarFallback>
+            </Avatar>
+            <span className="ml-2 hidden sm:inline text-sm font-medium">
+              {user.name || user.email}
+            </span>
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end" className="w-56">
+          <DropdownMenuLabel>
+            {user.name || user.email}
+          </DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem asChild>
+            <Link href="/my-courses">My Courses</Link>
+          </DropdownMenuItem>
+          {user.role === "TEACHER" && (
+            <DropdownMenuItem asChild>
+              <Link href="/teacher">Teacher Portal</Link>
+            </DropdownMenuItem>
+          )}
+          <DropdownMenuSeparator />
+          <DropdownMenuItem
+            variant="destructive"
+            onClick={logout}
+          >
+            Logout
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    );
+  }
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>

@@ -6,6 +6,8 @@ import { MobileSidebar } from "@/components/MobileSidebar";
 import { AuthModal } from "@/components/AuthModal";
 import { ModeToggle } from "@/components/ModeToggle";
 
+import { CartSheet } from "@/components/CartSheet";
+
 export const Navbar = () => {
   return (
     <div className="h-20 fixed top-0 right-0 left-0 md:left-64 bg-background border-b z-40 flex items-center px-6 gap-4">
@@ -34,6 +36,7 @@ export const Navbar = () => {
         <Button variant="ghost" size="icon" className="md:hidden">
           <Search className="h-5 w-5" />
         </Button>
+        <CartSheet />
         <ModeToggle />
         <AuthModal />
       </div>

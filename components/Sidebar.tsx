@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 const sidebarItems = [
   { icon: Compass, label: "Main", href: "/" },
   { icon: Compass, label: "Browse", href: "/browse" },
-  { icon: Mail, label: "Newsletter", href: "/newsletter" },
+  { icon: LayoutList, label: "My Courses", href: "/my-courses" },
   { icon: ListVideo, label: "Teacher Mode", href: "/teacher" },
 ];
 

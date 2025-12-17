@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { Card, CardContent } from "@/components/ui/card";
-import { Star, User, ShoppingCart, Check, PlayCircle } from "lucide-react";
+import { Star, User, ShoppingCart, Check, PlayCircle, ImageIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { useCart } from "@/hooks/use-cart";
@@ -12,7 +12,7 @@ interface CourseProps {
   id: number | string;
   title: string;
   author: string;
-  thumbnail: string;
+  thumbnail: string | null;
   price: string;
   rating: number;
   students: number;
@@ -20,7 +20,7 @@ interface CourseProps {
   progress?: number | null;
 }
 
-export const CourseCard = ({ course }: { course: CourseProps }) => {
+export const CourseCard = ({ course, isAdmin }: { course: CourseProps; isAdmin?: boolean }) => {
   const cart = useCart();
   // Hydration fix: Only check cart status after mount
   const [isMounted, setIsMounted] = useState(false);
@@ -40,12 +40,18 @@ export const CourseCard = ({ course }: { course: CourseProps }) => {
   return (
     <Card className="overflow-hidden group hover:shadow-lg transition-all duration-300 border-0 shadow-sm bg-card h-full flex flex-col">
       <div className="relative aspect-video w-full overflow-hidden rounded-t-lg">
-        <Image
-          src={course.thumbnail}
-          alt={course.title}
-          fill
-          className="object-cover group-hover:scale-105 transition-transform duration-300"
-        />
+        {course.thumbnail ? (
+          <img
+            src={course.thumbnail}
+            alt={course.title}
+            loading="lazy"
+            className="object-cover group-hover:scale-105 transition-transform duration-300"
+          />
+        ) : (
+          <div className="flex h-full w-full items-center justify-center bg-slate-100">
+            <ImageIcon className="h-12 w-12 text-slate-500" />
+          </div>
+        )}
         <div className="absolute top-2 right-2">
            <div className="bg-black/70 backdrop-blur-sm text-white text-xs px-2 py-1 rounded-md font-bold">
                {course.price}
@@ -83,7 +89,7 @@ export const CourseCard = ({ course }: { course: CourseProps }) => {
             </div>
             <Progress value={course.progress} className="h-2" />
           </div>
-        ) : (
+        ) : !isAdmin && (
           <Button 
               onClick={onAddToCart} 
               disabled={isInCart}

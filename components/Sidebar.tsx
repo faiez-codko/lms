@@ -3,19 +3,28 @@ import { Compass, Mail, ListVideo, LayoutList } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
+import { getCurrentUser } from "@/lib/auth";
 
 const sidebarItems = [
   { icon: Compass, label: "Main", href: "/" },
   { icon: Compass, label: "Browse", href: "/browse" },
   { icon: LayoutList, label: "My Courses", href: "/my-courses" },
-  { icon: ListVideo, label: "Teacher Mode", href: "/teacher" },
 ];
 
 interface SidebarProps {
   className?: string;
 }
 
-export const Sidebar = ({ className }: SidebarProps) => {
+export const Sidebar = async ({ className }: SidebarProps) => {
+  const user = await getCurrentUser();
+  const isTeacher = user?.role === "TEACHER" || user?.role === "SUPER_ADMIN";
+
+  const routes = [...sidebarItems];
+  
+  if (isTeacher) {
+      routes.push({ icon: ListVideo, label: "Teacher Mode", href: "/teacher" });
+  }
+
   return (
     <div className={cn("flex flex-col h-full border-r bg-background", className)}>
       {/* Brand Section */}
@@ -38,7 +47,7 @@ export const Sidebar = ({ className }: SidebarProps) => {
 
       {/* Navigation */}
       <div className="flex flex-col gap-1 px-4 mt-4">
-        {sidebarItems.map((item) => (
+        {routes.map((item) => (
           <Button
             key={item.href}
             variant="ghost"
@@ -56,7 +65,7 @@ export const Sidebar = ({ className }: SidebarProps) => {
       {/* Footer */}
       <div className="mt-auto p-6 border-t">
         <div className="text-[10px] text-muted-foreground">
-          © 2024 BRNA d.o.o.
+          © {new Date().getFullYear()} Quantum
         </div>
         <div className="flex gap-1 mt-1">
             <div className="h-1 w-1 rounded-full bg-muted-foreground/30"></div>

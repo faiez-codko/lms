@@ -1,35 +1,127 @@
 import { Button } from "@/components/ui/button";
-import { PlayCircle, FileText, MessageCircle, Github, Download, ArrowRight } from "lucide-react";
-import { chapters } from "@/lib/mock-data";
+import { PlayCircle, FileText, MessageCircle, Github, Download, ArrowRight, Lock, CheckCircle } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { CommentsList } from "@/components/CommentsList";
+import { cookies } from "next/headers";
+import { AUTH_COOKIE_NAME, verifyAuthToken } from "@/lib/auth";
+import { db } from "@/lib/prismadb";
+import { redirect } from "next/navigation";
+import { getProgress } from "@/actions/get-progress";
 
-export default async function ChapterPage({ params }: { params: { courseId: string; chapterId: string } }) {
-  const { chapterId  , courseId} = await params;
-  const currentChapterIndex = chapters.findIndex((c) => c.id === chapterId);
-  const currentChapter = chapters[currentChapterIndex];
+export default async function ChapterPage({ params }: { params: Promise<{ courseId: string; chapterId: string }> }) {
+  const { chapterId, courseId } = await params;
   
-  const nextChapter = chapters[currentChapterIndex + 1];
+  const token = (await cookies()).get(AUTH_COOKIE_NAME)?.value;
+  const payload = token ? verifyAuthToken(token) : null;
+  const userId = payload?.sub;
+
+  if (!userId) {
+    return redirect("/");
+  }
+
+  // Fetch course and chapters
+  const course = await db.course.findUnique({
+    where: {
+      id: courseId,
+    },
+    include: {
+      chapter: {
+        where: {
+          isPublished: true,
+        },
+        orderBy: {
+          position: "asc",
+        },
+      },
+    },
+  });
+
+  if (!course) {
+    return redirect("/");
+  }
+
+  // Find current chapter
+  const currentChapterIndex = course.chapter.findIndex((c) => c.id === chapterId);
+  const currentChapter = course.chapter[currentChapterIndex];
+
+  if (!currentChapter) {
+    return redirect("/");
+  }
+
+  const nextChapter = course.chapter[currentChapterIndex + 1];
+
+  // Check access: Admin OR Purchased OR Free Chapter
+  const isAdmin = payload?.role === "SUPER_ADMIN";
+  
+  let purchase = null;
+  if (!isAdmin) {
+      purchase = await db.purchase.findUnique({
+          where: {
+              userId_courseId: {
+                  userId,
+                  courseId
+              }
+          }
+      });
+  }
+
+  const isLocked = !currentChapter.isFree && !purchase && !isAdmin;
+
+  if (isLocked) {
+      return (
+          <div className="flex flex-col items-center justify-center h-[80vh] space-y-4">
+              <div className="bg-slate-100 p-8 rounded-full">
+                  <Lock className="h-12 w-12 text-slate-500" />
+              </div>
+              <h1 className="text-2xl font-bold">Chapter Locked</h1>
+              <p className="text-muted-foreground text-center max-w-md">
+                  You need to purchase this course to access this chapter.
+              </p>
+              <Link href={`/courses/${courseId}`}>
+                  <Button size="lg">
+                      View Course Details
+                  </Button>
+              </Link>
+          </div>
+      )
+  }
+
+  // Get User Progress for this chapter
+  const userProgress = await db.userprogress.findUnique({
+      where: {
+          userId_chapterId: {
+              userId,
+              chapterId
+          }
+      }
+  });
+
+  const isCompleted = userProgress?.isCompleted;
 
   return (
     <div className="flex flex-col max-w-5xl mx-auto pb-20">
       {/* Video Player Section */}
       <div className="p-4">
         <div className="relative aspect-video rounded-xl overflow-hidden bg-slate-900 shadow-lg border">
-            <div className="absolute inset-0 flex items-center justify-center">
-                <div className="flex flex-col items-center gap-4">
-                     <PlayCircle className="h-20 w-20 text-white opacity-80 hover:opacity-100 transition-opacity cursor-pointer" />
-                     <p className="text-white font-medium">Start watching: {currentChapter?.title || `Chapter ${chapterId}`}</p>
+            {currentChapter.videoUrl ? (
+                // In a real app, use a real video player (Mux, Youtube, etc)
+                // For now, simple video tag or iframe logic
+                <div className="absolute inset-0 flex items-center justify-center bg-black">
+                    <video src={currentChapter.videoUrl} controls />
+              
                 </div>
-            </div>
-            {/* Video Controls Mock */}
-            <div className="absolute bottom-0 left-0 right-0 h-14 bg-gradient-to-t from-black/80 to-transparent flex items-end px-4 pb-4">
-                <div className="w-full h-1 bg-white/30 rounded-full overflow-hidden">
-                    <div className="h-full w-1/3 bg-primary"></div>
+            ) : (
+                 <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="flex flex-col items-center gap-4">
+                        <PlayCircle className="h-20 w-20 text-white opacity-80 hover:opacity-100 transition-opacity cursor-pointer" />
+                        <p className="text-white font-medium">Start watching: {currentChapter.title}</p>
+                    </div>
                 </div>
-            </div>
+            )}
+           
+          
         </div>
       </div>
 
@@ -39,10 +131,14 @@ export default async function ChapterPage({ params }: { params: { courseId: stri
         {/* Header */}
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
             <div>
-                <h1 className="text-2xl font-bold mb-2">{currentChapter?.title || "Introduction to Databases"}</h1>
+                <h1 className="text-2xl font-bold mb-2">{currentChapter.title}</h1>
                 <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                    <span className="flex items-center gap-1"><FileText className="h-4 w-4" /> 12 Lessons</span>
-                    <span className="flex items-center gap-1"><MessageCircle className="h-4 w-4" /> 3 Comments</span>
+                    <span className="flex items-center gap-1"><FileText className="h-4 w-4" /> Lesson {currentChapterIndex + 1}</span>
+                    {isCompleted && (
+                        <span className="flex items-center gap-1 text-emerald-600 font-medium">
+                            <CheckCircle className="h-4 w-4" /> Completed
+                        </span>
+                    )}
                 </div>
             </div>
             <div className="flex items-center gap-2">
@@ -79,9 +175,9 @@ export default async function ChapterPage({ params }: { params: { courseId: stri
                     <TabsContent value="overview" className="space-y-6">
                         <div className="bg-card border rounded-lg p-6">
                             <h3 className="font-semibold mb-4 text-lg">About this chapter</h3>
-                            <p className="text-muted-foreground leading-relaxed">
-                                In this chapter, we will cover the fundamentals of database management systems. We will explore the differences between SQL and NoSQL databases, and when to use each. By the end of this lesson, you will have a clear understanding of how to set up your local development environment for MySQL, PostgreSQL, and MongoDB.
-                            </p>
+                            <div className="text-muted-foreground leading-relaxed">
+                                {currentChapter.description || "No description provided."}
+                            </div>
                         </div>
                         
                         <div className="bg-card border rounded-lg p-6">

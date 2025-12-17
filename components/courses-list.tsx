@@ -4,7 +4,7 @@ import { useEffect, useState, useRef, useCallback } from "react";
 import { CourseCard } from "@/components/CourseCard";
 import { getCourses } from "@/actions/get-courses";
 import { Loader2 } from "lucide-react";
-import { Category } from "@prisma/client";
+import { category } from "@prisma/client";
 import Link from "next/link";
 
 interface Course {
@@ -21,7 +21,7 @@ interface Course {
 
 interface CoursesListProps {
   initialCourses: Course[];
-  categories: Category[];
+  categories: category[];
   isAdmin?: boolean;
 }
 

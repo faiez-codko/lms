@@ -32,6 +32,12 @@ export const CoursesList = ({ initialCourses, categories, isAdmin }: CoursesList
   const [isLoading, setIsLoading] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
 
+  useEffect(() => {
+    setCourses(initialCourses);
+    setPage(2);
+    setHasMore(true);
+  }, [initialCourses]);
+
   const observerTarget = useRef(null);
 
   const loadMore = useCallback(async () => {

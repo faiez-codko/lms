@@ -9,6 +9,7 @@ import { AUTH_COOKIE_NAME, verifyAuthToken } from "@/lib/auth";
 import { db } from "@/lib/prismadb";
 import { redirect } from "next/navigation";
 import { getProgress } from "@/actions/get-progress";
+import { CourseProgressButton } from "./_components/course-progress-button";
 
 export default async function ChapterPage({ params }: { params: Promise<{ courseId: string; chapterId: string }> }) {
   const { chapterId, courseId } = await params;
@@ -146,7 +147,14 @@ export default async function ChapterPage({ params }: { params: Promise<{ course
                     <Github className="h-4 w-4" />
                     Source Code
                  </Button>
-                 {nextChapter ? (
+                 {purchase ? (
+                    <CourseProgressButton
+                        chapterId={chapterId}
+                        courseId={courseId}
+                        nextChapterId={nextChapter?.id}
+                        isCompleted={!!isCompleted}
+                    />
+                 ) : nextChapter ? (
                    <Link href={`/courses/${courseId}/chapters/${nextChapter.id}`}>
                       <Button className="gap-2 group">
                           Next Lesson

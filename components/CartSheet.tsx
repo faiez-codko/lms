@@ -1,6 +1,6 @@
 "use client";
 
-import { ShoppingCart, Trash2, X } from "lucide-react";
+import { ShoppingCart, Trash2, X, ImageIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -75,12 +75,18 @@ export const CartSheet = () => {
                 {cart.items.map((item) => (
                   <div key={item.id} className="flex gap-4 group">
                     <div className="relative h-20 w-32 rounded-md overflow-hidden flex-shrink-0 bg-secondary/50">
-                      <Image
-                        src={item.thumbnail}
-                        alt={item.title}
-                        fill
-                        className="object-cover"
-                      />
+                      {item.thumbnail ? (
+                        <Image
+                          src={item.thumbnail}
+                          alt={item.title}
+                          fill
+                          className="object-cover"
+                        />
+                      ) : (
+                        <div className="flex h-full w-full items-center justify-center bg-slate-100">
+                          <ImageIcon className="h-8 w-8 text-slate-500" />
+                        </div>
+                      )}
                     </div>
                     <div className="flex-1 flex flex-col justify-between">
                       <div className="space-y-1">

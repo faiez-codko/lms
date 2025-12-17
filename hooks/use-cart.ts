@@ -5,7 +5,7 @@ interface Course {
   id: number | string;
   title: string;
   author: string;
-  thumbnail: string;
+  thumbnail: string | null;
   price: string;
   rating: number;
   students: number;

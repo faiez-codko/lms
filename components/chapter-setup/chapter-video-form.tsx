@@ -8,7 +8,7 @@ import { Pencil, PlusCircle, Video } from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
-import { Chapter } from "@prisma/client";
+import { chapter } from "@prisma/client";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -21,7 +21,7 @@ import {
   } from "@/components/ui/form";
 
 interface ChapterVideoFormProps {
-  initialData: Chapter;
+  initialData: chapter;
   courseId: string;
   chapterId: string;
   apiUrl: string;

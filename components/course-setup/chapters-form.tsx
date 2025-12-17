@@ -8,7 +8,7 @@ import { Loader2, PlusCircle, Pencil } from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
-import { Chapter, Course } from "@prisma/client";
+import { chapter, course } from "@prisma/client";
 import Link from "next/link";
 
 import {
@@ -24,7 +24,7 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 
 interface ChaptersFormProps {
-  initialData: Course & { chapter: Chapter[] };
+  initialData: course & { chapter: chapter[] };
   courseId: string;
   apiUrl: string;
   editPagePrefix: string;

@@ -8,7 +8,7 @@ import { Pencil } from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
-import { Course } from "@prisma/client";
+import { course } from "@prisma/client";
 
 import {
   Form,
@@ -23,7 +23,7 @@ import { Input } from "@/components/ui/input";
 import { formatPrice } from "@/lib/format";
 
 interface PriceFormProps {
-  initialData: Course;
+  initialData: course;
   courseId: string;
   apiUrl: string;
 }
@@ -43,10 +43,10 @@ export const PriceForm = ({
 
   const router = useRouter();
 
-  const form = useForm<z.infer<typeof formSchema>>({
+  const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      price: initialData.price || undefined,
+      price: initialData.price ?? undefined,
     },
   });
 
@@ -101,6 +101,7 @@ export const PriceForm = ({
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
+                  {/* @ts-ignore */}
                     <Input
                       type="number"
                       step="0.01"

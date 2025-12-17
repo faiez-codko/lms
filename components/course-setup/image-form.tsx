@@ -8,7 +8,7 @@ import { Pencil, PlusCircle, ImageIcon } from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
-import { Course } from "@prisma/client";
+import { course } from "@prisma/client";
 import Image from "next/image";
 
 import {
@@ -22,7 +22,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 interface ImageFormProps {
-  initialData: Course;
+  initialData: course;
   courseId: string;
   apiUrl: string;
 }

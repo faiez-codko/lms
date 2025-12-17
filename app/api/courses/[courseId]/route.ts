@@ -14,14 +14,14 @@ export async function PATCH(
     const token = (await cookies()).get(AUTH_COOKIE_NAME)?.value;
     const payload = token ? verifyAuthToken(token) : null;
 
-    if (!payload || !payload.userId) {
+    if (!payload || !payload.sub) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
     const course = await db.course.update({
       where: {
         id: courseId,
-        userId: payload.userId, // Ensure user owns the course
+        userId: payload.sub, // Ensure user owns the course
       },
       data: {
         ...values,
@@ -44,14 +44,14 @@ export async function DELETE(
     const token = (await cookies()).get(AUTH_COOKIE_NAME)?.value;
     const payload = token ? verifyAuthToken(token) : null;
 
-    if (!payload || !payload.userId) {
+    if (!payload || !payload.sub) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
     const course = await db.course.delete({
       where: {
         id: courseId,
-        userId: payload.userId, // Ensure user owns the course
+        userId: payload.sub, // Ensure user owns the course
       },
     });
 

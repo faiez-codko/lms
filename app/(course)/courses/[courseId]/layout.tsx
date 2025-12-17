@@ -37,7 +37,10 @@ export default async function CourseLayout({
       <div className="h-[80px] md:pl-80 fixed inset-y-0 w-full z-50 bg-background border-b flex items-center px-6">
          <div className="flex items-center w-full justify-between">
             <div className="flex items-center gap-x-2 md:hidden">
-                <CourseMobileSidebar />
+                <CourseMobileSidebar
+                  course={course}
+                  progressCount={course.progress || 0}
+                />
             </div>
             <div className="hidden md:flex">
                 {/* Maybe breadcrumbs or title */}  

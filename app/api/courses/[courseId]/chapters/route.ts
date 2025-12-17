@@ -14,14 +14,14 @@ export async function POST(
     const token = (await cookies()).get(AUTH_COOKIE_NAME)?.value;
     const payload = token ? verifyAuthToken(token) : null;
 
-    if (!payload || !payload.userId) {
+    if (!payload || !payload.sub) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
     const courseOwner = await db.course.findUnique({
       where: {
         id: courseId,
-        userId: payload.userId,
+        userId: payload.sub,
       }
     });
 

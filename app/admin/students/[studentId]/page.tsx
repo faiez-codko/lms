@@ -61,7 +61,7 @@ export default async function StudentIdPage({
                <UserCog className="h-6 w-6" />
                <h2 className="text-xl font-semibold">Student Details</h2>
             </div>
-            <NameForm initialData={student} studentId={student.id} />
+            <NameForm initialData={{ name: student.name || "" }} studentId={student.id} />
             <EmailForm initialData={{ email: student.email || "" }} studentId={student.id} />
             <PasswordForm studentId={student.id} />
           </div>

@@ -17,7 +17,7 @@ import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft, Loader2, Lock, LogIn } from "lucide-react";
+import { ArrowLeft, ImageIcon, Loader2, Lock, LogIn } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { AuthModal } from "@/components/AuthModal";
@@ -211,12 +211,18 @@ export default function CheckoutPage() {
                   {cart.items.map((item) => (
                     <div key={item.id} className="flex gap-4">
                       <div className="relative h-16 w-24 rounded-md overflow-hidden flex-shrink-0">
-                        <Image
-                          src={item.thumbnail}
-                          alt={item.title}
-                          fill
-                          className="object-cover"
-                        />
+                        {item.thumbnail ? (
+                          <Image
+                            src={item.thumbnail}
+                            alt={item.title}
+                            fill
+                            className="object-cover"
+                          />
+                        ) : (
+                          <div className="flex h-full w-full items-center justify-center bg-slate-100">
+                            <ImageIcon className="h-8 w-8 text-slate-500" />
+                          </div>
+                        )}
                       </div>
                       <div className="flex-1 space-y-1">
                         <h4 className="font-medium text-sm line-clamp-2">

@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { Trash, ImageIcon } from "lucide-react";
-import { Category } from "@prisma/client";
+import { category } from "@prisma/client";
 import Image from "next/image";
 
 import {
@@ -33,7 +33,7 @@ const formSchema = z.object({
 });
 
 interface CategoryFormProps {
-  initialData: Category;
+  initialData: category;
 }
 
 export const CategoryForm = ({

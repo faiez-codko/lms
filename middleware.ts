@@ -32,7 +32,7 @@ export async function middleware(req: NextRequest) {
   }
 
   const payload = await verifyToken(token);
-  if (!payload?.role || payload.role !== "TEACHER") {
+  if (!payload?.role || !["TEACHER", "SUPER_ADMIN"].includes(payload.role)) {
     const url = new URL("/", req.url);
     url.searchParams.set("forbidden", "teacher");
     return NextResponse.redirect(url);

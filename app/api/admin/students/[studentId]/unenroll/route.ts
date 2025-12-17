@@ -23,8 +23,8 @@ export async function POST(
 
     const { studentId } = await params;
 
-    const purchase = await db.purchase.create({
-      data: {
+    const purchase = await db.purchase.deleteMany({
+      where: {
         userId: studentId,
         courseId: courseId,
       }
@@ -32,7 +32,7 @@ export async function POST(
 
     return NextResponse.json(purchase);
   } catch (error) {
-    console.log("[ENROLL_POST]", error);
+    console.log("[UNENROLL_POST]", error);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }

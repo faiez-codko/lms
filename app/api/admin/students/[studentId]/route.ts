@@ -1,38 +1,40 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/prismadb";
-import { verifyAuthToken, AUTH_COOKIE_NAME } from "@/lib/auth";
+import { hashPassword, verifyAuthToken, AUTH_COOKIE_NAME } from "@/lib/auth";
 import { cookies } from "next/headers";
 
-export async function POST(
+export async function PATCH(
   req: Request,
   { params }: { params: Promise<{ studentId: string }> }
 ) {
   try {
+    const { studentId } = await params;
+    const values = await req.json();
+    
     const token = (await cookies()).get(AUTH_COOKIE_NAME)?.value;
     const payload = token ? verifyAuthToken(token) : null;
-    
+
     if (payload?.role !== "SUPER_ADMIN") {
         return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    const { courseId } = await req.json();
-
-    if (!courseId) {
-      return new NextResponse("Missing courseId", { status: 400 });
+    // If updating password, hash it
+    if (values.password) {
+      values.password = await hashPassword(values.password);
     }
 
-    const { studentId } = await params;
-
-    const purchase = await db.purchase.create({
+    const user = await db.user.update({
+      where: {
+        id: studentId,
+      },
       data: {
-        userId: studentId,
-        courseId: courseId,
-      }
+        ...values,
+      },
     });
 
-    return NextResponse.json(purchase);
+    return NextResponse.json(user);
   } catch (error) {
-    console.log("[ENROLL_POST]", error);
+    console.log("[STUDENT_ID_PATCH]", error);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }

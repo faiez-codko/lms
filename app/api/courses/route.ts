@@ -8,7 +8,7 @@ export async function POST(req: Request) {
     const token = (await cookies()).get(AUTH_COOKIE_NAME)?.value;
     const payload = token ? verifyAuthToken(token) : null;
     
-    if (!payload || !payload.userId) {
+    if (!payload || !payload.sub) {
         return new NextResponse("Unauthorized", { status: 401 });
     }
 
@@ -20,7 +20,7 @@ export async function POST(req: Request) {
 
     const course = await db.course.create({
       data: {
-        userId: payload.userId,
+        userId: payload.sub,
         title,
       }
     });

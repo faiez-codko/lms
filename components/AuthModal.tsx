@@ -107,7 +107,7 @@ export const AuthModal = () => {
               <AvatarImage src={user.image || undefined} alt={user.name || "Profile"} />
               <AvatarFallback>{initial}</AvatarFallback>
             </Avatar>
-            <span className="ml-2 hidden sm:inline text-sm font-medium">
+            <span className="ml-2 hidden sm:inline text-sm font-medium text-white hover:text-primary ">
               {user.name || user.email}
             </span>
           </Button>

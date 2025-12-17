@@ -23,7 +23,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import Link from "next/link";
 
-export const AuthModal = () => {
+export const AuthModal = ({ trigger }: { trigger?: React.ReactNode }) => {
   const [isLogin, setIsLogin] = useState(true);
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -96,7 +96,7 @@ export const AuthModal = () => {
     }
   };
 
-  if (user) {
+  if (user && !trigger) {
     const initial =
       (user.name?.[0] || user.email?.[0] || "U").toUpperCase();
     return (
@@ -140,10 +140,14 @@ export const AuthModal = () => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline" className="gap-2 rounded-lg border-border/60 font-medium px-4 h-10 hover:bg-secondary/50">
-            <LogIn className="h-4 w-4" />
-            Login
-        </Button>
+        {trigger ? (
+            trigger
+        ) : (
+            <Button variant="outline" className="gap-2 rounded-lg border-border/60 font-medium px-4 h-10 hover:bg-secondary/50">
+                <LogIn className="h-4 w-4" />
+                Login
+            </Button>
+        )}
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>

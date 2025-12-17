@@ -2,34 +2,44 @@ import Link from "next/link";
 import { CourseCard } from "@/components/CourseCard";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, BookOpen } from "lucide-react";
+import { cookies } from "next/headers";
+import { AUTH_COOKIE_NAME, verifyAuthToken } from "@/lib/auth";
+import { getDashboardCourses } from "@/actions/get-dashboard-courses";
+import { redirect } from "next/navigation";
 
-// Mock data for purchased courses
-const purchasedCourses = [
-  {
-    id: 1,
-    title: "Complete React.js Masterclass 2024",
-    author: "Code With Faiez",
-    thumbnail: "https://utfs.io/f/7696b4d9-c2fe-4436-a4f6-c4cf83661223-6rrk66.png",
-    price: "$19.99",
-    rating: 4.8,
-    students: 12500,
-    category: "Development",
-    progress: 45 // Add progress for purchased courses
-  },
-  {
-    id: 3,
-    title: "Advanced Tailwind CSS Patterns",
-    author: "UI Labs",
-    thumbnail: "https://utfs.io/f/539a30f8-2ecd-45b3-aa68-ebbc83f236f9-36lslp.png",
-    price: "$14.99",
-    rating: 4.7,
-    students: 5400,
-    category: "Design",
-    progress: 12
+import { AuthModal } from "@/components/AuthModal";
+
+export default async function MyCoursesPage() {
+  const token = (await cookies()).get(AUTH_COOKIE_NAME)?.value;
+  const payload = token ? verifyAuthToken(token) : null;
+  const userId = payload?.sub;
+
+  if (!userId) {
+    return (
+      <div className="flex flex-col items-center justify-center h-full p-6 text-center space-y-4">
+        <div className="bg-secondary/50 p-6 rounded-full">
+          <BookOpen className="h-12 w-12 text-muted-foreground" />
+        </div>
+        <div className="space-y-1">
+          <h3 className="font-semibold text-lg">Not logged in</h3>
+          <p className="text-muted-foreground max-w-sm">
+            Please log in to view your purchased courses.
+          </p>
+        </div>
+        <AuthModal 
+            trigger={
+                <Button>
+                    Login to Continue
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+            }
+        />
+      </div>
+    );
   }
-];
 
-export default function MyCoursesPage() {
+  const purchasedCourses = await getDashboardCourses(userId);
+
   return (
     <div className="p-6">
       <div className="mb-8">

@@ -20,28 +20,43 @@ async function verifyToken(token: string) {
 
 export async function middleware(req: NextRequest) {
   const pathname = req.nextUrl.pathname;
-  if (!pathname.startsWith("/teacher")) {
-    return NextResponse.next();
+
+  if (pathname.startsWith("/teacher")) {
+    const token = req.cookies.get(AUTH_COOKIE_NAME)?.value;
+    if (!token) {
+      const url = new URL("/", req.url);
+      url.searchParams.set("unauthorized", "1");
+      return NextResponse.redirect(url);
+    }
+
+    const payload = await verifyToken(token);
+    if (!payload?.role || !["TEACHER", "SUPER_ADMIN"].includes(payload.role)) {
+      const url = new URL("/", req.url);
+      url.searchParams.set("forbidden", "teacher");
+      return NextResponse.redirect(url);
+    }
   }
 
-  const token = req.cookies.get(AUTH_COOKIE_NAME)?.value;
-  if (!token) {
-    const url = new URL("/", req.url);
-    url.searchParams.set("unauthorized", "1");
-    return NextResponse.redirect(url);
-  }
+  if (pathname.startsWith("/admin")) {
+    const token = req.cookies.get(AUTH_COOKIE_NAME)?.value;
+    if (!token) {
+      const url = new URL("/", req.url);
+      url.searchParams.set("unauthorized", "1");
+      return NextResponse.redirect(url);
+    }
 
-  const payload = await verifyToken(token);
-  if (!payload?.role || !["TEACHER", "SUPER_ADMIN"].includes(payload.role)) {
-    const url = new URL("/", req.url);
-    url.searchParams.set("forbidden", "teacher");
-    return NextResponse.redirect(url);
+    const payload = await verifyToken(token);
+    if (payload?.role !== "SUPER_ADMIN") {
+      const url = new URL("/", req.url);
+      url.searchParams.set("forbidden", "admin");
+      return NextResponse.redirect(url);
+    }
   }
 
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/teacher/:path*"],
+  matcher: ["/teacher/:path*", "/admin/:path*"],
 };
 

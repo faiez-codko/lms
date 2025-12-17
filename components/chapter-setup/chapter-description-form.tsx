@@ -1,10 +1,12 @@
 "use client";
 
 import * as z from "zod";
+import axios from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Pencil } from "lucide-react";
 import { useState } from "react";
+import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 
 import {
@@ -17,13 +19,13 @@ import {
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Textarea } from "@/components/ui/textarea";
+import { Chapter } from "@prisma/client";
 
 interface ChapterDescriptionFormProps {
-  initialData: {
-    description: string;
-  };
+  initialData: Chapter;
   courseId: string;
   chapterId: string;
+  apiUrl: string;
 }
 
 const formSchema = z.object({
@@ -34,6 +36,7 @@ export const ChapterDescriptionForm = ({
   initialData,
   courseId,
   chapterId,
+  apiUrl,
 }: ChapterDescriptionFormProps) => {
   const [isEditing, setIsEditing] = useState(false);
 
@@ -44,7 +47,7 @@ export const ChapterDescriptionForm = ({
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-        description: initialData.description || ""
+      description: initialData.description || ""
     },
   });
 
@@ -52,17 +55,12 @@ export const ChapterDescriptionForm = ({
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      // await axios.patch(`/api/courses/${courseId}/chapters/${chapterId}`, values);
-      console.log("Mock update:", values);
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      
-      // toast.success("Chapter updated");
+      await axios.patch(`${apiUrl}/${courseId}/chapters/${chapterId}`, values);
+      toast.success("Chapter updated");
       toggleEdit();
       router.refresh();
     } catch {
-      // toast.error("Something went wrong");
-      console.error("Something went wrong");
+      toast.error("Something went wrong");
     }
   };
 

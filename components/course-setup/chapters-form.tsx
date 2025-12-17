@@ -24,7 +24,7 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 
 interface ChaptersFormProps {
-  initialData: Course & { chapters: Chapter[] };
+  initialData: Course & { chapter: Chapter[] };
   courseId: string;
   apiUrl: string;
   editPagePrefix: string;

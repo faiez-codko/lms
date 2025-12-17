@@ -1,11 +1,15 @@
 "use client";
 
 import * as z from "zod";
+import axios from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Pencil, PlusCircle, Video } from "lucide-react";
 import { useState } from "react";
+import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { Chapter } from "@prisma/client";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -17,11 +21,10 @@ import {
   } from "@/components/ui/form";
 
 interface ChapterVideoFormProps {
-  initialData: {
-    videoUrl: string | null;
-  };
+  initialData: Chapter;
   courseId: string;
   chapterId: string;
+  apiUrl: string;
 }
 
 const formSchema = z.object({
@@ -32,6 +35,7 @@ export const ChapterVideoForm = ({
   initialData,
   courseId,
   chapterId,
+  apiUrl,
 }: ChapterVideoFormProps) => {
   const [isEditing, setIsEditing] = useState(false);
 
@@ -50,17 +54,12 @@ export const ChapterVideoForm = ({
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      // await axios.patch(`/api/courses/${courseId}/chapters/${chapterId}`, values);
-      console.log("Mock update:", values);
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      
-      // toast.success("Chapter updated");
+      await axios.patch(`${apiUrl}/${courseId}/chapters/${chapterId}`, values);
+      toast.success("Chapter updated");
       toggleEdit();
       router.refresh();
     } catch {
-      // toast.error("Something went wrong");
-      console.error("Something went wrong");
+      toast.error("Something went wrong");
     }
   };
 
@@ -93,9 +92,9 @@ export const ChapterVideoForm = ({
           </div>
         ) : (
           <div className="relative aspect-video mt-2">
-            {/* Mock Video Player */}
+            {/* Mock Video Player - replaced with a simpler div for now as no mux player yet */}
              <div className="flex items-center justify-center h-full w-full bg-slate-900 text-white rounded-md">
-                 <p className="text-sm">Video Player Placeholder for: {initialData.videoUrl}</p>
+                <video src={initialData.videoUrl} controls className="h-full w-full"></video>
              </div>
           </div>
         )

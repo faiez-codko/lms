@@ -20,22 +20,22 @@ export default async function CourseIdPage({
   const token = (await cookies()).get(AUTH_COOKIE_NAME)?.value;
   const payload = token ? verifyAuthToken(token) : null;
 
-  if (!payload || !payload.userId) {
+  if (!payload || !payload.sub) {
     return redirect("/");
   }
 
   const course = await db.course.findUnique({
     where: {
       id: courseId,
-      userId: payload.userId,
+      userId: payload.sub,
     },
     include: {
-      chapters: {
+      chapter: {
         orderBy: {
           position: "asc",
         },
       },
-      attachments: {
+      attachment: {
         orderBy: {
           createdAt: "desc",
         },
@@ -59,11 +59,11 @@ export default async function CourseIdPage({
     course.imageUrl,
     course.price,
     course.categoryId,
-    course.chapters.some(chapter => chapter.isPublished), 
+    course.chapter.some(chapter => chapter.isPublished), 
   ];
 
   // Adjust logic: Check if chapters exist
-  const hasChapters = course.chapters.length > 0;
+  const hasChapters = course.chapter.length > 0;
   
   // Re-evaluate required fields for progress
   const fields = [

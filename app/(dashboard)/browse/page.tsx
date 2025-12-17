@@ -11,14 +11,16 @@ export default async function BrowsePage() {
     },
   });
 
-  const courses = await getCourses({
-    page: 1,
-    pageSize: 8,
-  });
-
   const token = (await cookies()).get(AUTH_COOKIE_NAME)?.value;
   const payload = token ? verifyAuthToken(token) : null;
   const isAdmin = payload?.role === "SUPER_ADMIN";
+  const userId = payload?.sub;
+
+  const courses = await getCourses({
+    userId,
+    page: 1,
+    pageSize: 8,
+  });
 
   return (
     <div className="p-6">

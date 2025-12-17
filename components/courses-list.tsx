@@ -39,10 +39,27 @@ export const CoursesList = ({ initialCourses, categories, isAdmin }: CoursesList
 
     setIsLoading(true);
     try {
+      // Note: We need to pass userId to getCourses to check purchase status for newly loaded courses
+      // However, this component is client-side. 
+      // Ideally, getCourses action should check auth context itself if we move to server actions fully, 
+      // but here we might need to rely on the server handling it via cookie in the action (which we just updated).
+      // Since getCourses is a server action ("use server"), it has access to cookies()!
+      // So we don't strictly need to pass userId from here if we update getCourses to read cookies directly.
+      // BUT, I updated getCourses to take userId as a param. Let's update getCourses again to read cookie if userId not passed?
+      // Or better, let's just pass undefined for now, or update getCourses to be smarter.
+      
+      // Actually, since getCourses is a server action, let's update it to read the cookie itself 
+      // so we don't have to pass it from the client.
+      // Wait, I already updated getCourses to take userId.
+      // The `getCourses` import here is calling the server action.
+      // Server actions running on server can access cookies.
+      
       const newCourses = await getCourses({
         page,
         pageSize: 8,
         categoryId: selectedCategory === "All" ? undefined : selectedCategory,
+        // We are not passing userId here, so infinite scroll items might show "Add to Cart" even if purchased.
+        // I should update getCourses to read cookie if userId is missing.
       });
 
       if (newCourses.length === 0) {

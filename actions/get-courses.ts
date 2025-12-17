@@ -1,19 +1,30 @@
 "use server";
 
 import { db } from "@/lib/prismadb";
+import { cookies } from "next/headers";
+import { AUTH_COOKIE_NAME, verifyAuthToken } from "@/lib/auth";
 
 export const getCourses = async ({
+  userId,
   title,
   categoryId,
   page = 1,
   pageSize = 8,
 }: {
+  userId?: string;
   title?: string;
   categoryId?: string;
   page?: number;
   pageSize?: number;
 }) => {
   try {
+    // If userId is not explicitly passed, try to get it from the cookie
+    if (!userId) {
+        const token = (await cookies()).get(AUTH_COOKIE_NAME)?.value;
+        const payload = token ? verifyAuthToken(token) : null;
+        userId = payload?.sub;
+    }
+
     const skip = (page - 1) * pageSize;
 
     const whereClause: any = {
@@ -43,6 +54,11 @@ export const getCourses = async ({
             id: true,
           },
         },
+        purchase: {
+            where: {
+                userId: userId,
+            }
+        },
         _count: {
             select: {
                 purchase: true
@@ -56,11 +72,6 @@ export const getCourses = async ({
       take: pageSize,
     });
 
-    // Transform to match CourseCard expected props roughly
-    // We will do final mapping in the component or here.
-    // CourseCard expects:
-    // id, title, author, thumbnail, price, rating, students, category, progress
-    
     const formattedCourses = courses.map(course => ({
       id: course.id,
       title: course.title,
@@ -70,7 +81,7 @@ export const getCourses = async ({
       rating: 4.5, // Mock rating as we don't have reviews system yet
       students: course._count.purchase,
       category: course.category?.name || "Uncategorized",
-      progress: null, // Browse page usually doesn't show progress unless logged in user specific logic is added
+      progress: course.purchase.length > 0 ? 0 : null, // If purchased, return 0 (or actual progress if we fetch it), else null
     }));
 
     return formattedCourses;

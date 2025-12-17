@@ -1,4 +1,3 @@
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -8,174 +7,159 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model account {
+  id                String  @id @default(uuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              user    @relation(fields: [userId], references: [id], onDelete: Cascade, map: "Account_userId_fkey")
 
-model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String?   @unique
-  emailVerified DateTime?
-  image         String?
-  password      String?
-  role          String    @default("USER") // USER or TEACHER
-
-  accounts      Account[]
-  sessions      Session[]
-  
-  // LMS Relations
-  courses       Course[]
-  purchases     Purchase[]
-  progress      UserProgress[]
-
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  @@unique([provider, providerAccountId], map: "Account_provider_providerAccountId_key")
+  @@index([userId], map: "Account_userId_fkey")
 }
 
-model Account {
-  id                 String  @id @default(cuid())
-  userId             String
-  type               String
-  provider           String
-  providerAccountId  String
-  refresh_token      String?  
-  access_token       String?  
-  expires_at         Int?
-  token_type         String?
-  scope              String?
-  id_token           String?  
-  session_state      String?
+model attachment {
+  id        String   @id @default(uuid())
+  name      String
+  url       String
+  courseId  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  course    course   @relation(fields: [courseId], references: [id], onDelete: Cascade, map: "Attachment_courseId_fkey")
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@unique([provider, providerAccountId])
+  @@index([courseId], map: "Attachment_courseId_idx")
 }
 
-model Session {
-  id           String   @id @default(cuid())
-  sessionToken String   @unique
-  userId       String
-  expires      DateTime
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+model category {
+  id          String   @id @default(uuid())
+  name        String   @unique(map: "Category_name_key")
+  description String?
+  imageUrl    String?
+  course      course[]
 }
 
-model VerificationToken {
-  identifier String
-  token      String   @unique
-  expires    DateTime
+model chapter {
+  id           String         @id @default(uuid())
+  title        String
+  description  String?
+  videoUrl     String?
+  position     Int
+  isPublished  Boolean        @default(false)
+  isFree       Boolean        @default(false)
+  courseId     String
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  course       course         @relation(fields: [courseId], references: [id], onDelete: Cascade, map: "Chapter_courseId_fkey")
+  muxdata      muxdata?
+  userprogress userprogress[]
 
-  @@unique([identifier, token])
+  @@index([courseId], map: "Chapter_courseId_idx")
 }
 
-model Course {
-  id          String  @id @default(cuid())
+model course {
+  id          String       @id @default(uuid())
   userId      String
   title       String
   description String?
   imageUrl    String?
   price       Float?
-  isPublished Boolean @default(false)
-
+  isPublished Boolean      @default(false)
   categoryId  String?
-  category    Category? @relation(fields: [categoryId], references: [id])
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  attachment  attachment[]
+  chapter     chapter[]
+  category    category?    @relation(fields: [categoryId], references: [id], map: "Course_categoryId_fkey")
+  user        user         @relation(fields: [userId], references: [id], onDelete: Cascade, map: "Course_userId_fkey")
+  purchase    purchase[]
 
-  chapters    Chapter[]
-  attachments Attachment[]
-  purchases   Purchase[]
-
-  user        User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  @@index([categoryId])
+  @@index([categoryId], map: "Course_categoryId_idx")
+  @@index([userId], map: "Course_userId_fkey")
 }
 
-model Category {
-  id          String   @id @default(cuid())
-  name        String   @unique
-  description String?
-  imageUrl    String?
-  courses     Course[]
-}
-
-model Attachment {
-  id        String @id @default(cuid())
-  name      String
-  url       String
-  courseId  String
-  course    Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@index([courseId])
-}
-
-model Chapter {
-  id          String  @id @default(cuid())
-  title       String
-  description String?
-  videoUrl    String?
-  position    Int
-  isPublished Boolean @default(false)
-  isFree      Boolean @default(false)
-
-  muxData     MuxData?
-
-  courseId    String
-  course      Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
-
-  userProgress UserProgress[]
-
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  @@index([courseId])
-}
-
-model MuxData {
-  id         String  @id @default(cuid())
+model muxdata {
+  id         String  @id @default(uuid())
   assetId    String
   playbackId String?
-
-  chapterId  String  @unique
-  chapter    Chapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+  chapterId  String  @unique(map: "MuxData_chapterId_key")
+  chapter    chapter @relation(fields: [chapterId], references: [id], onDelete: Cascade, map: "MuxData_chapterId_fkey")
 }
 
-model UserProgress {
-  id        String  @id @default(cuid())
-  userId    String
-  chapterId String
-  chapter   Chapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
-  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  isCompleted Boolean @default(false)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@unique([userId, chapterId])
-  @@index([chapterId])
-}
-
-model Purchase {
-  id        String   @id @default(cuid())
+model purchase {
+  id        String   @id @default(uuid())
   userId    String
   courseId  String
-  course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt()
-
-  @@unique([userId, courseId])
-  @@index([courseId])
-}
-
-model StripeCustomer {
-  id               String @id @default(cuid())
-  userId           String @unique
-  stripeCustomerId String @unique
-
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  course    course   @relation(fields: [courseId], references: [id], onDelete: Cascade, map: "Purchase_courseId_fkey")
+  user      user     @relation(fields: [userId], references: [id], onDelete: Cascade, map: "Purchase_userId_fkey")
+
+  @@unique([userId, courseId], map: "Purchase_userId_courseId_key")
+  @@index([courseId], map: "Purchase_courseId_idx")
+}
+
+model session {
+  id           String   @id @default(uuid())
+  sessionToken String   @unique(map: "Session_sessionToken_key")
+  userId       String
+  expires      DateTime
+  user         user     @relation(fields: [userId], references: [id], onDelete: Cascade, map: "Session_userId_fkey")
+
+  @@index([userId], map: "Session_userId_fkey")
+}
+
+model stripecustomer {
+  id               String   @id @default(uuid())
+  userId           String   @unique(map: "StripeCustomer_userId_key")
+  stripeCustomerId String   @unique(map: "StripeCustomer_stripeCustomerId_key")
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
+
+model user {
+  id            String         @id @default(uuid())
+  name          String?
+  email         String?        @unique(map: "User_email_key")
+  emailVerified DateTime?
+  image         String?
+  password      String?
+  role          String         @default("USER")
+  isActive      Boolean        @default(false)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  account       account[]
+  course        course[]
+  purchase      purchase[]
+  session       session[]
+  userprogress  userprogress[]
+}
+
+model userprogress {
+  id          String   @id @default(uuid())
+  userId      String
+  chapterId   String
+  isCompleted Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  chapter     chapter  @relation(fields: [chapterId], references: [id], onDelete: Cascade, map: "UserProgress_chapterId_fkey")
+  user        user     @relation(fields: [userId], references: [id], onDelete: Cascade, map: "UserProgress_userId_fkey")
+
+  @@unique([userId, chapterId], map: "UserProgress_userId_chapterId_key")
+  @@index([chapterId], map: "UserProgress_chapterId_idx")
+}
+
+model verificationtoken {
+  identifier String
+  token      String   @unique(map: "VerificationToken_token_key")
+  expires    DateTime
+
+  @@unique([identifier, token], map: "VerificationToken_identifier_token_key")
 }

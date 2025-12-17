@@ -14,6 +14,8 @@ npx prisma migrate dev
 
 npx prisma db push
 
+npx prisma db seed
+
 npm run dev
 
 ```

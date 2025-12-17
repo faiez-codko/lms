@@ -22,6 +22,30 @@ async function main() {
   console.log('✅ Admin user created:', admin.email);
 
 
+  const categories = [
+    {
+      name: 'Math',
+      description: 'Math courses',
+    },
+    {
+      name: 'Science',
+      description: 'Science courses',
+    },
+    {
+      name: 'History',
+      description: 'History courses',
+    },
+  ]
+  
+  for (let i = 0; i < categories.length; i++) {
+    const element = categories[i];
+    await prisma.category.upsert({
+      where: { name: element.name },
+      update: {},
+      create: element,
+    });
+    console.log(`✅ Category created: ${element.name}`);
+  }
 
 
 
@@ -29,6 +53,7 @@ async function main() {
   console.log('🎉 Database seeding completed!');
   console.log('\n📧 Admin credentials:');
   console.log('Email: admin@myquantumacademy.com');
+
 
 
   console.log('\n🌐 You can now access:');

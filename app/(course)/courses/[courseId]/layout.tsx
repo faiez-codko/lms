@@ -40,7 +40,7 @@ export default async function CourseLayout({
                 <CourseMobileSidebar />
             </div>
             <div className="hidden md:flex">
-                {/* Maybe breadcrumbs or title */}
+                {/* Maybe breadcrumbs or title */}  
             </div>
             <Link href="/browse" className="flex items-center text-sm font-medium hover:opacity-75 transition ml-auto">
                 <ArrowLeft className="h-4 w-4 mr-2" />

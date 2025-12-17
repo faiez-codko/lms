@@ -50,7 +50,7 @@ export default async function CoursesPage() {
                 </td>
                 <td className="p-4">{course.category?.name || "Uncategorized"}</td>
                 <td className="p-4">
-                   <Link href={`/teacher/courses/${course.id}`}>
+                   <Link href={`/admin/courses/${course.id}`}>
                       <Button variant="ghost" size="sm">
                         <Pencil className="h-4 w-4 mr-2" />
                         Edit

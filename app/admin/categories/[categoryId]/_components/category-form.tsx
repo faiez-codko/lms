@@ -6,6 +6,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import { Trash, ImageIcon } from "lucide-react";
+import { Category } from "@prisma/client";
 import Image from "next/image";
 
 import {
@@ -20,6 +22,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { ConfirmModal } from "@/components/modals/confirm-modal";
 
 const formSchema = z.object({
   name: z.string().min(1, {
@@ -29,14 +32,20 @@ const formSchema = z.object({
   imageUrl: z.string().optional(),
 });
 
-export default function CreateCategoryPage() {
+interface CategoryFormProps {
+  initialData: Category;
+}
+
+export const CategoryForm = ({
+  initialData
+}: CategoryFormProps) => {
   const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
-      description: "",
-      imageUrl: "",
+      name: initialData.name,
+      description: initialData.description || "",
+      imageUrl: initialData.imageUrl || "",
     },
   });
 
@@ -44,8 +53,19 @@ export default function CreateCategoryPage() {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      await axios.post("/api/admin/categories", values);
-      toast.success("Category created");
+      await axios.patch(`/api/admin/categories/${initialData.id}`, values);
+      toast.success("Category updated");
+      router.push("/admin/categories");
+      router.refresh();
+    } catch {
+      toast.error("Something went wrong");
+    }
+  };
+
+  const onDelete = async () => {
+    try {
+      await axios.delete(`/api/admin/categories/${initialData.id}`);
+      toast.success("Category deleted");
       router.push("/admin/categories");
       router.refresh();
     } catch {
@@ -56,7 +76,14 @@ export default function CreateCategoryPage() {
   return (
     <div className="max-w-5xl mx-auto flex md:items-center md:justify-center h-full p-6">
       <div className="w-full md:w-[600px]">
-        <h1 className="text-2xl font-bold mb-6">Create Category</h1>
+        <div className="flex items-center justify-between mb-6">
+          <h1 className="text-2xl font-bold">Edit Category</h1>
+          <ConfirmModal onConfirm={onDelete}>
+            <Button variant="destructive" size="sm">
+              <Trash className="h-4 w-4" />
+            </Button>
+          </ConfirmModal>
+        </div>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 mt-8">
             <FormField
@@ -76,7 +103,7 @@ export default function CreateCategoryPage() {
                 </FormItem>
               )}
             />
-
+            
             <FormField
               control={form.control}
               name="description"
@@ -116,11 +143,11 @@ export default function CreateCategoryPage() {
               )}
             />
 
-             {form.watch("imageUrl") && (
+            {form.watch("imageUrl") && (
                 <div className="relative aspect-video mt-2 bg-slate-100 rounded-md overflow-hidden">
-                    <Image
+                    <img
                         alt="Category image"
-                        fill
+                        
                         className="object-cover"
                         src={form.watch("imageUrl") || ""}
                     />
@@ -139,7 +166,7 @@ export default function CreateCategoryPage() {
                 type="submit"
                 disabled={!isValid || isSubmitting}
               >
-                Create
+                Save
               </Button>
             </div>
           </form>
@@ -147,4 +174,4 @@ export default function CreateCategoryPage() {
       </div>
     </div>
   );
-}
+};

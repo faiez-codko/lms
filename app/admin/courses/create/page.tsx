@@ -39,8 +39,8 @@ export default function CreateCoursePage() {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      const response = await axios.post("/api/courses", values);
-      router.push(`/teacher/courses/${response.data.id}`);
+      const response = await axios.post("/api/admin/courses", values);
+      router.push(`/admin/courses/${response.data.id}`);
       toast.success("Course created");
     } catch {
       toast.error("Something went wrong");
@@ -49,7 +49,7 @@ export default function CreateCoursePage() {
 
   return (
     <div className="max-w-5xl mx-auto flex md:items-center md:justify-center h-full p-6">
-      <div className="w-full">
+      <div className="w-full md:w-[600px]">
         <h1 className="text-2xl font-bold">Name your course</h1>
         <p className="text-sm text-slate-500">
           What would you like to name your course? Don&apos;t worry, you can
@@ -81,7 +81,7 @@ export default function CreateCoursePage() {
               )}
             />
             <div className="flex items-center gap-x-2">
-              <Link href="/teacher/courses">
+              <Link href="/admin/courses">
                 <Button type="button" variant="ghost">
                   Cancel
                 </Button>

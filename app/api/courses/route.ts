@@ -8,27 +8,26 @@ export async function POST(req: Request) {
     const token = (await cookies()).get(AUTH_COOKIE_NAME)?.value;
     const payload = token ? verifyAuthToken(token) : null;
     
-    if (payload?.role !== "SUPER_ADMIN") {
+    if (!payload || !payload.userId) {
         return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    const { name, description, imageUrl } = await req.json();
+    const { title } = await req.json();
 
-    if (!name) {
-      return new NextResponse("Name is required", { status: 400 });
+    if (!title) {
+      return new NextResponse("Title is required", { status: 400 });
     }
 
-    const category = await db.category.create({
+    const course = await db.course.create({
       data: {
-        name,
-        description,
-        imageUrl,
+        userId: payload.userId,
+        title,
       }
     });
 
-    return NextResponse.json(category);
+    return NextResponse.json(course);
   } catch (error) {
-    console.log("[CATEGORIES_POST]", error);
+    console.log("[COURSES_POST]", error);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }

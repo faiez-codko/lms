@@ -1,15 +1,12 @@
 import { db } from "@/lib/prismadb";
 import { IconBadge } from "@/components/icon-badge";
-import { LayoutDashboard, ListChecks, CircleDollarSign } from "lucide-react";
+import { LayoutDashboard, ListChecks, CircleDollarSign, File } from "lucide-react";
 import { TitleForm } from "@/components/course-setup/title-form";
 import { DescriptionForm } from "@/components/course-setup/description-form";
 import { ImageForm } from "@/components/course-setup/image-form";
 import { CategoryForm } from "@/components/course-setup/category-form";
 import { PriceForm } from "@/components/course-setup/price-form";
 import { ChaptersForm } from "@/components/course-setup/chapters-form";
-import { verifyAuthToken, AUTH_COOKIE_NAME } from "@/lib/auth";
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
 
 export default async function CourseIdPage({
   params
@@ -17,31 +14,25 @@ export default async function CourseIdPage({
   params: Promise<{ courseId: string }>
 }) {
   const { courseId } = await params;
-  const token = (await cookies()).get(AUTH_COOKIE_NAME)?.value;
-  const payload = token ? verifyAuthToken(token) : null;
-
-  if (!payload || !payload.userId) {
-    return redirect("/");
-  }
-
   const course = await db.course.findUnique({
     where: {
       id: courseId,
-      userId: payload.userId,
     },
     include: {
-      chapters: {
+      chapter: {
         orderBy: {
           position: "asc",
         },
       },
-      attachments: {
+      attachment: {
         orderBy: {
           createdAt: "desc",
         },
       },
     },
   });
+
+  console.log(course)
 
   const categories = await db.category.findMany({
     orderBy: {
@@ -50,7 +41,7 @@ export default async function CourseIdPage({
   });
 
   if (!course) {
-    return redirect("/");
+    return <div>Course not found</div>;
   }
 
   const requiredFields = [
@@ -59,11 +50,11 @@ export default async function CourseIdPage({
     course.imageUrl,
     course.price,
     course.categoryId,
-    course.chapters.some(chapter => chapter.isPublished), 
+    course.chapter.some(chapter => chapter.isPublished), 
   ];
 
   // Adjust logic: Check if chapters exist
-  const hasChapters = course.chapters.length > 0;
+  const hasChapters = course.chapter.length > 0;
   
   // Re-evaluate required fields for progress
   const fields = [
@@ -104,17 +95,17 @@ export default async function CourseIdPage({
           <TitleForm
             initialData={course}
             courseId={course.id}
-            apiUrl="/api/courses"
+            apiUrl="/api/admin/courses"
           />
           <DescriptionForm
             initialData={course}
             courseId={course.id}
-            apiUrl="/api/courses"
+            apiUrl="/api/admin/courses"
           />
           <ImageForm
             initialData={course}
             courseId={course.id}
-            apiUrl="/api/courses"
+            apiUrl="/api/admin/courses"
           />
           <CategoryForm
             initialData={course}
@@ -123,7 +114,7 @@ export default async function CourseIdPage({
               label: category.name,
               value: category.id,
             }))}
-            apiUrl="/api/courses"
+            apiUrl="/api/admin/courses"
           />
         </div>
         <div className="space-y-6">
@@ -137,8 +128,8 @@ export default async function CourseIdPage({
             <ChaptersForm
               initialData={course}
               courseId={course.id}
-              apiUrl="/api/courses"
-              editPagePrefix="/teacher/courses"
+              apiUrl="/api/admin/courses"
+              editPagePrefix="/admin/courses"
             />
           </div>
           <div>
@@ -151,7 +142,7 @@ export default async function CourseIdPage({
             <PriceForm
               initialData={course}
               courseId={course.id}
-              apiUrl="/api/courses"
+              apiUrl="/api/admin/courses"
             />
           </div>
         </div>

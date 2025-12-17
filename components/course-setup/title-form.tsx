@@ -4,21 +4,28 @@ import * as z from "zod";
 import axios from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
+import { Pencil } from "lucide-react";
+import { useState } from "react";
 import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+
+interface TitleFormProps {
+  initialData: {
+    title: string;
+  };
+  courseId: string;
+  apiUrl: string;
+}
 
 const formSchema = z.object({
   title: z.string().min(1, {
@@ -26,46 +33,66 @@ const formSchema = z.object({
   }),
 });
 
-export default function CreateCoursePage() {
+export const TitleForm = ({
+  initialData,
+  courseId,
+  apiUrl
+}: TitleFormProps) => {
+  const [isEditing, setIsEditing] = useState(false);
+
+  const toggleEdit = () => setIsEditing((current) => !current);
+
   const router = useRouter();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      title: "",
-    },
+    defaultValues: initialData,
   });
 
   const { isSubmitting, isValid } = form.formState;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      const response = await axios.post("/api/courses", values);
-      router.push(`/teacher/courses/${response.data.id}`);
-      toast.success("Course created");
+      await axios.patch(`${apiUrl}/${courseId}`, values);
+      toast.success("Course updated");
+      toggleEdit();
+      router.refresh();
     } catch {
       toast.error("Something went wrong");
     }
   };
 
   return (
-    <div className="max-w-5xl mx-auto flex md:items-center md:justify-center h-full p-6">
-      <div className="w-full">
-        <h1 className="text-2xl font-bold">Name your course</h1>
-        <p className="text-sm text-slate-500">
-          What would you like to name your course? Don&apos;t worry, you can
-          change this later.
+    <div className="mt-6 border bg-slate-100 rounded-md p-4 dark:bg-slate-900">
+      <div className="font-medium flex items-center justify-between">
+        Course title
+        <Button onClick={toggleEdit} variant="ghost">
+          {isEditing ? (
+            <>Cancel</>
+          ) : (
+            <>
+              <Pencil className="h-4 w-4 mr-2" />
+              Edit title
+            </>
+          )}
+        </Button>
+      </div>
+      {!isEditing && (
+        <p className="text-sm mt-2">
+          {initialData.title}
         </p>
+      )}
+      {isEditing && (
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-8 mt-8"
+            className="space-y-4 mt-4"
           >
             <FormField
               control={form.control}
               name="title"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Course Title</FormLabel>
                   <FormControl>
                     <Input
                       disabled={isSubmitting}
@@ -73,26 +100,21 @@ export default function CreateCoursePage() {
                       {...field}
                     />
                   </FormControl>
-                  <FormDescription>
-                    What will you teach in this course?
-                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
             />
             <div className="flex items-center gap-x-2">
-              <Link href="/teacher/courses">
-                <Button type="button" variant="ghost">
-                  Cancel
-                </Button>
-              </Link>
-              <Button type="submit" disabled={!isValid || isSubmitting}>
-                Continue
+              <Button
+                disabled={!isValid || isSubmitting}
+                type="submit"
+              >
+                Save
               </Button>
             </div>
           </form>
         </Form>
-      </div>
+      )}
     </div>
   );
-}
+};

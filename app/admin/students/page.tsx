@@ -2,6 +2,7 @@ import { db } from "@/lib/prismadb";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Plus, Eye, MoreHorizontal } from "lucide-react";
+import { StudentStatusToggle } from "./_components/student-status-toggle";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -33,6 +34,7 @@ export default async function StudentsPage() {
             <tr>
               <th className="p-4 font-medium">Name</th>
               <th className="p-4 font-medium">Email</th>
+              <th className="p-4 font-medium">Status</th>
               <th className="p-4 font-medium">Created At</th>
               <th className="p-4 font-medium">Actions</th>
             </tr>
@@ -42,6 +44,9 @@ export default async function StudentsPage() {
               <tr key={student.id} className="border-t hover:bg-muted/50 transition">
                 <td className="p-4 font-medium">{student.name || "N/A"}</td>
                 <td className="p-4">{student.email}</td>
+                <td className="p-4">
+                  <StudentStatusToggle studentId={student.id} isActive={student.isActive} />
+                </td>
                 <td className="p-4">
                   {new Date(student.createdAt).toLocaleDateString()}
                 </td>

@@ -1,9 +1,12 @@
+"use client";
+
 import Link from "next/link";
 import { Compass, Mail, ListVideo, LayoutList } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
-import { getCurrentUser } from "@/lib/auth";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 const sidebarItems = [
   { icon: Compass, label: "Main", href: "/" },
@@ -15,9 +18,25 @@ interface SidebarProps {
   className?: string;
 }
 
-export const Sidebar = async ({ className }: SidebarProps) => {
-  const user = await getCurrentUser();
-  const isTeacher = user?.role === "TEACHER" || user?.role === "SUPER_ADMIN";
+export const Sidebar = ({ className }: SidebarProps) => {
+  const [isTeacher, setIsTeacher] = useState(false);
+
+  useEffect(() => {
+    // Check if user is teacher on client side
+    // Since we are in a hybrid client/server environment, and this component is used inside MobileSidebar (client)
+    // we need to handle the data fetching on the client or refactor MobileSidebar to accept children.
+    // For simplicity, let's just fetch the user role here.
+    axios.get("/api/auth/me")
+      .then((res) => {
+        const user = res.data.user;
+        if (user && (user.role === "TEACHER" || user.role === "SUPER_ADMIN")) {
+          setIsTeacher(true);
+        }
+      })
+      .catch(() => {
+        setIsTeacher(false);
+      });
+  }, []);
 
   const routes = [...sidebarItems];
   

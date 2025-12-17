@@ -4,7 +4,16 @@ import { CoursesList } from "@/components/courses-list";
 import { cookies } from "next/headers";
 import { AUTH_COOKIE_NAME, verifyAuthToken } from "@/lib/auth";
 
-export default async function BrowsePage() {
+export default async function BrowsePage({
+  searchParams,
+}: {
+  searchParams: Promise<{
+    title: string;
+    categoryId: string;
+  }>;
+}) {
+  const { title, categoryId } = await searchParams;
+
   const categories = await db.category.findMany({
     orderBy: {
       name: "asc",
@@ -18,6 +27,8 @@ export default async function BrowsePage() {
 
   const courses = await getCourses({
     userId,
+    title,
+    categoryId,
     page: 1,
     pageSize: 8,
   });

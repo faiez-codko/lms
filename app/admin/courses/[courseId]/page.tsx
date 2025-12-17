@@ -1,6 +1,7 @@
 import { db } from "@/lib/prismadb";
 import { IconBadge } from "@/components/icon-badge";
-import { LayoutDashboard, ListChecks, CircleDollarSign, File } from "lucide-react";
+import { LayoutDashboard, ListChecks, CircleDollarSign, File, ArrowLeft } from "lucide-react";
+import Link from "next/link";
 import { TitleForm } from "@/components/course-setup/title-form";
 import { DescriptionForm } from "@/components/course-setup/description-form";
 import { ImageForm } from "@/components/course-setup/image-form";
@@ -73,6 +74,13 @@ export default async function CourseIdPage({
 
   return (
     <div className="p-6">
+      <Link
+        href="/admin/courses"
+        className="flex items-center text-sm hover:opacity-75 transition mb-6"
+      >
+        <ArrowLeft className="h-4 w-4 mr-2" />
+        Back to courses
+      </Link>
       <div className="flex items-center justify-between">
         <div className="flex flex-col gap-y-2">
           <h1 className="text-2xl font-bold">

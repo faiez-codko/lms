@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import toast from "react-hot-toast";
+import { ArrowLeft } from "lucide-react";
 
 import {
   Form,
@@ -50,6 +51,13 @@ export default function CreateCoursePage() {
   return (
     <div className="max-w-5xl mx-auto flex md:items-center md:justify-center h-full p-6">
       <div className="w-full md:w-[600px]">
+        <Link
+          href="/admin/courses"
+          className="flex items-center text-sm hover:opacity-75 transition mb-6"
+        >
+          <ArrowLeft className="h-4 w-4 mr-2" />
+          Back to courses
+        </Link>
         <h1 className="text-2xl font-bold">Name your course</h1>
         <p className="text-sm text-slate-500">
           What would you like to name your course? Don&apos;t worry, you can

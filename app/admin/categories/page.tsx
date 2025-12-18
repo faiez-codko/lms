@@ -12,6 +12,8 @@ import {
 } from "@/components/ui/table";
 import { CategoryActions } from "./_components/category-actions";
 
+export const dynamic = "force-dynamic";
+
 export default async function CategoriesPage() {
   const categories = await db.category.findMany({
     orderBy: { name: "asc" },

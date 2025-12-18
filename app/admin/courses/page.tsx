@@ -3,6 +3,8 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Plus, Pencil } from "lucide-react";
 
+export const dynamic = "force-dynamic";
+
 export default async function CoursesPage() {
   const courses = await db.course.findMany({
     orderBy: { createdAt: "desc" },

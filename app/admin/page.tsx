@@ -2,6 +2,8 @@ import { db } from "@/lib/prismadb";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { DollarSign, CreditCard, BookOpen, Users } from "lucide-react";
 
+export const dynamic = "force-dynamic";
+
 async function getAnalytics() {
   const totalUsers = await db.user.count({
     where: { role: "USER" }
@@ -28,6 +30,8 @@ async function getAnalytics() {
     totalSales
   };
 }
+
+
 
 export default async function AdminDashboardPage() {
   const { totalUsers, totalCourses, totalRevenue, totalSales } = await getAnalytics();

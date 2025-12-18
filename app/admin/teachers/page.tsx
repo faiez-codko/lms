@@ -3,6 +3,8 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Plus } from "lucide-react";
 
+export const dynamic = "force-dynamic";
+
 export default async function TeachersPage() {
   const teachers = await db.user.findMany({
     where: { role: "TEACHER" },

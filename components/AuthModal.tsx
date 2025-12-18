@@ -107,7 +107,7 @@ export const AuthModal = ({ trigger }: { trigger?: React.ReactNode }) => {
               <AvatarImage src={user.image || undefined} alt={user.name || "Profile"} />
               <AvatarFallback>{initial}</AvatarFallback>
             </Avatar>
-            <span className="ml-2 hidden sm:inline text-sm font-medium text-white hover:text-primary ">
+            <span className="ml-2 hidden sm:inline text-sm font-medium text-white hover:text-primary bg-primary/10 px-2 rounded-full">
               {user.name || user.email}
             </span>
           </Button>
@@ -117,9 +117,10 @@ export const AuthModal = ({ trigger }: { trigger?: React.ReactNode }) => {
             {user.name || user.email}
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuItem asChild>
+          {user.role === "USER" && (
+            <DropdownMenuItem asChild>
             <Link href="/my-courses">My Courses</Link>
-          </DropdownMenuItem>
+          </DropdownMenuItem>)}
           {user.role === "TEACHER" && (
             <DropdownMenuItem asChild>
               <Link href="/teacher">Teacher Portal</Link>

@@ -35,7 +35,7 @@ export default function MarketingLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="h-full bg-slate-900">
+    <div className="h-full bg-slate-900" id="header">
       <Navbar />
       <main className="h-full ">
         {children}

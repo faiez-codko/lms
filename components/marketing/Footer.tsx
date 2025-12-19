@@ -4,6 +4,7 @@ import { Twitter, Instagram, Linkedin, Github } from "lucide-react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { GravityFooter } from "@/components/marketing/GravityFooter";
+import Image from "next/image";
 
 export const Footer = () => {
   const brandName = "QUANTUM";
@@ -14,8 +15,8 @@ export const Footer = () => {
         <div className="flex flex-col md:flex-row justify-between gap-12 mb-20">
             {/* Logo Icon */}
             <div className="mb-8 md:mb-0">
-                <div className="h-10 w-10 bg-white rounded-lg flex items-center justify-center">
-                     <span className="text-black font-bold text-lg">T</span>
+                <div className="h-10   rounded-lg flex items-center justify-center">
+                     <Image src="/logo-white.png" alt="Quantum" width={150} height={32} />
                 </div>
             </div>
 
@@ -30,9 +31,8 @@ export const Footer = () => {
                 
                 <div className="flex flex-col gap-4">
                     <h4 className="font-semibold text-gray-500 mb-2">Resources</h4>
-                    <Link href="#" className="hover:text-emerald-400 transition-colors">Docs</Link>
+                    <Link href="/about" className="hover:text-emerald-400 transition-colors">About Us</Link>
                     <Link href="#" className="hover:text-emerald-400 transition-colors">Blog</Link>
-                    <Link href="#" className="hover:text-emerald-400 transition-colors">Changelog</Link>
                 </div>
                 
                 <div className="flex flex-col gap-4">
@@ -55,22 +55,20 @@ export const Footer = () => {
                 <Link href="#" className="text-gray-400 hover:text-white transition-colors">
                     <Twitter className="h-5 w-5" />
                 </Link>
-                 <Link href="#" className="text-gray-400 hover:text-white transition-colors">
-                    <Github className="h-5 w-5" />
-                </Link>
+             
             </div>
             
-             <Link href="#" className="text-gray-500 text-sm hover:text-white flex items-center gap-1">
+             <Link href="#header" className="text-gray-500 text-sm hover:text-white flex items-center gap-1">
                 Back to top
             </Link>
         </div>
       </div>
       
       {/* Big Brand Text with Scatter Animation */}
-      <div className="w-full bg-emerald-500 overflow-hidden cursor-default group relative h-[30vh] lg:h-auto">
+      <div className="w-full bg-[#99ed43] overflow-hidden cursor-default group relative h-[30vh] lg:h-auto">
           <GravityFooter />
           <motion.h1 
-            className="text-[15vw] leading-none font-black text-center tracking-tighter text-black hover:text-yellow-400 transition-all hover:cursor-pointer select-none flex justify-center w-full relative z-10"
+            className="text-[15vw] leading-none font-black text-center tracking-tighter text-white hover:text-[#383838] transition-all hover:cursor-pointer select-none flex justify-center w-full relative z-10"
             initial="initial"
             whileHover="hover"
           >

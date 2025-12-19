@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { AuthModal } from "@/components/AuthModal";
 import { ModeToggle } from "@/components/ModeToggle";
+import Image from "next/image";
 
 export const Navbar = () => {
   return (
@@ -11,10 +12,10 @@ export const Navbar = () => {
       <div className="md:max-w-screen-2xl mx-auto flex items-center w-full justify-between">
         <Link href="/">
             <div className="flex items-center gap-2">
-                <div className="h-8 w-8 bg-emerald-500 rounded-lg flex items-center justify-center">
-                    <span className="text-white font-bold text-lg">Q</span>
+                <div className="h-8 rounded-lg flex items-center justify-center">
+                    <Image src="/logo-white.png" alt="Quantum" width={150} height={32} />
                 </div>
-                <span className="font-bold text-xl text-white">Quantum</span>
+           
             </div>
         </Link>
         <div className="hidden md:flex items-center gap-x-6 mr-6 text-slate-300">

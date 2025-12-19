@@ -49,17 +49,15 @@ export const Sidebar = ({ className }: SidebarProps) => {
       {/* Brand Section */}
       <div className="p-6">
         <div className="flex items-center gap-3">
-            <div className="relative h-10 w-10 rounded-full overflow-hidden border">
-                <Image 
-                    src="https://trae-api-sg.mchost.guru/api/ide/v1/text_to_image?prompt=developer%20avatar%20cartoon%20man%20coding&image_size=square"
-                    alt="Logo"
-                    fill
-                    className="object-cover"
-                />
-            </div>
+
             <div className="flex flex-col">
-                <span className="font-bold text-sm leading-tight text-primary">Quantum</span>
-                <span className="text-xs text-muted-foreground">Build something great!</span>
+                <Image 
+                    src="/logo.svg"
+                    alt="Logo"
+                    width={120}
+                    height={24}
+                />
+                <span className="text-xs italic text-muted-foreground">Build something great!</span>
             </div>
         </div>
       </div>

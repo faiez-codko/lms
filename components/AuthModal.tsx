@@ -13,6 +13,7 @@ import * as z from "zod";
 import { loginSchema, registerSchema, LoginSchema, RegisterSchema } from "@/schema/auth";
 import axios from "axios";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useUser } from "@/hooks/use-user";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -28,13 +29,7 @@ export const AuthModal = ({ trigger }: { trigger?: React.ReactNode }) => {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [user, setUser] = useState<{
-    id: string;
-    name: string | null;
-    email: string | null;
-    role: string;
-    image: string | null;
-  } | null>(null);
+  const { user, fetchUser, logout } = useUser();
 
   const form = useForm<LoginSchema | RegisterSchema>({
     resolver: zodResolver(isLogin ? loginSchema : registerSchema),
@@ -46,21 +41,8 @@ export const AuthModal = ({ trigger }: { trigger?: React.ReactNode }) => {
   });
 
   useEffect(() => {
-    let active = true;
-    axios
-      .get("/api/auth/me")
-      .then((res) => {
-        if (!active) return;
-        setUser(res.data.user);
-      })
-      .catch(() => {
-        if (!active) return;
-        setUser(null);
-      });
-    return () => {
-      active = false;
-    };
-  }, []);
+    fetchUser();
+  }, [fetchUser]);
 
   const onSubmit = async (data: LoginSchema | RegisterSchema) => {
     setError(null);
@@ -88,12 +70,8 @@ export const AuthModal = ({ trigger }: { trigger?: React.ReactNode }) => {
     form.reset(); // Reset form when switching modes
   };
 
-  const logout = async () => {
-    try {
-      await axios.post("/api/auth/logout");
-      window.location.reload();
-    } catch {
-    }
+  const logoutHandler = async () => {
+    await logout();
   };
 
   if (user && !trigger) {
@@ -129,7 +107,7 @@ export const AuthModal = ({ trigger }: { trigger?: React.ReactNode }) => {
           <DropdownMenuSeparator />
           <DropdownMenuItem
             variant="destructive"
-            onClick={logout}
+            onClick={logoutHandler}
           >
             Logout
           </DropdownMenuItem>

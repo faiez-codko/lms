@@ -1,6 +1,7 @@
 "use client";
 
 import { useCart } from "@/hooks/use-cart";
+import { useUser } from "@/hooks/use-user";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -30,12 +31,14 @@ const formSchema = z.object({
 
 export default function CheckoutPage() {
   const cart = useCart();
+  const { user, fetchUser } = useUser();
   const [isMounted, setIsMounted] = useState(false);
   const [isCheckingOut, setIsCheckingOut] = useState(false);
 
   useEffect(() => {
     setIsMounted(true);
-  }, []);
+    fetchUser();
+  }, [fetchUser]);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -45,6 +48,13 @@ export default function CheckoutPage() {
       phone: "",
     },
   });
+
+  useEffect(() => {
+    if (user) {
+      form.setValue("name", user.name || "");
+      form.setValue("email", user.email || "");
+    }
+  }, [user, form]);
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     setIsCheckingOut(true);
@@ -111,23 +121,26 @@ export default function CheckoutPage() {
                       <Lock className="h-5 w-5 text-primary" />
                     </div>
                     <div>
-                      <p className="font-medium text-sm">Already have an account?</p>
-                      <p className="text-xs text-muted-foreground">
-                        Sign in for a faster checkout
-                      </p>
+                      {user ? (
+                        <>
+                          <p className="font-medium text-sm">Logged in as {user.name}</p>
+                          <p className="text-xs text-muted-foreground">{user.email}</p>
+                        </>
+                      ) : (
+                        <>
+                          <p className="font-medium text-sm">Already have an account?</p>
+                          <p className="text-xs text-muted-foreground">
+                            Sign in for a faster checkout
+                          </p>
+                        </>
+                      )}
                     </div>
                   </div>
-                  {/* We can trigger the existing AuthModal here or redirect */}
-                  <Button variant="outline" size="sm" asChild>
-                    {/* Assuming AuthModal is a dialog trigger, we might need to wrap it differently or just use a visual button if AuthModal is self-contained */}
-                    {/* Since AuthModal is a Dialog, we can't easily trigger it programmatically without refactoring, 
-                        so for now, we'll assume the user can click the button in the Navbar or we replicate a trigger.
-                        Actually, let's just use the AuthModal component itself if it renders a trigger button.
-                    */}
-                    <div className="cursor-pointer">
-                        Sign In
+                  {!user && (
+                    <div className="flex gap-2">
+                       <AuthModal />
                     </div>
-                  </Button>
+                  )}
                 </div>
 
                 <Form {...form}>

@@ -23,9 +23,10 @@ interface CoursesListProps {
   initialCourses: Course[];
   categories: category[];
   isAdmin?: boolean;
+  isAuthenticated?: boolean;
 }
 
-export const CoursesList = ({ initialCourses, categories, isAdmin }: CoursesListProps) => {
+export const CoursesList = ({ initialCourses, categories, isAdmin, isAuthenticated = false }: CoursesListProps) => {
   const [courses, setCourses] = useState<Course[]>(initialCourses);
   const [page, setPage] = useState(2);
   const [hasMore, setHasMore] = useState(true);
@@ -158,7 +159,7 @@ export const CoursesList = ({ initialCourses, categories, isAdmin }: CoursesList
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {courses.map((course) => (
           <Link href={`/courses/${course.id}`} key={course.id}>
-             <CourseCard course={course} isAdmin={isAdmin} />
+             <CourseCard course={course} isAdmin={isAdmin}  isAuthenticated={isAuthenticated} />
           </Link>
         ))}
       </div>

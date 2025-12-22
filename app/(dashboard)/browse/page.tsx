@@ -24,6 +24,7 @@ export default async function BrowsePage({
   const payload = token ? verifyAuthToken(token) : null;
   const isAdmin = payload?.role === "SUPER_ADMIN";
   const userId = payload?.sub;
+  const isAuthenticated = userId !== undefined;
 
   const courses = await getCourses({
     userId,
@@ -35,7 +36,7 @@ export default async function BrowsePage({
 
   return (
     <div className="p-6">
-      <CoursesList initialCourses={courses} categories={categories} isAdmin={isAdmin} />
+      <CoursesList initialCourses={courses} categories={categories} isAdmin={isAdmin} isAuthenticated={isAuthenticated} />
     </div>
   );
 }

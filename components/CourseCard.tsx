@@ -20,7 +20,7 @@ interface CourseProps {
   progress?: number | null;
 }
 
-export const CourseCard = ({ course, isAdmin }: { course: CourseProps; isAdmin?: boolean }) => {
+export const CourseCard = ({ course, isAdmin, isAuthenticated =false }: { course: CourseProps; isAdmin?: boolean; isAuthenticated?: boolean }) => {
   const cart = useCart();
   // Hydration fix: Only check cart status after mount
   const [isMounted, setIsMounted] = useState(false);
@@ -82,7 +82,7 @@ export const CourseCard = ({ course, isAdmin }: { course: CourseProps; isAdmin?:
             </div>
         </div>
 
-        {course.progress !== undefined && course.progress !== null ? (
+        {isAuthenticated && course.progress !== undefined && course.progress !== null ? (
           <div className="mt-auto space-y-2">
             <div className="flex items-center justify-between text-xs text-muted-foreground">
                <span>{course.progress}% Complete</span>

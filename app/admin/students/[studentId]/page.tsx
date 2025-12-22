@@ -45,7 +45,7 @@ export default async function StudentIdPage({
   const availableCourses = allCourses.filter(c => !purchasedCourseIds.includes(c.id));
 
   return (
-    <div className="p-6">
+    <div className="p-6 bg-white rounded-lg shadow-md dark:bg-gray-800 m-6">
        <div className="flex items-center gap-x-2 mb-6">
         <Link href="/admin/students">
           <Button variant="ghost" size="sm" className="pl-0 hover:bg-transparent hover:text-primary">

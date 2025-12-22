@@ -56,13 +56,8 @@ export default async function ChapterIdPage({
 
   return (
     <>
-      {/* {!chapter.isPublished && (
-        <Banner
-          variant="warning"
-          label="This chapter is unpublished. It will not be visible in the course"
-        />
-      )} */}
-      <div className="p-6">
+
+      <div className="p-6 m-5 bg-white rounded-lg shadow-md dark:bg-gray-800">
         <div className="flex items-center justify-between">
           <div className="w-full">
             <Link

@@ -73,7 +73,7 @@ export default async function CourseIdPage({
   const completionText = `(${completedFields}/${totalFields})`;
 
   return (
-    <div className="p-6">
+    <div className="p-6 m-5 bg-white rounded-lg shadow-md dark:bg-gray-800">
       <Link
         href="/admin/courses"
         className="flex items-center text-sm hover:opacity-75 transition mb-6"

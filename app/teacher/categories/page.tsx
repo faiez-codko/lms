@@ -1,7 +1,5 @@
-"use client";
-
 import { Button } from "@/components/ui/button";
-import { PlusCircle, Pencil, Trash2 } from "lucide-react";
+import { PlusCircle, Pencil, Trash2, ImageIcon } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -11,53 +9,17 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { db } from "@/lib/prismadb";
 
-const categories = [
-  { 
-    id: "1", 
-    name: "Computer Science", 
-    description: "Learn programming, algorithms, and system design.",
-    imageUrl: "https://trae-api-sg.mchost.guru/api/ide/v1/text_to_image?prompt=computer%20science%20code%20abstract&image_size=landscape_4_3"
-  },
-  { 
-    id: "2", 
-    name: "Music", 
-    description: "Master instruments, theory, and production.",
-    imageUrl: "https://trae-api-sg.mchost.guru/api/ide/v1/text_to_image?prompt=musical%20instruments%20studio&image_size=landscape_4_3"
-  },
-  { 
-    id: "3", 
-    name: "Fitness", 
-    description: "Workouts, nutrition, and healthy living guides.",
-    imageUrl: "https://trae-api-sg.mchost.guru/api/ide/v1/text_to_image?prompt=fitness%20gym%20workout&image_size=landscape_4_3"
-  },
-  { 
-    id: "4", 
-    name: "Photography", 
-    description: "Camera basics, lighting, and photo editing.",
-    imageUrl: "https://trae-api-sg.mchost.guru/api/ide/v1/text_to_image?prompt=camera%20photography%20lens&image_size=landscape_4_3"
-  },
-  { 
-    id: "5", 
-    name: "Accounting", 
-    description: "Financial reporting, bookkeeping, and tax prep.",
-    imageUrl: "https://trae-api-sg.mchost.guru/api/ide/v1/text_to_image?prompt=accounting%20finance%20calculator&image_size=landscape_4_3"
-  },
-  { 
-    id: "6", 
-    name: "Engineering", 
-    description: "Civil, mechanical, and electrical engineering concepts.",
-    imageUrl: "https://trae-api-sg.mchost.guru/api/ide/v1/text_to_image?prompt=engineering%20blueprint%20gear&image_size=landscape_4_3"
-  },
-  { 
-    id: "7", 
-    name: "Filming", 
-    description: "Cinematography, directing, and video editing.",
-    imageUrl: "https://trae-api-sg.mchost.guru/api/ide/v1/text_to_image?prompt=filming%20camera%20movie%20set&image_size=landscape_4_3"
-  },
-];
+export const dynamic = "force-dynamic";
 
-export default function CategoriesPage() {
+export default async function CategoriesPage() {
+  const categories = await db.category.findMany({
+    orderBy: {
+      name: "asc",
+    },
+  });
+
   return (
     <div className="p-6">
       <div className="flex items-center justify-between mb-6">
@@ -74,19 +36,25 @@ export default function CategoriesPage() {
         {categories.map((category) => (
           <Card key={category.id} className="overflow-hidden group hover:shadow-lg transition-shadow">
             <div className="relative aspect-video w-full overflow-hidden">
-                 <Image 
-                    src={category.imageUrl}
-                    alt={category.name}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-300"
-                 />
+                 {category.imageUrl ? (
+                    <Image 
+                        src={category.imageUrl}
+                        alt={category.name}
+                        fill
+                        className="object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                 ) : (
+                    <div className="flex items-center justify-center h-full w-full bg-slate-200 dark:bg-slate-800">
+                        <ImageIcon className="h-10 w-10 text-slate-500" />
+                    </div>
+                 )}
             </div>
             <CardHeader className="p-4 pb-2">
                 <CardTitle className="text-lg line-clamp-1">{category.name}</CardTitle>
             </CardHeader>
             <CardContent className="p-4 pt-0 h-16">
                  <p className="text-sm text-muted-foreground line-clamp-2">
-                     {category.description}
+                     {category.description || "No description"}
                  </p>
             </CardContent>
             <CardFooter className="p-4 pt-0 flex justify-between">
@@ -102,6 +70,11 @@ export default function CategoriesPage() {
             </CardFooter>
           </Card>
         ))}
+        {categories.length === 0 && (
+             <div className="text-center text-sm text-muted-foreground mt-10 col-span-full">
+                 No categories found
+             </div>
+        )}
       </div>
     </div>
   );

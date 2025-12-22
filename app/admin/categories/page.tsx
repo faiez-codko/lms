@@ -20,7 +20,7 @@ export default async function CategoriesPage() {
   });
 
   return (
-    <div className="p-6">
+    <div className="p-6 min-h-screen">
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-bold">Categories</h1>
         <Link href="/admin/categories/create">
@@ -31,9 +31,9 @@ export default async function CategoriesPage() {
         </Link>
       </div>
 
-      <div className="border rounded-md">
+      <div className="border rounded-md bg-white dark:bg-slate-900">
         <Table>
-          <TableHeader>
+          <TableHeader className=" dark:bg-slate-800 dark:text-slate-100">
             <TableRow>
               <TableHead className="w-[100px]">Image</TableHead>
               <TableHead>Name</TableHead>

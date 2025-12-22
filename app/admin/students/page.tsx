@@ -17,7 +17,7 @@ export default async function StudentsPage() {
   });
 
   return (
-    <div className="p-6">
+    <div className="p-6 min-h-screen">
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-bold">Students</h1>
         <Link href="/admin/students/create">
@@ -30,7 +30,7 @@ export default async function StudentsPage() {
 
       <div className="border rounded-md bg-white dark:bg-slate-900">
         <table className="w-full text-sm text-left">
-          <thead className="bg-secondary text-secondary-foreground">
+          <thead className="bg-primary text-primary-foreground dark:bg-slate-800 dark:text-slate-100">
             <tr>
               <th className="p-4 font-medium">Name</th>
               <th className="p-4 font-medium">Email</th>

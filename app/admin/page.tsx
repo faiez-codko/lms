@@ -37,7 +37,7 @@ export default async function AdminDashboardPage() {
   const { totalUsers, totalCourses, totalRevenue, totalSales } = await getAnalytics();
 
   return (
-    <div className="p-6">
+    <div className="p-6 min-h-screen">
       <h1 className="text-2xl font-bold mb-6">Admin Dashboard</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
         <Card>

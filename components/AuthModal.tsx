@@ -104,6 +104,11 @@ export const AuthModal = ({ trigger }: { trigger?: React.ReactNode }) => {
               <Link href="/teacher">Teacher Portal</Link>
             </DropdownMenuItem>
           )}
+          {user.role === "SUPER_ADMIN" && (
+            <DropdownMenuItem asChild>
+              <Link href="/admin">Admin Portal</Link>
+            </DropdownMenuItem>
+          )}
           <DropdownMenuSeparator />
           <DropdownMenuItem
             variant="destructive"

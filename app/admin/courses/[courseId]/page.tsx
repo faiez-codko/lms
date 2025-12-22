@@ -8,6 +8,7 @@ import { ImageForm } from "@/components/course-setup/image-form";
 import { CategoryForm } from "@/components/course-setup/category-form";
 import { PriceForm } from "@/components/course-setup/price-form";
 import { ChaptersForm } from "@/components/course-setup/chapters-form";
+import { CourseActions } from "@/components/course-setup/course-actions";
 
 export default async function CourseIdPage({
   params
@@ -72,6 +73,8 @@ export default async function CourseIdPage({
 
   const completionText = `(${completedFields}/${totalFields})`;
 
+  const isComplete = fields.every(Boolean);
+
   return (
     <div className="p-6 m-5 bg-white rounded-lg shadow-md dark:bg-gray-800">
       <Link
@@ -90,6 +93,11 @@ export default async function CourseIdPage({
             Complete all fields {completionText}
           </span>
         </div>
+        <CourseActions
+          disabled={!isComplete}
+          courseId={course.id}
+          isPublished={course.isPublished}
+        />
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-16">

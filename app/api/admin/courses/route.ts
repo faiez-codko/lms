@@ -7,8 +7,6 @@ export async function POST(req: Request) {
   try {
     const token = (await cookies()).get(AUTH_COOKIE_NAME)?.value;
     const payload = token ? verifyAuthToken(token) : null;
-
-    console.log(payload)
     
     if (payload?.role !== "SUPER_ADMIN") {
         return new NextResponse("Unauthorized", { status: 401 });

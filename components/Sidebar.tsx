@@ -56,6 +56,14 @@ export const Sidebar = ({ className }: SidebarProps) => {
                     alt="Logo"
                     width={120}
                     height={24}
+                    className="dark:hidden"
+                />
+                <Image 
+                    src="/logo-white.png"
+                    alt="Logo"
+                    width={120}
+                    height={24}
+                    className="hidden dark:block"
                 />
                 <span className="text-xs italic text-muted-foreground">Build something great!</span>
             </div>

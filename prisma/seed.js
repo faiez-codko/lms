@@ -1,7 +1,12 @@
-import { PrismaClient } from '@prisma/client';
-import { hashPassword } from '../lib/auth';
+const { PrismaClient } = require('@prisma/client');
+const bcrypt = require('bcryptjs');
 
 const prisma = new PrismaClient();
+
+async function hashPassword(password) {
+  const salt = await bcrypt.genSalt(10);
+  return bcrypt.hash(password, salt);
+}
 
 async function main() {
   console.log('🌱 Starting database seeding...');
@@ -47,14 +52,9 @@ async function main() {
     console.log(`✅ Category created: ${element.name}`);
   }
 
-
-
-
   console.log('🎉 Database seeding completed!');
   console.log('\n📧 Admin credentials:');
   console.log('Email: admin@myquantumacademy.com');
-
-
 
   console.log('\n🌐 You can now access:');
   console.log('- Home page with dynamic content: http://localhost:3000');

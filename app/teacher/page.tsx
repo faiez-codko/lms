@@ -1,17 +1,10 @@
-"use client";
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { DollarSign, Users, BookOpen } from "lucide-react";
-import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis, Tooltip } from "recharts";
-
-const data = [
-  { name: "Jan", total: 1200 },
-  { name: "Feb", total: 2100 },
-  { name: "Mar", total: 1800 },
-  { name: "Apr", total: 2400 },
-  { name: "May", total: 3200 },
-  { name: "Jun", total: 3800 },
-];
+import { getCurrentUser } from "@/lib/auth";
+import { redirect } from "next/navigation";
+import { getAnalytics } from "@/actions/get-analytics";
+import { Chart } from "@/components/dashboard/chart";
+import { db } from "@/lib/prismadb";
 
 const comments = [
     {
@@ -34,7 +27,25 @@ const comments = [
     }
 ]
 
-export default function TeacherDashboard() {
+export const dynamic = "force-dynamic";
+
+export default async function TeacherDashboard() {
+  const session = await getCurrentUser();
+
+  if (!session?.id) {
+    return redirect("/");
+  }
+
+  const { data, totalRevenue, totalSales } = await getAnalytics(session.id);
+
+  // Fetch active courses count
+  const activeCoursesCount = await db.course.count({
+    where: {
+        userId: session.id,
+        isPublished: true,
+    }
+  });
+
   return (
     <div className="p-6">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
@@ -46,23 +57,25 @@ export default function TeacherDashboard() {
             <DollarSign className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">$14,500.00</div>
+            <div className="text-2xl font-bold">
+                {new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(totalRevenue)}
+            </div>
             <p className="text-xs text-muted-foreground">
-              +20.1% from last month
+              Based on your course sales
             </p>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
-              Students Enrolled
+              Total Sales
             </CardTitle>
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">+2,350</div>
+            <div className="text-2xl font-bold">+{totalSales}</div>
             <p className="text-xs text-muted-foreground">
-              +180.1% from last month
+              Total successful enrollments
             </p>
           </CardContent>
         </Card>
@@ -74,45 +87,16 @@ export default function TeacherDashboard() {
             <BookOpen className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">12</div>
+            <div className="text-2xl font-bold">{activeCoursesCount}</div>
             <p className="text-xs text-muted-foreground">
-              +2 new courses this month
+              Courses currently published
             </p>
           </CardContent>
         </Card>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        <Card className="col-span-1">
-          <CardHeader>
-            <CardTitle>Overview</CardTitle>
-          </CardHeader>
-          <CardContent className="pl-2">
-            <ResponsiveContainer width="100%" height={350}>
-              <BarChart data={data}>
-                <XAxis
-                  dataKey="name"
-                  stroke="#888888"
-                  fontSize={12}
-                  tickLine={false}
-                  axisLine={false}
-                />
-                <YAxis
-                  stroke="#888888"
-                  fontSize={12}
-                  tickLine={false}
-                  axisLine={false}
-                  tickFormatter={(value) => `$${value}`}
-                />
-                <Tooltip 
-                    cursor={{fill: 'transparent'}}
-                    contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
-                />
-                <Bar dataKey="total" fill="#10b981" radius={[4, 4, 0, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
-          </CardContent>
-        </Card>
+        <Chart data={data} />
         <Card className="col-span-1">
             <CardHeader>
                 <CardTitle>Recent Comments</CardTitle>

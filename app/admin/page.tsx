@@ -1,6 +1,8 @@
 import { db } from "@/lib/prismadb";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { DollarSign, CreditCard, BookOpen, Users } from "lucide-react";
+import { getAdminAnalytics } from "@/actions/get-admin-analytics";
+import { Chart } from "@/components/dashboard/chart";
 
 export const dynamic = "force-dynamic";
 
@@ -11,30 +13,21 @@ async function getAnalytics() {
 
   const totalCourses = await db.course.count();
   
-  const purchases = await db.purchase.findMany({
-    include: {
-      course: true,
-    }
-  });
-
-  const totalRevenue = purchases.reduce((acc, purchase) => {
-    return acc + (purchase.course.price || 0);
-  }, 0);
-
-  const totalSales = purchases.length;
+  const { data, totalRevenue, totalSales } = await getAdminAnalytics();
 
   return {
     totalUsers,
     totalCourses,
     totalRevenue,
-    totalSales
+    totalSales,
+    data
   };
 }
 
 
 
 export default async function AdminDashboardPage() {
-  const { totalUsers, totalCourses, totalRevenue, totalSales } = await getAnalytics();
+  const { totalUsers, totalCourses, totalRevenue, totalSales, data } = await getAnalytics();
 
   return (
     <div className="p-6 min-h-screen">
@@ -90,6 +83,7 @@ export default async function AdminDashboardPage() {
           </CardContent>
         </Card>
       </div>
+      <Chart data={data} />
     </div>
   );
 }

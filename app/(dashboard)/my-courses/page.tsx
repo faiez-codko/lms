@@ -72,8 +72,6 @@ export default async function MyCoursesPage() {
             {purchasedCourses.map((course) => (
             <Link href={`/courses/${course.id}`} key={course.id}>
                 <CourseCard course={course} isAuthenticated={true} />
-                {/* We could add a progress bar here if CourseCard doesn't support it yet, 
-                    but for now standard card is fine. */}
             </Link>
             ))}
         </div>

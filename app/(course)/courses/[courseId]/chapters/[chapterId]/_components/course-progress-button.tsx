@@ -52,11 +52,11 @@ export const CourseProgressButton = ({
       type="button"
       variant={isCompleted ? "outline" : "default"}
       className={cn(
-        "w-full md:w-auto",
+        "w-auto",
         !isCompleted && "bg-emerald-600 hover:bg-emerald-700 text-white"
       )}
     >
-      {isCompleted ? "Not completed" : "Mark as complete"}
+      {isCompleted ? "Mark as not completed" : "Mark as complete"}
       <Icon className="h-4 w-4 ml-2" />
     </Button>
   );

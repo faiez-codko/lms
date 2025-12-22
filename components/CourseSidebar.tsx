@@ -18,7 +18,7 @@ interface CourseSidebarProps {
 export const CourseSidebar = ({ course, progressCount }: CourseSidebarProps) => {
   const params = useParams();
   const router = useRouter();
-  
+
   // Handle potential array params (though courseId/chapterId should be strings)
   const chapterId = Array.isArray(params?.chapterId) ? params?.chapterId[0] : params?.chapterId;
 
@@ -33,13 +33,13 @@ export const CourseSidebar = ({ course, progressCount }: CourseSidebarProps) => 
           {course.title}
         </h1>
         <div className="flex items-center gap-x-2 mb-2">
-            <span className="text-xs font-medium text-emerald-700 dark:text-emerald-500">
-                {Math.round(progressCount)}% Complete
-            </span>
+          <span className="text-xs font-medium text-emerald-700 dark:text-emerald-500">
+            {Math.round(progressCount)}% Complete
+          </span>
         </div>
         <Progress value={progressCount} className="h-2" indicatorClassName="bg-emerald-700 dark:bg-emerald-500" />
       </div>
-      <div className="flex flex-col w-full">
+      <div className="flex flex-col w-full overflow-x-hidden">
         {course.chapter.map((chapter) => {
           const isActive = chapterId === chapter.id;
           const isCompleted = !!chapter.userprogress?.[0]?.isCompleted;
@@ -58,17 +58,14 @@ export const CourseSidebar = ({ course, progressCount }: CourseSidebarProps) => 
               )}
             >
               <div className="flex items-center gap-x-2 py-4">
-                 {isCompleted ? (
+                {isCompleted ? (
                   <CheckCircle className="text-emerald-700 dark:text-emerald-500" size={22} />
-                ) : isActive ? (
-                    <PlayCircle className={cn("text-slate-500", isActive && "text-slate-700 dark:text-slate-200")} size={22} />
                 ) : (
-                    <Lock className="text-slate-500" size={22} /> 
-                    // Note: This lock logic is purely visual here. Real access control happens on page load.
-                    // For now let's just show PlayCircle if not completed for simplicity unless we pass purchase status
+                  <PlayCircle className={cn("text-slate-500", isActive && "text-slate-700 dark:text-slate-200")} size={22} />
                 )}
-                
-                {chapter.title}
+                <span className="truncate line-clamp-1">
+                  {chapter.title.length > 35 ? chapter.title.substring(0, 35) + "..." : chapter.title}
+                </span>
               </div>
             </button>
           )

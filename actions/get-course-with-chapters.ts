@@ -1,9 +1,10 @@
 import { db } from "@/lib/prismadb";
 import { getProgress } from "@/actions/get-progress";
-import { chapter, course, userprogress } from "@prisma/client";
+import { chapter, course, userprogress, topic } from "@prisma/client";
 
 type ChapterWithProgress = chapter & {
   userprogress: userprogress[] | null;
+  topics: topic[];
 };
 
 type CourseWithProgressWithCategory = course & {
@@ -34,6 +35,14 @@ export const getCourseWithChapters = async (
                 userId,
               },
             },
+            topics: {
+              where: {
+                isPublished: true,
+              },
+              orderBy: {
+                position: "asc",
+              }
+            }
           },
         },
       },

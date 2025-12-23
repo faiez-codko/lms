@@ -10,9 +10,17 @@ import { db } from "@/lib/prismadb";
 import { redirect } from "next/navigation";
 import { getProgress } from "@/actions/get-progress";
 import { CourseProgressButton } from "./_components/course-progress-button";
+import { CourseQuizCard } from "@/components/course-quiz-card";
 
-export default async function ChapterPage({ params }: { params: Promise<{ courseId: string; chapterId: string }> }) {
+export default async function ChapterPage({ 
+    params, 
+    searchParams 
+}: { 
+    params: Promise<{ courseId: string; chapterId: string }>;
+    searchParams: Promise<{ topicId?: string }>;
+}) {
     const { chapterId, courseId } = await params;
+    const { topicId } = await searchParams;
 
     const token = (await cookies()).get(AUTH_COOKIE_NAME)?.value;
     const payload = token ? verifyAuthToken(token) : null;
@@ -31,6 +39,20 @@ export default async function ChapterPage({ params }: { params: Promise<{ course
             chapter: {
                 where: {
                     isPublished: true,
+                },
+                include: {
+                    quiz: true,
+                    topics: {
+                        where: {
+                            isPublished: true,
+                        },
+                        include: {
+                            quiz: true,
+                        },
+                        orderBy: {
+                            position: "asc",
+                        }
+                    }
                 },
                 orderBy: {
                     position: "asc",
@@ -53,6 +75,8 @@ export default async function ChapterPage({ params }: { params: Promise<{ course
 
     const nextChapter = course.chapter[currentChapterIndex + 1];
 
+    const currentTopic = topicId ? currentChapter.topics.find((t) => t.id === topicId) : null;
+
     // Check access: Admin OR Purchased OR Free Chapter
     const isAdmin = payload?.role === "SUPER_ADMIN";
 
@@ -68,7 +92,17 @@ export default async function ChapterPage({ params }: { params: Promise<{ course
         });
     }
 
-    const isLocked = !currentChapter.isFree && !purchase && !isAdmin;
+    let isLocked = !purchase && !isAdmin;
+
+    if (isLocked) {
+        if (currentTopic) {
+            if (currentTopic.isFree) {
+                isLocked = false;
+            }
+        } else if (currentChapter.isFree) {
+            isLocked = false;
+        }
+    }
 
     if (isLocked) {
         return (
@@ -101,23 +135,58 @@ export default async function ChapterPage({ params }: { params: Promise<{ course
 
     const isCompleted = userProgress?.isCompleted;
 
+    const title = currentTopic ? currentTopic.title : currentChapter.title;
+    const description = currentTopic ? currentTopic.description : currentChapter.description;
+    const videoUrl = currentTopic ? currentTopic.videoUrl : currentChapter.videoUrl;
+    const quiz = currentTopic ? currentTopic.quiz : currentChapter.quiz;
+
+    let nextLessonUrl = "";
+
+    if (currentTopic) {
+        // Find next topic
+        const currentTopicIndex = currentChapter.topics.findIndex((t) => t.id === topicId);
+        const nextTopic = currentChapter.topics[currentTopicIndex + 1];
+        
+        if (nextTopic) {
+             nextLessonUrl = `/courses/${courseId}/chapters/${chapterId}?topicId=${nextTopic.id}`;
+        } else if (nextChapter) {
+             // Check if next chapter has topics
+             if (nextChapter.topics && nextChapter.topics.length > 0) {
+                 nextLessonUrl = `/courses/${courseId}/chapters/${nextChapter.id}?topicId=${nextChapter.topics[0].id}`;
+             } else {
+                 nextLessonUrl = `/courses/${courseId}/chapters/${nextChapter.id}`;
+             }
+        }
+    } else {
+        // On Chapter Page
+        if (currentChapter.topics && currentChapter.topics.length > 0) {
+            nextLessonUrl = `/courses/${courseId}/chapters/${chapterId}?topicId=${currentChapter.topics[0].id}`;
+        } else if (nextChapter) {
+             if (nextChapter.topics && nextChapter.topics.length > 0) {
+                 nextLessonUrl = `/courses/${courseId}/chapters/${nextChapter.id}?topicId=${nextChapter.topics[0].id}`;
+             } else {
+                 nextLessonUrl = `/courses/${courseId}/chapters/${nextChapter.id}`;
+             }
+        }
+    }
+
     return (
         <div className="flex flex-col max-w-5xl mx-auto pb-20">
             {/* Video Player Section */}
             <div className="p-4">
                 <div className="relative aspect-video rounded-xl overflow-hidden bg-slate-900 shadow-lg border">
-                    {currentChapter.videoUrl ? (
+                    {videoUrl ? (
                         // In a real app, use a real video player (Mux, Youtube, etc)
                         // For now, simple video tag or iframe logic
                         <div className="absolute inset-0 flex items-center justify-center bg-black">
-                            <video src={currentChapter.videoUrl} controls />
+                            <video src={videoUrl} controls />
 
                         </div>
                     ) : (
                         <div className="absolute inset-0 flex items-center justify-center">
                             <div className="flex flex-col items-center gap-4">
                                 <PlayCircle className="h-20 w-20 text-white opacity-80 hover:opacity-100 transition-opacity cursor-pointer" />
-                                <p className="text-white font-medium">Start watching: {currentChapter.title}</p>
+                                <p className="text-white font-medium">Start watching: {title}</p>
                             </div>
                         </div>
                     )}
@@ -132,7 +201,7 @@ export default async function ChapterPage({ params }: { params: Promise<{ course
                 {/* Header */}
                 <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
                     <div>
-                        <h1 className="text-2xl font-bold mb-2">{currentChapter.title}</h1>
+                        <h1 className="text-2xl font-bold mb-2">{title}</h1>
                         <div className="flex items-center gap-4 text-sm text-muted-foreground">
                             <span className="flex items-center gap-1"><FileText className="h-4 w-4" /> Lesson {currentChapterIndex + 1}</span>
                             {isCompleted && (
@@ -156,8 +225,8 @@ export default async function ChapterPage({ params }: { params: Promise<{ course
 
 
                         {
-                            nextChapter && (
-                                <Link href={`/courses/${courseId}/chapters/${nextChapter.id}`}>
+                            nextLessonUrl && (
+                                <Link href={nextLessonUrl}>
                                     <Button className="gap-2 group">
                                         Next Lesson
                                         <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
@@ -183,7 +252,7 @@ export default async function ChapterPage({ params }: { params: Promise<{ course
                                 <div className="bg-card border rounded-lg p-6">
                                     <h3 className="font-semibold mb-4 text-lg">About this chapter</h3>
                                     <div className="text-muted-foreground leading-relaxed">
-                                        {currentChapter.description || "No description provided."}
+                                        {description || "No description provided."}
                                     </div>
                                 </div>
 
@@ -221,6 +290,14 @@ export default async function ChapterPage({ params }: { params: Promise<{ course
                     </div>
 
                     <div className="space-y-6">
+                        {quiz && (
+                            <CourseQuizCard
+                                courseId={courseId}
+                                chapterId={chapterId}
+                                quizId={quiz.id}
+                                title={quiz.title}
+                            />
+                        )}
                         <div className="bg-blue-50 border border-blue-100 rounded-lg p-6">
                             <h3 className="font-semibold text-blue-900 mb-2">Need Help?</h3>
                             <p className="text-sm text-blue-700 mb-4">

@@ -6,22 +6,20 @@ import Link from "next/link";
 import { ArrowLeft, Eye, LayoutDashboard, Video } from "lucide-react";
 
 import { IconBadge } from "@/components/icon-badge";
-import { ChapterTitleForm } from "@/components/chapter-setup/chapter-title-form";
-import { ChapterDescriptionForm } from "@/components/chapter-setup/chapter-description-form";
-import { ChapterAccessForm } from "@/components/chapter-setup/chapter-access-form";
-import { ChapterVideoForm } from "@/components/chapter-setup/chapter-video-form";
-import { TopicsForm } from "@/components/chapter-setup/topics-form";
+import { TopicTitleForm } from "@/components/topic-setup/topic-title-form";
+import { TopicDescriptionForm } from "@/components/topic-setup/topic-description-form";
+import { TopicAccessForm } from "@/components/topic-setup/topic-access-form";
+import { TopicVideoForm } from "@/components/topic-setup/topic-video-form";
+import { TopicActions } from "@/components/topic-setup/topic-actions";
 import { QuizForm } from "@/components/chapter-setup/quiz-form";
-// import { Banner } from "@/components/banner";
-import { ChapterActions } from "@/components/chapter-setup/chapter-actions";
 
-export default async function ChapterIdPage({
+export default async function TopicIdPage({
   params
 }: {
-  params: Promise<{ courseId: string; chapterId: string }>
+  params: Promise<{ courseId: string; chapterId: string; topicId: string }>
 }) {
-  const { courseId, chapterId } = await params;
-  
+  const { courseId, chapterId, topicId } = await params;
+
   const token = (await cookies()).get(AUTH_COOKIE_NAME)?.value;
   const payload = token ? verifyAuthToken(token) : null;
 
@@ -29,30 +27,25 @@ export default async function ChapterIdPage({
     return redirect("/");
   }
 
-  const chapter = await db.chapter.findUnique({
+  const topic = await db.topic.findUnique({
     where: {
-      id: chapterId,
-      courseId: courseId
+      id: topicId,
+      chapterId: chapterId,
     },
     include: {
       muxdata: true,
-      topics: {
-        orderBy: {
-            position: "asc",
-        },
-      },
       quiz: true,
     },
   });
 
-  if (!chapter) {
+  if (!topic) {
     return redirect("/");
   }
 
   const requiredFields = [
-    chapter.title,
-    chapter.description,
-    chapter.videoUrl,
+    topic.title,
+    topic.description,
+    topic.videoUrl,
   ];
 
   const totalFields = requiredFields.length;
@@ -64,33 +57,31 @@ export default async function ChapterIdPage({
 
   return (
     <>
-
       <div className="p-6 m-5 bg-white rounded-lg shadow-md dark:bg-gray-800">
         <div className="flex items-center justify-between">
           <div className="w-full">
             <Link
-              href={`/admin/courses/${courseId}`}
+              href={`/admin/courses/${courseId}/chapters/${chapterId}`}
               className="flex items-center text-sm hover:opacity-75 transition mb-6"
             >
               <ArrowLeft className="h-4 w-4 mr-2" />
-              Back to course setup
+              Back to chapter setup
             </Link>
             <div className="flex items-center justify-between w-full">
               <div className="flex flex-col gap-y-2">
                 <h1 className="text-2xl font-medium">
-                  Chapter Creation
+                  Topic Creation
                 </h1>
                 <span className="text-sm text-slate-700">
                   Complete all fields {completionText}
                 </span>
               </div>
-              <ChapterActions
-                disabled={!isComplete}
+              <TopicActions
+                disabled={false}
                 courseId={courseId}
                 chapterId={chapterId}
-                isPublished={chapter.isPublished}
-                apiUrl="/api/admin/courses"
-                redirectUrl={`/admin/courses/${courseId}`}
+                topicId={topicId}
+                isPublished={topic.isPublished}
               />
             </div>
           </div>
@@ -101,20 +92,20 @@ export default async function ChapterIdPage({
               <div className="flex items-center gap-x-2">
                 <IconBadge icon={LayoutDashboard} />
                 <h2 className="text-xl">
-                  Customize your chapter
+                  Customize your topic
                 </h2>
               </div>
-              <ChapterTitleForm
-                initialData={chapter}
+              <TopicTitleForm
+                initialData={topic}
                 courseId={courseId}
                 chapterId={chapterId}
-                apiUrl="/api/admin/courses"
+                topicId={topicId}
               />
-              <ChapterDescriptionForm
-                initialData={chapter}
+              <TopicDescriptionForm
+                initialData={topic}
                 courseId={courseId}
                 chapterId={chapterId}
-                apiUrl="/api/admin/courses"
+                topicId={topicId}
               />
             </div>
             <div>
@@ -124,15 +115,15 @@ export default async function ChapterIdPage({
                   Access Settings
                 </h2>
               </div>
-              <ChapterAccessForm
-                initialData={chapter}
+              <TopicAccessForm
+                initialData={topic}
                 courseId={courseId}
                 chapterId={chapterId}
-                apiUrl="/api/admin/courses"
+                topicId={topicId}
               />
             </div>
           </div>
-          {!chapter.topics.length && (
+          <div className="space-y-4">
             <div>
               <div className="flex items-center gap-x-2">
                 <IconBadge icon={Video} />
@@ -140,39 +131,27 @@ export default async function ChapterIdPage({
                   Add a video
                 </h2>
               </div>
-              <ChapterVideoForm
-                initialData={chapter}
+              <TopicVideoForm
+                initialData={topic}
                 courseId={courseId}
                 chapterId={chapterId}
-                apiUrl="/api/admin/courses"
+                topicId={topicId}
               />
             </div>
-          )}
-          <div>
-            <div className="flex items-center gap-x-2">
-              <IconBadge icon={LayoutDashboard} />
-              <h2 className="text-xl">
-                Chapter Topics
-              </h2>
+            <div>
+                <div className="flex items-center gap-x-2">
+                    <IconBadge icon={LayoutDashboard} />
+                    <h2 className="text-xl">
+                        Topic Quiz
+                    </h2>
+                </div>
+                <QuizForm
+                    initialData={topic}
+                    courseId={courseId}
+                    chapterId={chapterId}
+                    topicId={topicId}
+                />
             </div>
-            <TopicsForm
-              initialData={chapter}
-              courseId={courseId}
-              chapterId={chapterId}
-            />
-          </div>
-          <div>
-            <div className="flex items-center gap-x-2">
-              <IconBadge icon={LayoutDashboard} />
-              <h2 className="text-xl">
-                Chapter Quiz
-              </h2>
-            </div>
-            <QuizForm
-              initialData={chapter}
-              courseId={courseId}
-              chapterId={chapterId}
-            />
           </div>
         </div>
       </div>

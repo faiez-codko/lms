@@ -6,6 +6,12 @@ import { Button } from "@/components/ui/button";
 import { BookOpen, PlayCircle, Lock, Github, PartyPopper, CheckCircle } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion"
 import Link from "next/link";
 import { cookies } from "next/headers";
 import { AUTH_COOKIE_NAME, verifyAuthToken } from "@/lib/auth";
@@ -27,6 +33,16 @@ export default async function CourseDetailPage({ params }: { params: Promise<{ c
         orderBy: {
           position: "asc",
         },
+        include: {
+          topics: {
+            where: {
+              isPublished: true,
+            },
+            orderBy: {
+              position: "asc",
+            }
+          }
+        }
       },
       category: true,
     },
@@ -143,6 +159,50 @@ export default async function CourseDetailPage({ params }: { params: Promise<{ c
                      const isLocked = !chapter.isFree && !isPurchased;
                      const isCompleted = completedChapters.has(chapter.id);
                      
+                     if (chapter.topics.length > 0) {
+                        return (
+                          <Accordion type="single" collapsible className="w-full" key={chapter.id}>
+                            <AccordionItem value={chapter.id} className="border-b-0">
+                                <AccordionTrigger className="px-4 py-3 hover:bg-slate-50 hover:no-underline transition-all">
+                                  <div className="flex items-center gap-x-3 w-full">
+                                      {isCompleted ? (
+                                          <CheckCircle className="h-5 w-5 text-emerald-500 flex-shrink-0" />
+                                      ) : isLocked ? (
+                                          <Lock className="h-5 w-5 text-slate-400 flex-shrink-0" />
+                                      ) : (
+                                          <PlayCircle className="h-5 w-5 text-slate-500 flex-shrink-0" />
+                                      )}
+                                      <span className="text-sm font-medium line-clamp-1 text-left">
+                                          {chapter.title}
+                                      </span>
+                                      {chapter.isFree && !isPurchased && (
+                                          <Badge variant="outline" className="ml-auto mr-4 bg-emerald-50 text-emerald-600 border-emerald-200">
+                                              Free Preview
+                                          </Badge>
+                                      )}
+                                  </div>
+                                </AccordionTrigger>
+                                <AccordionContent className="bg-slate-50/50 pt-0">
+                                  <div className="flex flex-col">
+                                    {chapter.topics.map((topic) => (
+                                      <Link
+                                        key={topic.id}
+                                        href={`/courses/${courseId}/chapters/${chapter.id}?topicId=${topic.id}`}
+                                        className="flex items-center gap-x-3 p-3 pl-12 text-sm hover:bg-slate-100 transition-colors"
+                                      >
+                                        <PlayCircle className="h-4 w-4 text-slate-500 flex-shrink-0" />
+                                        <span className="line-clamp-1">
+                                          {topic.title}
+                                        </span>
+                                      </Link>
+                                    ))}
+                                  </div>
+                                </AccordionContent>
+                            </AccordionItem>
+                          </Accordion>
+                        )
+                     }
+
                      return (
                          <Link 
                             key={chapter.id} 

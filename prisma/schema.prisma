@@ -62,6 +62,7 @@ model chapter {
   userprogress userprogress[]
   topics       topic[]
   quiz         quiz?
+  comments     comment[]
 
   @@index([courseId], map: "Chapter_courseId_idx")
 }
@@ -80,6 +81,7 @@ model topic {
   chapter     chapter  @relation(fields: [chapterId], references: [id], onDelete: Cascade)
   muxdata     muxdata?
   quiz        quiz?
+  comments    comment[]
 
   @@index([chapterId])
 }
@@ -204,6 +206,7 @@ model user {
   purchase      purchase[]
   session       session[]
   userprogress  userprogress[]
+  comments      comment[]
 }
 
 model userprogress {
@@ -226,4 +229,22 @@ model verificationtoken {
   expires    DateTime
 
   @@unique([identifier, token], map: "VerificationToken_identifier_token_key")
+}
+
+model comment {
+  id        String   @id @default(uuid())
+  text      String   @db.Text
+  userId    String
+  chapterId String?
+  topicId   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user    user     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  chapter chapter? @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+  topic   topic?   @relation(fields: [topicId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([chapterId])
+  @@index([topicId])
 }

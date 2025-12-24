@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { MediaPicker } from "@/components/media-picker";
 
 interface ImageFormProps {
   initialData: course;
@@ -108,17 +109,22 @@ export const ImageForm = ({
             onSubmit={form.handleSubmit(onSubmit)}
             className="space-y-4 mt-4"
           >
+            
             <FormField
               control={form.control}
               name="imageUrl"
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input
-                        disabled={isSubmitting}
-                        placeholder="Paste image URL here"
-                        {...field}
-                    />
+                    <div className="flex flex-col items-center gap-x-2">
+                      <Input
+                          disabled={isSubmitting}
+                          placeholder="Paste image URL here"
+                          {...field}
+                          className="my-2"
+                      />
+                      <MediaPicker onChange={field.onChange} />
+                    </div>
                   </FormControl>
                   <FormMessage />
                 </FormItem>

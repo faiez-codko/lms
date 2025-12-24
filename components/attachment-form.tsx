@@ -19,6 +19,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
+import { MediaPicker } from "@/components/media-picker";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 
@@ -189,11 +190,14 @@ export const AttachmentForm = ({
                 <FormItem>
                   <FormLabel>File URL</FormLabel>
                   <FormControl>
-                    <Input
-                      disabled={isSubmitting}
-                      placeholder="e.g. 'https://example.com/file.pdf'"
-                      {...field}
-                    />
+                    <div className="flex flex-col items-center gap-y-2">
+                      <Input
+                        disabled={isSubmitting}
+                        placeholder="e.g. 'https://example.com/file.pdf'"
+                        {...field}
+                      />
+                      <MediaPicker onChange={field.onChange} />
+                    </div>
                   </FormControl>
                   <FormMessage />
                 </FormItem>

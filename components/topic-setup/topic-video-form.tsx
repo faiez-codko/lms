@@ -9,6 +9,7 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { topic } from "@prisma/client";
+import { MediaPicker } from "../media-picker";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -109,15 +110,18 @@ export const TopicVideoForm = ({
              name="videoUrl"
              render={({ field }) => (
                <FormItem>
-                 <FormControl>
-                   <Input
-                     disabled={isSubmitting}
-                     placeholder="e.g. 'https://youtube.com/...'"
-                     {...field}
-                   />
-                 </FormControl>
-                 <FormMessage />
-               </FormItem>
+                  <FormControl>
+                    <div className="flex flex-col items-center gap-y-2">
+                      <Input
+                        disabled={isSubmitting}
+                        placeholder="e.g. 'https://youtube.com/...'"
+                        {...field}
+                      />
+                      <MediaPicker onChange={field.onChange} />
+                    </div>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
              )}
            />
            <div className="flex items-center gap-x-2">

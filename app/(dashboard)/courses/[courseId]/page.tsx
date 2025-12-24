@@ -103,10 +103,10 @@ export default async function CourseDetailPage({ params }: { params: Promise<{ c
           {/* Hero Section */}
           <div className="relative aspect-video w-full overflow-hidden rounded-xl shadow-sm group">
             {course.imageUrl ? (
-                <Image
+                <img
                 src={course.imageUrl}
                 alt={course.title}
-                fill
+                
                 className="object-cover"
                 />
             ) : (

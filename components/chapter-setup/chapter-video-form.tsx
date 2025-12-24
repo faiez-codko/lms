@@ -19,6 +19,7 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
+import { MediaPicker } from "@/components/media-picker";
 
 interface ChapterVideoFormProps {
   initialData: chapter;
@@ -114,11 +115,14 @@ export const ChapterVideoForm = ({
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input
-                      disabled={isSubmitting}
-                      placeholder="e.g. 'https://youtube.com/...'"
-                      {...field}
-                    />
+                    <div className="flex flex-col items-center gap-y-2">
+                      <Input
+                        disabled={isSubmitting}
+                        placeholder="e.g. 'https://youtube.com/...'"
+                        {...field}
+                      />
+                      <MediaPicker onChange={field.onChange} />
+                    </div>
                   </FormControl>
                   <FormMessage />
                 </FormItem>

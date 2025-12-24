@@ -18,6 +18,11 @@ const nextConfig: NextConfig = {
         hostname: 'utfs.io',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'dev-test-001.b-cdn.net',
+        pathname: '/**',
+      },
     ],
   },
 };

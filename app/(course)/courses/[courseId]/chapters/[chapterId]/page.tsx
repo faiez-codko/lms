@@ -287,7 +287,12 @@ export default async function ChapterPage({
 
                             <TabsContent value="comments">
                                 <div className="bg-card border rounded-lg p-6">
-                                    <CommentsList />
+                                    <CommentsList 
+                                        chapterId={chapterId} 
+                                        topicId={topicId} 
+                                        currentUserId={userId}
+                                        isCurrentUserAdmin={isAdmin}
+                                    />
                                 </div>
                             </TabsContent>
                         </Tabs>

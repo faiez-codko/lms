@@ -3,7 +3,7 @@ import { verifyAuthToken, AUTH_COOKIE_NAME } from "@/lib/auth";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, Eye, LayoutDashboard, Video } from "lucide-react";
+import { ArrowLeft, Eye, LayoutDashboard, Video, File } from "lucide-react";
 
 import { IconBadge } from "@/components/icon-badge";
 import { ChapterTitleForm } from "@/components/chapter-setup/chapter-title-form";
@@ -14,6 +14,7 @@ import { TopicsForm } from "@/components/chapter-setup/topics-form";
 import { QuizForm } from "@/components/chapter-setup/quiz-form";
 // import { Banner } from "@/components/banner";
 import { ChapterActions } from "@/components/chapter-setup/chapter-actions";
+import { AttachmentForm } from "@/components/attachment-form";
 
 export default async function ChapterIdPage({
   params
@@ -42,6 +43,11 @@ export default async function ChapterIdPage({
         },
       },
       quiz: true,
+      attachments: {
+        orderBy: {
+          createdAt: "desc",
+        },
+      },
     },
   });
 
@@ -172,6 +178,13 @@ export default async function ChapterIdPage({
               initialData={chapter}
               courseId={courseId}
               chapterId={chapterId}
+            />
+          </div>
+          <div>
+             <AttachmentForm
+              initialData={chapter.attachments}
+              chapterId={chapter.id}
+              courseId={courseId}
             />
           </div>
         </div>

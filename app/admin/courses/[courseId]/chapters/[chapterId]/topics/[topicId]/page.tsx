@@ -3,7 +3,7 @@ import { verifyAuthToken, AUTH_COOKIE_NAME } from "@/lib/auth";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, Eye, LayoutDashboard, Video } from "lucide-react";
+import { ArrowLeft, Eye, LayoutDashboard, Video, File } from "lucide-react";
 
 import { IconBadge } from "@/components/icon-badge";
 import { TopicTitleForm } from "@/components/topic-setup/topic-title-form";
@@ -12,6 +12,7 @@ import { TopicAccessForm } from "@/components/topic-setup/topic-access-form";
 import { TopicVideoForm } from "@/components/topic-setup/topic-video-form";
 import { TopicActions } from "@/components/topic-setup/topic-actions";
 import { QuizForm } from "@/components/chapter-setup/quiz-form";
+import { AttachmentForm } from "@/components/attachment-form";
 
 export default async function TopicIdPage({
   params
@@ -35,6 +36,11 @@ export default async function TopicIdPage({
     include: {
       muxdata: true,
       quiz: true,
+      attachments: {
+        orderBy: {
+          createdAt: "desc",
+        },
+      },
     },
   });
 
@@ -151,6 +157,20 @@ export default async function TopicIdPage({
                     chapterId={chapterId}
                     topicId={topicId}
                 />
+            </div>
+            <div>
+              <div className="flex items-center gap-x-2">
+                <IconBadge icon={File} />
+                <h2 className="text-xl">
+                  Resources & Attachments
+                </h2>
+              </div>
+              <AttachmentForm
+                initialData={topic.attachments}
+                courseId={courseId}
+                chapterId={chapterId}
+                topicId={topicId}
+              />
             </div>
           </div>
         </div>

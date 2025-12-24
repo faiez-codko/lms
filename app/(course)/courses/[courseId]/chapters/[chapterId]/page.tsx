@@ -48,11 +48,21 @@ export default async function ChapterPage({
                         },
                         include: {
                             quiz: true,
+                            attachments: {
+                                orderBy: {
+                                    createdAt: "desc",
+                                },
+                            },
                         },
                         orderBy: {
                             position: "asc",
                         }
-                    }
+                    },
+                    attachments: {
+                        orderBy: {
+                            createdAt: "desc",
+                        },
+                    },
                 },
                 orderBy: {
                     position: "asc",
@@ -134,6 +144,11 @@ export default async function ChapterPage({
     });
 
     const isCompleted = userProgress?.isCompleted;
+
+    // Determine relevant attachments
+    const attachments = currentTopic 
+        ? currentTopic.attachments 
+        : currentChapter.attachments;
 
     const title = currentTopic ? currentTopic.title : currentChapter.title;
     const description = currentTopic ? currentTopic.description : currentChapter.description;
@@ -262,26 +277,30 @@ export default async function ChapterPage({
 
                                 <div className="bg-card border rounded-lg p-6">
                                     <h3 className="font-semibold mb-4 text-lg">Resources</h3>
-                                    <div className="flex flex-col gap-2">
-                                        <div className="flex items-center justify-between p-3 bg-secondary/50 rounded-lg">
-                                            <div className="flex items-center gap-3">
-                                                <FileText className="h-5 w-5 text-primary" />
-                                                <span className="text-sm font-medium">Installation Guide.pdf</span>
-                                            </div>
-                                            <Button variant="ghost" size="sm">
-                                                <Download className="h-4 w-4" />
-                                            </Button>
+                                    {attachments.length === 0 ? (
+                                        <p className="text-sm text-muted-foreground italic">No resources available for this section.</p>
+                                    ) : (
+                                        <div className="flex flex-col gap-2">
+                                            {attachments.map((attachment) => (
+                                                <div key={attachment.id} className="flex items-center justify-between p-3 bg-secondary/50 rounded-lg">
+                                                    <div className="flex items-center gap-3">
+                                                        <FileText className="h-5 w-5 text-primary" />
+                                                        <div className="flex flex-col">
+                                                            <span className="text-sm font-medium">{attachment.title}</span>
+                                                            {attachment.description && (
+                                                                <span className="text-xs text-muted-foreground">{attachment.description}</span>
+                                                            )}
+                                                        </div>
+                                                    </div>
+                                                    <a href={attachment.url} target="_blank" rel="noopener noreferrer">
+                                                        <Button variant="ghost" size="sm">
+                                                            <Download className="h-4 w-4" />
+                                                        </Button>
+                                                    </a>
+                                                </div>
+                                            ))}
                                         </div>
-                                        <div className="flex items-center justify-between p-3 bg-secondary/50 rounded-lg">
-                                            <div className="flex items-center gap-3">
-                                                <Github className="h-5 w-5 text-primary" />
-                                                <span className="text-sm font-medium">Starter Project</span>
-                                            </div>
-                                            <Button variant="ghost" size="sm">
-                                                <Download className="h-4 w-4" />
-                                            </Button>
-                                        </div>
-                                    </div>
+                                    )}
                                 </div>
                             </TabsContent>
 

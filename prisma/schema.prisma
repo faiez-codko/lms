@@ -27,15 +27,26 @@ model account {
 }
 
 model attachment {
-  id        String   @id @default(uuid())
-  name      String
-  url       String
-  courseId  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  course    course   @relation(fields: [courseId], references: [id], onDelete: Cascade, map: "Attachment_courseId_fkey")
+  id          String   @id @default(uuid())
+  title       String
+  description String?
+  url         String
+  courseId    String?
+  chapterId   String?
+  topicId     String?
+  userId      String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  course      course?  @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  chapter     chapter? @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+  topic       topic?   @relation(fields: [topicId], references: [id], onDelete: Cascade)
+  user        user     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([courseId], map: "Attachment_courseId_idx")
+  @@index([chapterId])
+  @@index([topicId])
+  @@index([userId])
 }
 
 model category {
@@ -63,6 +74,7 @@ model chapter {
   topics       topic[]
   quiz         quiz?
   comments     comment[]
+  attachments  attachment[]
 
   @@index([courseId], map: "Chapter_courseId_idx")
 }
@@ -82,6 +94,7 @@ model topic {
   muxdata     muxdata?
   quiz        quiz?
   comments    comment[]
+  attachments attachment[]
 
   @@index([chapterId])
 }
@@ -207,6 +220,7 @@ model user {
   session       session[]
   userprogress  userprogress[]
   comments      comment[]
+  attachments   attachment[]
 }
 
 model userprogress {

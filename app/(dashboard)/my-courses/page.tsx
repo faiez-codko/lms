@@ -8,6 +8,7 @@ import { getDashboardCourses } from "@/actions/get-dashboard-courses";
 import { redirect } from "next/navigation";
 
 import { AuthModal } from "@/components/AuthModal";
+import { SuccessAlert } from "@/components/success-alert";
 
 export default async function MyCoursesPage() {
   const token = (await cookies()).get(AUTH_COOKIE_NAME)?.value;
@@ -42,6 +43,7 @@ export default async function MyCoursesPage() {
 
   return (
     <div className="p-6">
+      <SuccessAlert />
       <div className="mb-8">
         <h1 className="text-2xl font-bold">My Learning</h1>
         <p className="text-muted-foreground mt-2">

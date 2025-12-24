@@ -21,6 +21,9 @@ import Link from "next/link";
 import { ArrowLeft, ImageIcon, Loader2, Lock, LogIn } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
+import axios from "axios";
 import { AuthModal } from "@/components/AuthModal";
 
 const formSchema = z.object({
@@ -30,6 +33,7 @@ const formSchema = z.object({
 });
 
 export default function CheckoutPage() {
+  const router = useRouter();
   const cart = useCart();
   const { user, fetchUser } = useUser();
   const [isMounted, setIsMounted] = useState(false);
@@ -57,14 +61,28 @@ export default function CheckoutPage() {
   }, [user, form]);
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    setIsCheckingOut(true);
-    // Simulate API call
-    console.log(values);
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-    setIsCheckingOut(false);
-    // Redirect or show success
-    alert("Order placed successfully! (Mock)");
-    cart.clearCart();
+    try {
+      setIsCheckingOut(true);
+      
+      if (!user) {
+        toast.error("Please log in to purchase courses");
+        return;
+      }
+
+      const courseIds = cart.items.map(item => item.id);
+
+      await axios.post("/api/checkout/mock", {
+        courseIds,
+      });
+
+      toast.success("Order placed successfully!");
+      cart.clearCart();
+      router.push("/my-courses?message=course_placed"); 
+    } catch (error) {
+      toast.error("Something went wrong");
+    } finally {
+      setIsCheckingOut(false);
+    }
   };
 
   if (!isMounted) return null;

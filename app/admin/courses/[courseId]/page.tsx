@@ -73,7 +73,7 @@ export default async function CourseIdPage({
 
   const completionText = `(${completedFields}/${totalFields})`;
 
-  const isComplete = fields.every(Boolean);
+  const isComplete = fields.every(field => field !== undefined);
 
   return (
     <div className="p-6 m-5 bg-white rounded-lg shadow-md dark:bg-gray-800">

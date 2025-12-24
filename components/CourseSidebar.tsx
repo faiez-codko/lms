@@ -54,7 +54,7 @@ export const CourseSidebar = ({ course, progressCount }: CourseSidebarProps) => 
 
           if (chapter.topics && chapter.topics.length > 0) {
              return (
-               <Accordion type="single" collapsible className="w-full" key={chapter.id}>
+               <Accordion type="single" collapsible className="w-full px-2" key={chapter.id}>
                  <AccordionItem value={chapter.id} className="border-b-0">
                     <AccordionTrigger 
                         className={cn(

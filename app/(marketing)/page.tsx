@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import {  Star, CheckCircle, BookOpen, Users, Zap, LineChart } from "lucide-react";
+import { Star, CheckCircle, BookOpen, Users, Zap, LineChart } from "lucide-react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import {
@@ -33,15 +33,18 @@ export default function LandingPage() {
         buttons={{
           primary: {
             text: "Start Free Trial",
-            href : '/register'
-          
+            href: '/register',
           },
           secondary: {
             text: "Browse Course",
-            href : '/browse'
+            href: '/browse',
           }
         }}
         className="custom-classes" // optional
+        shaderColors={{
+          colorAccent: "#FFF",
+          colorBackground: "#40230D"
+        }}
       />
 
       {/* Trusted By Strip (Marquee) */}

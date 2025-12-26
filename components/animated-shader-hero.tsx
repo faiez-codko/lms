@@ -16,22 +16,47 @@ interface HeroProps {
     primary?: {
       text: string;
       href: string;
+      className?: string;
+      style?: React.CSSProperties;
+      backgroundColor?: string;
+      textColor?: string;
     };
     secondary?: {
       text: string;
       href: string;
+      className?: string;
+      style?: React.CSSProperties;
+      backgroundColor?: string;
+      textColor?: string;
+      borderColor?: string;
     };
+  };
+  shaderColors?: {
+    colorAccent?: string;
+    colorBackground?: string;
   };
   className?: string;
 }
 
 // Reusable Shader Background Hook
-const useShaderBackground = () => {
+const useShaderBackground = (shaderColors?: { colorAccent?: string; colorBackground?: string }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   // @ts-ignore
   const animationFrameRef = useRef<number>();
   const rendererRef = useRef<WebGLRenderer | null>(null);
   const pointersRef = useRef<PointerHandler | null>(null);
+
+  // Helper to convert hex to rgb
+  const hexToRgb = (hex: string): number[] => {
+    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result
+      ? [
+          parseInt(result[1], 16) / 255,
+          parseInt(result[2], 16) / 255,
+          parseInt(result[3], 16) / 255,
+        ]
+      : [1, 1, 1];
+  };
 
   // WebGL Renderer class
   class WebGLRenderer {
@@ -47,6 +72,8 @@ const useShaderBackground = () => {
     private mouseCoords = [0, 0];
     private pointerCoords = [0, 0];
     private nbrOfPointers = 0;
+    private accentColor = [1.0, 1.0, 1.0];
+    private backgroundColor = [0.25, 0.137, 0.05];
 
     private vertexSrc = `#version 300 es
 precision highp float;
@@ -61,6 +88,11 @@ void main(){gl_Position=position;}`;
       this.gl = canvas.getContext('webgl2')!;
       this.gl.viewport(0, 0, canvas.width * scale, canvas.height * scale);
       this.shaderSource = defaultShaderSource;
+    }
+
+    updateColors(accent: number[], bg: number[]) {
+      this.accentColor = accent;
+      this.backgroundColor = bg;
     }
 
     updateShader(source: string) {
@@ -165,6 +197,8 @@ void main(){gl_Position=position;}`;
       (program as any).touch = gl.getUniformLocation(program, 'touch');
       (program as any).pointerCount = gl.getUniformLocation(program, 'pointerCount');
       (program as any).pointers = gl.getUniformLocation(program, 'pointers');
+      (program as any).uAccentColor = gl.getUniformLocation(program, 'uAccentColor');
+      (program as any).uBackgroundColor = gl.getUniformLocation(program, 'uBackgroundColor');
     }
 
     render(now = 0) {
@@ -186,6 +220,8 @@ void main(){gl_Position=position;}`;
       gl.uniform2f((program as any).touch, ...this.mouseCoords);
       gl.uniform1i((program as any).pointerCount, this.nbrOfPointers);
       gl.uniform2fv((program as any).pointers, this.pointerCoords);
+      gl.uniform3fv((program as any).uAccentColor, this.accentColor);
+      gl.uniform3fv((program as any).uBackgroundColor, this.backgroundColor);
       gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
     }
   }
@@ -286,6 +322,14 @@ void main(){gl_Position=position;}`;
   };
 
   useEffect(() => {
+    if (rendererRef.current && shaderColors) {
+      const accent = shaderColors.colorAccent ? hexToRgb(shaderColors.colorAccent) : [1.0, 1.0, 1.0];
+      const bg = shaderColors.colorBackground ? hexToRgb(shaderColors.colorBackground) : [0.25, 0.137, 0.05];
+      rendererRef.current.updateColors(accent, bg);
+    }
+  }, [shaderColors]);
+
+  useEffect(() => {
     if (!canvasRef.current) return;
 
     const canvas = canvasRef.current;
@@ -293,6 +337,13 @@ void main(){gl_Position=position;}`;
     
     rendererRef.current = new WebGLRenderer(canvas, dpr);
     pointersRef.current = new PointerHandler(canvas, dpr);
+
+    // Set initial colors
+    if (shaderColors) {
+      const accent = shaderColors.colorAccent ? hexToRgb(shaderColors.colorAccent) : [1.0, 1.0, 1.0];
+      const bg = shaderColors.colorBackground ? hexToRgb(shaderColors.colorBackground) : [0.25, 0.137, 0.05];
+      rendererRef.current.updateColors(accent, bg);
+    }
     
     rendererRef.current.setup();
     rendererRef.current.init();
@@ -327,9 +378,10 @@ const Hero: React.FC<HeroProps> = ({
   headline,
   subtitle,
   buttons,
+  shaderColors,
   className = ""
 }) => {
-  const canvasRef = useShaderBackground();
+  const canvasRef = useShaderBackground(shaderColors);
 
   return (
     <div className={`relative w-full h-screen overflow-hidden bg-black ${className}`}>
@@ -443,7 +495,12 @@ const Hero: React.FC<HeroProps> = ({
               {buttons.primary && (
                 <Link 
                   href={buttons.primary.href}
-                  className="px-8 py-4 bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-600 hover:to-yellow-600 text-black rounded-full font-semibold text-lg transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-orange-500/25"
+                  className={`px-8 py-4 bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-600 hover:to-yellow-600 text-black rounded-full font-semibold text-lg transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-orange-500/25 ${buttons.primary.className || ''}`}
+                  style={{
+                    ...(buttons.primary.backgroundColor ? { backgroundImage: 'none', backgroundColor: buttons.primary.backgroundColor } : {}),
+                    ...(buttons.primary.textColor ? { color: buttons.primary.textColor } : {}),
+                    ...buttons.primary.style
+                  }}
                 >
                   {buttons.primary.text}
                 </Link>
@@ -451,7 +508,13 @@ const Hero: React.FC<HeroProps> = ({
               {buttons.secondary && (
                 <Link 
                   href={buttons.secondary.href}
-                  className="px-8 py-4 bg-orange-500/10 hover:bg-orange-500/20 border border-orange-300/30 hover:border-orange-300/50 text-orange-100 rounded-full font-semibold text-lg transition-all duration-300 hover:scale-105 backdrop-blur-sm"
+                  className={`px-8 py-4 bg-orange-500/10 hover:bg-orange-500/20 border border-orange-300/30 hover:border-orange-300/50 text-orange-100 rounded-full font-semibold text-lg transition-all duration-300 hover:scale-105 backdrop-blur-sm ${buttons.secondary.className || ''}`}
+                  style={{
+                    ...(buttons.secondary.backgroundColor ? { backgroundColor: buttons.secondary.backgroundColor } : {}),
+                    ...(buttons.secondary.textColor ? { color: buttons.secondary.textColor } : {}),
+                    ...(buttons.secondary.borderColor ? { borderColor: buttons.secondary.borderColor } : {}),
+                    ...buttons.secondary.style
+                  }}
                 >
                   {buttons.secondary.text}
                 </Link>
@@ -476,6 +539,8 @@ precision highp float;
 out vec4 O;
 uniform vec2 resolution;
 uniform float time;
+uniform vec3 uAccentColor;
+uniform vec3 uBackgroundColor;
 #define FC gl_FragCoord.xy
 #define T time
 #define R resolution
@@ -525,10 +590,10 @@ void main(void) {
 		uv+=.1*cos(i*vec2(.1+.01*i, .8)+i*i+T*.5+.1*uv.x);
 		vec2 p=uv;
 		float d=length(p);
-		col+=.00125/d*(cos(sin(i)*vec3(1,2,3))+1.);
+		col+=.00125/d*(cos(sin(i)*vec3(1,2,3))+1.) * uAccentColor;
 		float b=noise(i+p+bg*1.731);
 		col+=.002*b/length(max(p,vec2(b*p.x*.02,p.y)));
-		col=mix(col,vec3(bg*.25,bg*.137,bg*.05),d);
+		col=mix(col,bg * uBackgroundColor,d);
 	}
 	O=vec4(col,1);
 }`;

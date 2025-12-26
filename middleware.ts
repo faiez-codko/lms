@@ -46,7 +46,7 @@ export async function middleware(req: NextRequest) {
     }
 
     const payload = await verifyToken(token);
-    if (payload?.role !== "SUPER_ADMIN") {
+    if (!payload?.role || !["ADMIN", "SUPER_ADMIN"].includes(payload.role)) {
       const url = new URL("/", req.url);
       url.searchParams.set("forbidden", "admin");
       return NextResponse.redirect(url);

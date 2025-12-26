@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { BarChart, Users, GraduationCap, List, LayoutDashboard, LogOut } from "lucide-react";
+import { BarChart, Users, GraduationCap, List, LayoutDashboard, LogOut, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
@@ -10,6 +10,7 @@ import { usePathname } from "next/navigation";
 const sidebarItems = [
   { icon: LayoutDashboard, label: "Dashboard", href: "/admin" },
   { icon: Users, label: "Students", href: "/admin/students" },
+  { icon: Shield, label: "Admins", href: "/admin/admins" },
   { icon: GraduationCap, label: "Teachers", href: "/admin/teachers" },
   { icon: List, label: "Courses", href: "/admin/courses" },
   { icon: List, label: "Categories", href: "/admin/categories" },

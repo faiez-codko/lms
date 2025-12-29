@@ -251,6 +251,7 @@ model comment {
   userId    String
   chapterId String?
   topicId   String?
+  parentId  String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -258,7 +259,11 @@ model comment {
   chapter chapter? @relation(fields: [chapterId], references: [id], onDelete: Cascade)
   topic   topic?   @relation(fields: [topicId], references: [id], onDelete: Cascade)
 
+  parent  comment?  @relation("CommentToComment", fields: [parentId], references: [id], onDelete: Cascade)
+  replies comment[] @relation("CommentToComment")
+
   @@index([userId])
   @@index([chapterId])
   @@index([topicId])
+  @@index([parentId])
 }

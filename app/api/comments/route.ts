@@ -9,7 +9,7 @@ export async function POST(req: Request) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    const { text, chapterId, topicId } = await req.json();
+    const { text, chapterId, topicId, parentId } = await req.json();
 
     if (!text) {
       return new NextResponse("Text is required", { status: 400 });
@@ -25,6 +25,7 @@ export async function POST(req: Request) {
         userId: user.id,
         chapterId: chapterId || null,
         topicId: topicId || null,
+        parentId: parentId || null,
       },
       include: {
         user: {
@@ -49,12 +50,17 @@ export async function GET(req: Request) {
     const { searchParams } = new URL(req.url);
     const chapterId = searchParams.get("chapterId");
     const topicId = searchParams.get("topicId");
+    const cursor = searchParams.get("cursor"); // Use cursor-based pagination if simpler, or limit/offset
+    const limit = parseInt(searchParams.get("limit") || "10");
+    const offset = parseInt(searchParams.get("offset") || "0");
 
     if (!chapterId && !topicId) {
       return new NextResponse("Chapter ID or Topic ID is required", { status: 400 });
     }
 
-    const where: any = {};
+    const where: any = {
+      parentId: null, // Only fetch top-level comments
+    };
     
     if (chapterId) {
       where.chapterId = chapterId;
@@ -68,12 +74,28 @@ export async function GET(req: Request) {
 
     const comments = await db.comment.findMany({
       where,
+      take: limit,
+      skip: offset,
       include: {
         user: {
           select: {
             name: true,
             image: true,
             role: true,
+          }
+        },
+        replies: {
+          include: {
+            user: {
+              select: {
+                name: true,
+                image: true,
+                role: true,
+              }
+            }
+          },
+          orderBy: {
+            createdAt: "asc", // Replies usually ascending
           }
         }
       },

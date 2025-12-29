@@ -23,6 +23,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import Link from "next/link";
+import { EditProfileModal } from "@/components/modals/edit-profile-modal";
 
 export const AuthModal = ({ trigger }: { trigger?: React.ReactNode }) => {
   const [isLogin, setIsLogin] = useState(true);
@@ -30,6 +31,7 @@ export const AuthModal = ({ trigger }: { trigger?: React.ReactNode }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const { user, fetchUser, logout } = useUser();
+  const [showProfileModal, setShowProfileModal] = useState(false);
 
   const form = useForm<LoginSchema | RegisterSchema>({
     resolver: zodResolver(isLogin ? loginSchema : registerSchema),
@@ -78,6 +80,11 @@ export const AuthModal = ({ trigger }: { trigger?: React.ReactNode }) => {
     const initial =
       (user.name?.[0] || user.email?.[0] || "U").toUpperCase();
     return (
+      <>
+      <EditProfileModal 
+        isOpen={showProfileModal} 
+        onClose={() => setShowProfileModal(false)} 
+      />
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="px-2">
@@ -95,6 +102,9 @@ export const AuthModal = ({ trigger }: { trigger?: React.ReactNode }) => {
             {user.name || user.email}
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
+          <DropdownMenuItem onClick={() => setShowProfileModal(true)}>
+             Profile
+          </DropdownMenuItem>
           {user.role === "USER" && (
             <DropdownMenuItem asChild>
             <Link href="/my-courses">My Courses</Link>
@@ -118,6 +128,7 @@ export const AuthModal = ({ trigger }: { trigger?: React.ReactNode }) => {
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
+      </>
     );
   }
 

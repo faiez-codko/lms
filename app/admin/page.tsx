@@ -154,7 +154,7 @@ export default async function AdminDashboardPage() {
               {recentCourses.map((course) => (
                 <div key={course.id} className="flex items-center justify-between p-3 rounded-lg border bg-card text-card-foreground shadow-sm">
                   <div className="flex flex-col gap-1">
-                    <Link href={`/teacher/courses/${course.id}`} className="font-medium hover:underline">
+                    <Link href={`/admin/courses/${course.id}`} className="font-medium hover:underline">
                       {course.title}
                     </Link>
                     <div className="flex items-center gap-2">

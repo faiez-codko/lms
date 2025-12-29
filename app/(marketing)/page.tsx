@@ -16,9 +16,25 @@ const bgColors = ["#263b11","#4d7722", "#99ed43","#d6f8b4","#ebfbd9","#40230D"]
 
 export default function LandingPage() {
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Trading Mastery LMS",
+    "url": "https://myquantumacademy.com",
+    "logo": "https://myquantumacademy.com/logo.svg",
+    "sameAs": [
+      "https://twitter.com/myquantumacademy",
+      "https://facebook.com/myquantumacademy"
+    ],
+    "description": "The all-in-one platform to master technical analysis, manage risk, and build a profitable trading career."
+  };
 
   return (
     <div className="flex flex-col min-h-screen bg-slate-900 text-white overflow-hidden">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
 
       {/* Hero Section */}
 

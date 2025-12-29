@@ -93,8 +93,36 @@ export default async function CourseDetailPage({ params }: { params: Promise<{ c
 
   const isPurchased = !!purchase;
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Course",
+    "name": course.title,
+    "description": course.description,
+    "provider": {
+      "@type": "Organization",
+      "name": "Trading Mastery LMS",
+      "sameAs": "https://www.example.com"
+    },
+    "hasCourseInstance": {
+      "@type": "CourseInstance",
+      "courseMode": "online",
+      "courseWorkload": "PT10H" // Example workload, could be dynamic
+    },
+    "offers": {
+      "@type": "Offer",
+      "category": "Paid",
+      "priceCurrency": "USD",
+      "price": course.price || 0,
+      "availability": "https://schema.org/InStock"
+    }
+  };
+
   return (
     <div className="p-6 max-w-7xl mx-auto">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         
         {/* Main Content Column (Left/Center) */}

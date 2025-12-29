@@ -1,7 +1,7 @@
 import { db } from "@/lib/prismadb";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { Plus, Pencil } from "lucide-react";
+import { Plus, Pencil, Eye } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
@@ -10,6 +10,7 @@ export default async function CoursesPage() {
     orderBy: { createdAt: "desc" },
     include: {
       category: true,
+      chapter: true,
     }
   });
 
@@ -52,8 +53,14 @@ export default async function CoursesPage() {
                 </td>
                 <td className="p-4">{course.category?.name || "Uncategorized"}</td>
                 <td className="p-4">
+                   <Link href={`/courses/${course.id}/chapters/${course.chapter[0]?.id}`}>
+                      <Button variant="outline" size="sm">
+                        <Eye className="h-4 w-4 mr-2" />
+                        View
+                      </Button>
+                   </Link>
                    <Link href={`/admin/courses/${course.id}`}>
-                      <Button variant="ghost" size="sm">
+                      <Button variant="link" size="sm">
                         <Pencil className="h-4 w-4 mr-2" />
                         Edit
                       </Button>

@@ -22,7 +22,7 @@ export default async function BrowsePage({
 
   const token = (await cookies()).get(AUTH_COOKIE_NAME)?.value;
   const payload = token ? verifyAuthToken(token) : null;
-  const isAdmin = payload?.role === "SUPER_ADMIN";
+  const isAdmin = ["SUPER_ADMIN", "ADMIN"].includes(payload?.role || "");
   const userId = payload?.sub;
   const isAuthenticated = userId !== undefined;
 

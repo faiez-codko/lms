@@ -12,6 +12,8 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import Hero from "@/components/animated-shader-hero";
+const bgColors = ["#263b11","#4d7722", "#99ed43","#d6f8b4","#ebfbd9","#40230D"]
+
 export default function LandingPage() {
 
 
@@ -21,10 +23,7 @@ export default function LandingPage() {
       {/* Hero Section */}
 
       <Hero
-        trustBadge={{
-          text: "Quantum",
-          icons: ["🚀"] // optional
-        }}
+     
         headline={{
           line1: "Turn Your Trading",
           line2: "Into A Business."
@@ -34,16 +33,20 @@ export default function LandingPage() {
           primary: {
             text: "Start Free Trial",
             href: '/register',
+            // backgroundColor: bgColors[4],
+            // textColor: "#FFF",
           },
           secondary: {
             text: "Browse Course",
             href: '/browse',
+            // backgroundColor: bgColors[4],
+            // textColor: "#FFF",
           }
         }}
-        className="custom-classes" // optional
+       
         shaderColors={{
           colorAccent: "#FFF",
-          colorBackground: "#40230D"
+          colorBackground: bgColors[0],
         }}
       />
 

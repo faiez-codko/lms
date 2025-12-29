@@ -371,7 +371,7 @@ void main(){gl_Position=position;}`;
 
   return canvasRef;
 };
-
+const bgColors = ["#263b11","#4d7722", "#99ed43","#d6f8b4","#ebfbd9","#40230D"]
 // Reusable Hero Component
 const Hero: React.FC<HeroProps> = ({
   trustBadge,

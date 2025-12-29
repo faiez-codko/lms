@@ -88,7 +88,7 @@ export default async function ChapterPage({
     const currentTopic = topicId ? currentChapter.topics.find((t) => t.id === topicId) : null;
 
     // Check access: Admin OR Purchased OR Free Chapter
-    const isAdmin = payload?.role === "SUPER_ADMIN";
+    const isAdmin = ["SUPER_ADMIN", "ADMIN"].includes(payload?.role || "");
 
     let purchase = null;
     if (!isAdmin) {

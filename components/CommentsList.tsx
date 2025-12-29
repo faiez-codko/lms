@@ -24,6 +24,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { Badge } from "@/components/ui/badge";
 
 interface Comment {
   id: string;
@@ -33,6 +34,7 @@ interface Comment {
   user: {
     name: string | null;
     image: string | null;
+    role: string;
   };
 }
 
@@ -239,6 +241,11 @@ export const CommentsList = ({ chapterId, topicId, currentUserId, isCurrentUserA
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <span className="font-semibold text-sm">{comment.user.name || "Anonymous"}</span>
+                    {(comment.user.role === "ADMIN" || comment.user.role === "SUPER_ADMIN") && (
+                      <Badge variant="default" className="text-[10px] px-1 py-0 h-5">
+                        {comment.user.role === "SUPER_ADMIN" ? "Admin" : "Mod"}
+                      </Badge>
+                    )}
                     <span className="text-xs text-muted-foreground">{formatDate(comment.createdAt)}</span>
                   </div>
                   {(currentUserId === comment.userId || isCurrentUserAdmin) && (

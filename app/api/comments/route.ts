@@ -31,6 +31,7 @@ export async function POST(req: Request) {
           select: {
             name: true,
             image: true,
+            role: true,
           }
         }
       }
@@ -72,6 +73,7 @@ export async function GET(req: Request) {
           select: {
             name: true,
             image: true,
+            role: true,
           }
         }
       },

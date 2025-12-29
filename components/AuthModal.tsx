@@ -104,7 +104,7 @@ export const AuthModal = ({ trigger }: { trigger?: React.ReactNode }) => {
               <Link href="/teacher">Teacher Portal</Link>
             </DropdownMenuItem>
           )}
-          {user.role === "SUPER_ADMIN" && (
+          {["SUPER_ADMIN", "ADMIN"].includes(user.role || "") && (
             <DropdownMenuItem asChild>
               <Link href="/admin">Admin Portal</Link>
             </DropdownMenuItem>

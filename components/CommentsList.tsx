@@ -7,7 +7,7 @@ import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { toast } from "react-hot-toast";
-import { Loader2, MoreVertical, Pencil, Trash, Reply } from "lucide-react";
+import { Loader2, MoreVertical, Pencil, Trash, Reply, ChevronDown, ChevronUp } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -249,6 +249,70 @@ const CommentItem = ({
           </div>
         )}
       </div>
+    </div>
+  );
+};
+
+interface CommentThreadProps extends CommentItemProps {
+  comment: Comment;
+}
+
+const CommentThread = (props: CommentThreadProps) => {
+  const [areRepliesOpen, setAreRepliesOpen] = useState(false);
+  const { comment } = props;
+  const replyCount = comment.replies?.length || 0;
+
+  // Auto-expand if a new reply is added while viewing
+  useEffect(() => {
+    if (replyCount > 0 && !areRepliesOpen) {
+        // Optional: logic to auto-expand on new reply can go here
+        // For now, let's keep it manual unless user just posted
+    }
+  }, [replyCount]);
+
+  return (
+    <div>
+      <CommentItem {...props} />
+      
+      {replyCount > 0 && (
+        <div className="ml-12 mt-2">
+          {!areRepliesOpen ? (
+             <Button 
+                variant="ghost" 
+                size="sm" 
+                className="text-xs text-muted-foreground h-auto p-0 hover:text-primary flex items-center gap-1"
+                onClick={() => setAreRepliesOpen(true)}
+             >
+                <ChevronDown className="h-3 w-3" />
+                Show {replyCount} {replyCount === 1 ? 'reply' : 'replies'}
+             </Button>
+          ) : (
+            <div className="relative animate-in fade-in slide-in-from-top-2">
+               <div className="absolute left-[-24px] top-0 bottom-0 w-px bg-border" />
+               <div className="mb-2">
+                 <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    className="text-xs text-muted-foreground h-auto p-0 hover:text-primary flex items-center gap-1 mb-2"
+                    onClick={() => setAreRepliesOpen(false)}
+                 >
+                    <ChevronUp className="h-3 w-3" />
+                    Hide replies
+                 </Button>
+               </div>
+               
+               {comment.replies?.map((reply) => (
+                  <CommentItem 
+                    key={reply.id} 
+                    {...props} 
+                    comment={reply} 
+                    isReply 
+                  />
+               ))}
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 };
@@ -563,56 +627,26 @@ export const CommentsList = ({
         ) : (
           <div className="space-y-6">
             {comments.map((comment) => (
-              <div key={comment.id}>
-                <CommentItem
-                  comment={comment}
-                  currentUserId={currentUserId}
-                  isCurrentUserAdmin={isCurrentUserAdmin}
-                  editingId={editingId}
-                  startEditing={startEditing}
-                  cancelEditing={cancelEditing}
-                  handleEditComment={handleEditComment}
-                  isEditing={isEditing}
-                  editText={editText}
-                  setEditText={setEditText}
-                  setDeletingId={setDeletingId}
-                  replyingId={replyingId}
-                  setReplyingId={setReplyingId}
-                  replyText={replyText}
-                  setReplyText={setReplyText}
-                  handleReply={handleReply}
-                  isReplying={isReplying}
-                />
-                {/* Render Replies */}
-                {comment.replies && comment.replies.length > 0 && (
-                  <div className="relative">
-                    <div className="absolute left-6 top-0 bottom-0 w-px bg-border" />
-                    {comment.replies.map((reply) => (
-                      <CommentItem
-                        key={reply.id}
-                        comment={reply}
-                        isReply
-                        currentUserId={currentUserId}
-                        isCurrentUserAdmin={isCurrentUserAdmin}
-                        editingId={editingId}
-                        startEditing={startEditing}
-                        cancelEditing={cancelEditing}
-                        handleEditComment={handleEditComment}
-                        isEditing={isEditing}
-                        editText={editText}
-                        setEditText={setEditText}
-                        setDeletingId={setDeletingId}
-                        replyingId={replyingId}
-                        setReplyingId={setReplyingId}
-                        replyText={replyText}
-                        setReplyText={setReplyText}
-                        handleReply={handleReply}
-                        isReplying={isReplying}
-                      />
-                    ))}
-                  </div>
-                )}
-              </div>
+              <CommentThread
+                key={comment.id}
+                comment={comment}
+                currentUserId={currentUserId}
+                isCurrentUserAdmin={isCurrentUserAdmin}
+                editingId={editingId}
+                startEditing={startEditing}
+                cancelEditing={cancelEditing}
+                handleEditComment={handleEditComment}
+                isEditing={isEditing}
+                editText={editText}
+                setEditText={setEditText}
+                setDeletingId={setDeletingId}
+                replyingId={replyingId}
+                setReplyingId={setReplyingId}
+                replyText={replyText}
+                setReplyText={setReplyText}
+                handleReply={handleReply}
+                isReplying={isReplying}
+              />
             ))}
 
             {hasMore && (

@@ -49,14 +49,14 @@ export default function LandingPage() {
           primary: {
             text: "Start Free Trial",
             href: '/register',
-            // backgroundColor: bgColors[4],
-            // textColor: "#FFF",
+            backgroundColor: bgColors[0],
+            textColor: "#FFF",
           },
           secondary: {
             text: "Browse Course",
             href: '/browse',
-            // backgroundColor: bgColors[4],
-            // textColor: "#FFF",
+            backgroundColor: bgColors[0],
+            textColor: "#FFF",
           }
         }}
        

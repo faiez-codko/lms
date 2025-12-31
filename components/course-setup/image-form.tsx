@@ -21,6 +21,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { MediaPicker } from "@/components/media-picker";
+import { ImgBBPicker } from "../imgbb-picker";
 
 interface ImageFormProps {
   initialData: course;
@@ -123,7 +124,10 @@ export const ImageForm = ({
                           {...field}
                           className="my-2"
                       />
-                      <MediaPicker onChange={field.onChange} />
+                     <ImgBBPicker
+                      
+                      onChange={field.onChange}
+                     />
                     </div>
                   </FormControl>
                   <FormMessage />

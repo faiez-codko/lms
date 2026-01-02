@@ -8,6 +8,7 @@ import { MobileSidebar } from "@/components/MobileSidebar";
 import { AuthModal } from "@/components/AuthModal";
 import { ModeToggle } from "@/components/ModeToggle";
 import { CartSheet } from "@/components/CartSheet";
+import { NotificationDropdown } from "@/components/NotificationDropdown";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import qs from "query-string";
@@ -66,6 +67,7 @@ export const Navbar = () => {
         <Button variant="ghost" size="icon" className="md:hidden">
           <Search className="h-5 w-5" />
         </Button>
+        <NotificationDropdown />
         <CartSheet />
         <ModeToggle />
         <AuthModal />

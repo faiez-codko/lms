@@ -44,6 +44,15 @@ export async function POST(req: Request) {
       select: { id: true, name: true, email: true, role: true, image: true },
     });
 
+    await db.notification.create({
+      data: {
+        userId: user.id,
+        title: "Account Created",
+        message: "Welcome to our platform! Your account has been successfully created.",
+        type: "General"
+      }
+    });
+
     const token = signAuthToken({ sub: user.id, role: user.role });
     const res = NextResponse.json({ user }, { status: 201 });
     res.cookies.set(AUTH_COOKIE_NAME, token, {

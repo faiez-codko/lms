@@ -221,6 +221,22 @@ model user {
   userprogress  userprogress[]
   comments      comment[]
   attachments   attachment[]
+  notifications notification[]
+}
+
+model notification {
+  id        String   @id @default(uuid())
+  userId    String
+  title     String
+  message   String   @db.Text
+  type      String   // General, Marketing, Reply, Failure
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user      user     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
 }
 
 model userprogress {

@@ -38,6 +38,24 @@ export async function POST(req: Request) {
       }
     });
 
+    if (parentId) {
+      const parentComment = await db.comment.findUnique({
+        where: { id: parentId },
+        select: { userId: true }
+      });
+
+      if (parentComment && parentComment.userId !== user.id) {
+        await db.notification.create({
+          data: {
+            userId: parentComment.userId,
+            title: "New Reply",
+            message: `${user.name || "User"} replied to your comment: "${text.substring(0, 50)}${text.length > 50 ? "..." : ""}"`,
+            type: "Reply"
+          }
+        });
+      }
+    }
+
     return NextResponse.json(comment);
   } catch (error) {
     console.log("[COMMENTS_POST]", error);

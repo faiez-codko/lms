@@ -76,6 +76,7 @@ export default async function StudentCourseAnalyticsPage({
   );
 
   const completedTopicIds = new Set(
+    //@ts-ignore
     progress.filter(p => p.isCompleted && p.topicId).map(p => p.topicId)
   );
 
@@ -145,7 +146,7 @@ export default async function StudentCourseAnalyticsPage({
                             </span>
                         </div>
                         <div className="text-xs text-muted-foreground">
-                            {topic.type}
+                            {topic.comments.length > 0 ? `(${topic.comments.length} comments)` : ''}
                         </div>
                     </div>
                     {topic.comments.length > 0 && (

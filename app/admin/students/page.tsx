@@ -1,14 +1,9 @@
 import { db } from "@/lib/prismadb";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { Plus, Eye, MoreHorizontal } from "lucide-react";
+import { Plus } from "lucide-react";
 import { StudentStatusToggle } from "./_components/student-status-toggle";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { StudentActions } from "./_components/student-actions";
 import { Pagination } from "@/components/pagination";
 
 export const dynamic = "force-dynamic";
@@ -74,21 +69,7 @@ export default async function StudentsPage({ searchParams }: StudentsPageProps) 
                   {new Date(student.createdAt).toLocaleDateString()}
                 </td>
                 <td className="p-4">
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" className="h-8 w-8 p-0">
-                        <MoreHorizontal className="h-4 w-4" />
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                       <DropdownMenuItem asChild>
-                          <Link href={`/admin/students/${student.id}`} className="flex items-center w-full cursor-pointer">
-                            <Eye className="h-4 w-4 mr-2" />
-                            View Details
-                          </Link>
-                       </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
+                  <StudentActions id={student.id} />
                 </td>
               </tr>
             ))}

@@ -34,8 +34,23 @@ export default async function StudentCourseAnalyticsPage({
           topics: {
             orderBy: { position: "asc" },
             include: {
-              muxData: true,
+              comments: {
+                where: {
+                   userId: studentId,
+                },
+                orderBy: {
+                  createdAt: "desc"
+                }
+              }
             }
+          },
+          comments: {
+              where: {
+                 userId: studentId,
+              },
+              orderBy: {
+                createdAt: "desc"
+              }
           }
         }
       }
@@ -98,12 +113,27 @@ export default async function StudentCourseAnalyticsPage({
               </h3>
             </div>
 
+            {chapter.comments.length > 0 && (
+                <div className="mb-4 pl-4 border-l-4 border-blue-500 bg-blue-50 dark:bg-blue-900/20 p-3 rounded-r-md">
+                    <h4 className="text-sm font-semibold text-blue-700 dark:text-blue-300 mb-2">Student Comments on Chapter:</h4>
+                    <div className="space-y-2">
+                        {chapter.comments.map(comment => (
+                            <div key={comment.id} className="text-sm bg-white dark:bg-slate-800 p-2 rounded border border-blue-100 dark:border-blue-900">
+                                <p className="text-slate-700 dark:text-slate-300">{comment.text}</p>
+                                <span className="text-xs text-muted-foreground">{new Date(comment.createdAt).toLocaleDateString()}</span>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
+
             <div className="pl-4 space-y-2 border-l-2 border-slate-200 dark:border-slate-700 ml-2">
                {chapter.topics.length === 0 ? (
                  <p className="text-sm text-muted-foreground italic">No topics in this chapter</p>
                ) : (
                  chapter.topics.map((topic) => (
-                    <div key={topic.id} className="flex items-center justify-between p-2 rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+                    <div key={topic.id}>
+                        <div className="flex items-center justify-between p-2 rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 transition">
                         <div className="flex items-center gap-x-3">
                             {completedTopicIds.has(topic.id) ? (
                                 <CheckCircle className="h-5 w-5 text-emerald-600" />
@@ -117,6 +147,20 @@ export default async function StudentCourseAnalyticsPage({
                         <div className="text-xs text-muted-foreground">
                             {topic.type}
                         </div>
+                    </div>
+                    {topic.comments.length > 0 && (
+                        <div className="ml-8 mb-3 pl-4 border-l-4 border-amber-500 bg-amber-50 dark:bg-amber-900/20 p-2 rounded-r-md">
+                            <h4 className="text-xs font-semibold text-amber-700 dark:text-amber-300 mb-1">Student Comments on Topic:</h4>
+                             <div className="space-y-1">
+                                {topic.comments.map(comment => (
+                                    <div key={comment.id} className="text-sm">
+                                        <p className="text-slate-700 dark:text-slate-300 italic">"{comment.text}"</p>
+                                        <span className="text-[10px] text-muted-foreground block text-right">{new Date(comment.createdAt).toLocaleDateString()}</span>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    )}
                     </div>
                  ))
                )}

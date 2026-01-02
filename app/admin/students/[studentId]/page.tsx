@@ -91,7 +91,9 @@ export default async function StudentIdPage({
                      <div className="flex gap-3 items-center w-full">
                         {purchase.course?.imageUrl && <img src={purchase.course?.imageUrl } alt={purchase.course.title} className="w-12 h-12 rounded-md" />}
                         <div className="flex flex-col w-full">
-                        <div className="font-medium">{purchase.course.title}</div>
+                        <Link href={`/admin/students/${student.id}/courses/${purchase.course.id}`} className="font-medium hover:underline cursor-pointer">
+                            {purchase.course.title}
+                        </Link>
                         <div className="flex items-center gap-x-2 w-full max-w-[200px] mt-1">
                             <Progress value={purchase.progress} className="h-2" />
                             <span className="text-xs text-muted-foreground">{Math.round(purchase.progress)}%</span>

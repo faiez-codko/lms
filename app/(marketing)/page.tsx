@@ -68,7 +68,7 @@ export default function LandingPage() {
         }}
       />
       
-      <Hero2 />
+     
 
 
       {/* Trusted By Strip (Marquee) */}
@@ -90,6 +90,51 @@ export default function LandingPage() {
               </div>
             ))}
           </motion.div>
+        </div>
+      </section>
+
+            {/* Testimonials */}
+      <section className="py-32 bg-slate-900">
+        <div className="max-w-7xl mx-auto px-4 text-center">
+          <h2 className="text-4xl md:text-5xl font-bold mb-16">Don't just take our word for it.</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <TestimonialCard
+              quote="I went from blowing accounts to funded trader in 3 months. The structure here is unlike anything else on YouTube."
+              author="Marcus J."
+              role="Funded Trader"
+              avatar="https://trae-api-sg.mchost.guru/api/ide/v1/text_to_image?prompt=man%20portrait%20professional&image_size=square"
+            />
+            <TestimonialCard
+              quote="Finally, a community that focuses on process over profits. This is the real deal."
+              author="Elena R."
+              role="Swing Trader"
+              avatar="https://trae-api-sg.mchost.guru/api/ide/v1/text_to_image?prompt=woman%20portrait%20professional&image_size=square"
+            />
+            <TestimonialCard
+              quote="The risk management tools alone saved me thousands during the last crash. Essential for any serious trader."
+              author="David K."
+              role="Crypto Investor"
+              avatar="https://trae-api-sg.mchost.guru/api/ide/v1/text_to_image?prompt=man%20portrait%20casual&image_size=square"
+            />
+            <TestimonialCard
+              quote="The risk management tools alone saved me thousands during the last crash. Essential for any serious trader."
+              author="David K."
+              role="Crypto Investor"
+              avatar="https://trae-api-sg.mchost.guru/api/ide/v1/text_to_image?prompt=man%20portrait%20casual&image_size=square"
+            />
+            <TestimonialCard
+              quote="The risk management tools alone saved me thousands during the last crash. Essential for any serious trader."
+              author="David K."
+              role="Crypto Investor"
+              avatar="https://trae-api-sg.mchost.guru/api/ide/v1/text_to_image?prompt=man%20portrait%20casual&image_size=square"
+            />
+            <TestimonialCard
+              quote="The risk management tools alone saved me thousands during the last crash. Essential for any serious trader."
+              author="David K."
+              role="Crypto Investor"
+              avatar="https://trae-api-sg.mchost.guru/api/ide/v1/text_to_image?prompt=man%20portrait%20casual&image_size=square"
+            />
+          </div>
         </div>
       </section>
 
@@ -178,50 +223,7 @@ export default function LandingPage() {
         reversed={false}
       />
 
-      {/* Testimonials */}
-      <section className="py-32 bg-slate-900">
-        <div className="max-w-7xl mx-auto px-4 text-center">
-          <h2 className="text-4xl md:text-5xl font-bold mb-16">Don't just take our word for it.</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <TestimonialCard
-              quote="I went from blowing accounts to funded trader in 3 months. The structure here is unlike anything else on YouTube."
-              author="Marcus J."
-              role="Funded Trader"
-              avatar="https://trae-api-sg.mchost.guru/api/ide/v1/text_to_image?prompt=man%20portrait%20professional&image_size=square"
-            />
-            <TestimonialCard
-              quote="Finally, a community that focuses on process over profits. This is the real deal."
-              author="Elena R."
-              role="Swing Trader"
-              avatar="https://trae-api-sg.mchost.guru/api/ide/v1/text_to_image?prompt=woman%20portrait%20professional&image_size=square"
-            />
-            <TestimonialCard
-              quote="The risk management tools alone saved me thousands during the last crash. Essential for any serious trader."
-              author="David K."
-              role="Crypto Investor"
-              avatar="https://trae-api-sg.mchost.guru/api/ide/v1/text_to_image?prompt=man%20portrait%20casual&image_size=square"
-            />
-            <TestimonialCard
-              quote="The risk management tools alone saved me thousands during the last crash. Essential for any serious trader."
-              author="David K."
-              role="Crypto Investor"
-              avatar="https://trae-api-sg.mchost.guru/api/ide/v1/text_to_image?prompt=man%20portrait%20casual&image_size=square"
-            />
-            <TestimonialCard
-              quote="The risk management tools alone saved me thousands during the last crash. Essential for any serious trader."
-              author="David K."
-              role="Crypto Investor"
-              avatar="https://trae-api-sg.mchost.guru/api/ide/v1/text_to_image?prompt=man%20portrait%20casual&image_size=square"
-            />
-            <TestimonialCard
-              quote="The risk management tools alone saved me thousands during the last crash. Essential for any serious trader."
-              author="David K."
-              role="Crypto Investor"
-              avatar="https://trae-api-sg.mchost.guru/api/ide/v1/text_to_image?prompt=man%20portrait%20casual&image_size=square"
-            />
-          </div>
-        </div>
-      </section>
+
 
       {/* FAQ Section */}
       <section className="py-24 bg-slate-950 border-t border-slate-800">

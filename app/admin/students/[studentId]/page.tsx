@@ -8,6 +8,8 @@ import { PasswordForm } from "./_components/password-form";
 import Link from "next/link";
 import { ArrowLeft, UserCog } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { getProgress } from "@/actions/get-progress";
+import { Progress } from "@/components/ui/progress";
 
 export default async function StudentIdPage({
   params
@@ -35,6 +37,17 @@ export default async function StudentIdPage({
   if (!student) {
     return redirect("/admin/students");
   }
+
+  // Fetch progress for each purchased course
+  const purchasedCoursesWithProgress = await Promise.all(
+    student.purchase.map(async (purchase) => {
+      const progress = await getProgress(student.id, purchase.course.id);
+      return {
+        ...purchase,
+        progress,
+      };
+    })
+  );
 
   const allCourses = await db.course.findMany({
     orderBy: { title: "asc" }
@@ -69,17 +82,20 @@ export default async function StudentIdPage({
           <div className="space-y-6">
              <div>
                <h2 className="text-xl font-semibold mb-4">Enrolled Courses</h2>
-            {student.purchase.length === 0 ? (
+            {purchasedCoursesWithProgress.length === 0 ? (
                <p className="text-muted-foreground">No enrolled courses.</p>
             ) : (
                <ul className="space-y-2">
-                 {student.purchase.map((purchase) => (
+                 {purchasedCoursesWithProgress.map((purchase) => (
                    <li key={purchase.id} className="p-3 border rounded-md bg-white dark:bg-slate-900 flex gap-3 items-center justify-between">
-                     <div className="flex gap-3 items-center">
+                     <div className="flex gap-3 items-center w-full">
                         {purchase.course?.imageUrl && <img src={purchase.course?.imageUrl } alt={purchase.course.title} className="w-12 h-12 rounded-md" />}
-                        <div className="flex flex-col">
-                        {purchase.course.title}
-                        <p className="text-sm text-muted-foreground">{purchase.course.description}</p>
+                        <div className="flex flex-col w-full">
+                        <div className="font-medium">{purchase.course.title}</div>
+                        <div className="flex items-center gap-x-2 w-full max-w-[200px] mt-1">
+                            <Progress value={purchase.progress} className="h-2" />
+                            <span className="text-xs text-muted-foreground">{Math.round(purchase.progress)}%</span>
+                        </div>
                         </div>
                      </div>
                      <UnenrollButton studentId={student.id} courseId={purchase.course.id} />

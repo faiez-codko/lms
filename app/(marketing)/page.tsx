@@ -70,8 +70,6 @@ export default function LandingPage() {
       
       <Hero2 />
 
-      <Hero3 />
-
 
       {/* Trusted By Strip (Marquee) */}
       <section className="py-10 border-y border-slate-800 bg-slate-950/50 overflow-hidden">

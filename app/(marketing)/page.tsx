@@ -12,6 +12,8 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import Hero from "@/components/animated-shader-hero";
+import { Hero2 } from "@/components/hero-2";
+import { Hero3 } from "@/components/hero-3";
 const bgColors = ["#263b11","#4d7722", "#99ed43","#d6f8b4","#ebfbd9","#40230D"]
 
 export default function LandingPage() {
@@ -49,14 +51,14 @@ export default function LandingPage() {
           primary: {
             text: "Start Free Trial",
             href: '/register',
-            backgroundColor: bgColors[0],
-            textColor: "#FFF",
+            // backgroundColor: bgColors[0],
+            // textColor: "#FFF",
           },
           secondary: {
             text: "Browse Course",
             href: '/browse',
-            backgroundColor: bgColors[0],
-            textColor: "#FFF",
+            // backgroundColor: bgColors[0],
+            // textColor: "#FFF",
           }
         }}
        
@@ -65,6 +67,11 @@ export default function LandingPage() {
           colorBackground: bgColors[0],
         }}
       />
+      
+      <Hero2 />
+
+      <Hero3 />
+
 
       {/* Trusted By Strip (Marquee) */}
       <section className="py-10 border-y border-slate-800 bg-slate-950/50 overflow-hidden">

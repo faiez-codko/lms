@@ -495,7 +495,7 @@ const Hero: React.FC<HeroProps> = ({
               {buttons.primary && (
                 <Link 
                   href={buttons.primary.href}
-                  className={`px-8 py-4 bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-600 hover:to-yellow-600 text-black rounded-full font-semibold text-lg transition-all duration-300 hover:scale-105 hover:shadow-xl  ${buttons.primary.className || ''}`}
+                  className={`px-8 py-4 bg-gradient-to-r from-[#99ed43] to-[#4d7722] hover:from-[#4d7722] hover:to-[#99ed43] text-white rounded-full font-semibold text-lg transition-all duration-300 hover:scale-105 hover:shadow-xl  ${buttons.primary.className || ''}`}
                   style={{
                     ...(buttons.primary.backgroundColor ? { backgroundImage: 'none', backgroundColor: buttons.primary.backgroundColor } : {}),
                     ...(buttons.primary.textColor ? { color: buttons.primary.textColor } : {}),

@@ -9,12 +9,35 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Pagination } from "@/components/pagination";
 
-export default async function StudentsPage() {
-  const students = await db.user.findMany({
-    where: { role: "USER" },
-    orderBy: { createdAt: "desc" },
-  });
+export const dynamic = "force-dynamic";
+
+interface StudentsPageProps {
+  searchParams: Promise<{
+    page?: string;
+  }>;
+}
+
+export default async function StudentsPage({ searchParams }: StudentsPageProps) {
+  const resolvedSearchParams = await searchParams;
+  const page = Number(resolvedSearchParams.page) || 1;
+  const limit = 10;
+  const skip = (page - 1) * limit;
+
+  const [students, count] = await Promise.all([
+    db.user.findMany({
+      where: { role: "USER" },
+      orderBy: { createdAt: "desc" },
+      skip,
+      take: limit,
+    }),
+    db.user.count({
+      where: { role: "USER" },
+    }),
+  ]);
+
+  const totalPages = Math.ceil(count / limit);
 
   return (
     <div className="p-6 min-h-screen">
@@ -71,7 +94,7 @@ export default async function StudentsPage() {
             ))}
             {students.length === 0 && (
               <tr>
-                <td colSpan={4} className="p-4 text-center text-muted-foreground">
+                <td colSpan={5} className="p-4 text-center text-muted-foreground">
                   No students found.
                 </td>
               </tr>
@@ -79,6 +102,8 @@ export default async function StudentsPage() {
           </tbody>
         </table>
       </div>
+
+      <Pagination page={page} totalPages={totalPages} />
     </div>
   );
 }

@@ -2,17 +2,36 @@ import { db } from "@/lib/prismadb";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Plus, Pencil, Eye } from "lucide-react";
+import { Pagination } from "@/components/pagination";
 
 export const dynamic = "force-dynamic";
 
-export default async function CoursesPage() {
-  const courses = await db.course.findMany({
-    orderBy: { createdAt: "desc" },
-    include: {
-      category: true,
-      chapter: true,
-    }
-  });
+interface CoursesPageProps {
+  searchParams: Promise<{
+    page?: string;
+  }>;
+}
+
+export default async function CoursesPage({ searchParams }: CoursesPageProps) {
+  const resolvedSearchParams = await searchParams;
+  const page = Number(resolvedSearchParams.page) || 1;
+  const limit = 10;
+  const skip = (page - 1) * limit;
+
+  const [courses, count] = await Promise.all([
+    db.course.findMany({
+      orderBy: { createdAt: "desc" },
+      include: {
+        category: true,
+        chapter: true,
+      },
+      skip,
+      take: limit,
+    }),
+    db.course.count(),
+  ]);
+
+  const totalPages = Math.ceil(count / limit);
 
   return (
     <div className="p-6 min-h-screen">
@@ -78,6 +97,8 @@ export default async function CoursesPage() {
           </tbody>
         </table>
       </div>
+
+      <Pagination page={page} totalPages={totalPages} />
     </div>
   );
 }

@@ -1,26 +1,46 @@
 import { db } from "@/lib/prismadb";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { Plus, MoreHorizontal } from "lucide-react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { Plus } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { AdminActions } from "@/components/admin/admin-actions";
+import { Pagination } from "@/components/pagination";
 
 export const dynamic = "force-dynamic";
 
-export default async function AdminsPage() {
-  const admins = await db.user.findMany({
-    where: { 
-        role: {
-            in: ["ADMIN", "SUPER_ADMIN"]
-        }
-    },
-    orderBy: { createdAt: "desc" },
-  });
+interface AdminsPageProps {
+  searchParams: Promise<{
+    page?: string;
+  }>;
+}
+
+export default async function AdminsPage({ searchParams }: AdminsPageProps) {
+  const resolvedSearchParams = await searchParams;
+  const page = Number(resolvedSearchParams.page) || 1;
+  const limit = 10;
+  const skip = (page - 1) * limit;
+
+  const [admins, count] = await Promise.all([
+    db.user.findMany({
+      where: { 
+          role: {
+              in: ["ADMIN", "SUPER_ADMIN"]
+          }
+      },
+      orderBy: { createdAt: "desc" },
+      skip,
+      take: limit,
+    }),
+    db.user.count({
+      where: { 
+          role: {
+              in: ["ADMIN", "SUPER_ADMIN"]
+          }
+      },
+    })
+  ]);
+
+  const totalPages = Math.ceil(count / limit);
 
   return (
     <div className="p-6 min-h-screen">
@@ -59,19 +79,7 @@ export default async function AdminsPage() {
                   {new Date(admin.createdAt).toLocaleDateString()}
                 </td>
                 <td className="p-4">
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" className="h-8 w-8 p-0">
-                        <MoreHorizontal className="h-4 w-4" />
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                       {/* Add edit/delete actions here later if needed */}
-                       <DropdownMenuItem disabled className="text-muted-foreground">
-                            No actions available
-                       </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
+                  <AdminActions id={admin.id} />
                 </td>
               </tr>
             ))}
@@ -85,6 +93,8 @@ export default async function AdminsPage() {
           </tbody>
         </table>
       </div>
+      
+      <Pagination page={page} totalPages={totalPages} />
     </div>
   );
 }

@@ -14,6 +14,7 @@ import {
 import Hero from "@/components/animated-shader-hero";
 import { Hero2 } from "@/components/hero-2";
 import { Hero3 } from "@/components/hero-3";
+import { QHero } from "@/components/QHero";
 const bgColors = ["#263b11","#4d7722", "#99ed43","#d6f8b4","#ebfbd9","#40230D"]
 
 export default function LandingPage() {
@@ -39,7 +40,9 @@ export default function LandingPage() {
       />
 
       {/* Hero Section */}
+      <QHero />
 
+      {/* 
       <Hero
      
         headline={{
@@ -67,6 +70,7 @@ export default function LandingPage() {
           colorBackground: bgColors[0],
         }}
       />
+      */}
       
      
 

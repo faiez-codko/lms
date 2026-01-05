@@ -8,34 +8,36 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export const QHero = () => {
   return (
-    <section className="relative w-full min-h-[calc(100vh)] bg-white text-slate-900 overflow-hidden flex flex-col justify-center">
+    <section className="relative w-full min-h-screen  md:min-h-[70vh] xl:min-h-[calc(100vh)] bg-white text-slate-900 overflow-hidden flex flex-col justify-center">
       
       {/* Background Graphic - Q */}
       {/* We position it absolutely on the right side. 
           Based on the SVG, it seems to have a lot of whitespace or specific positioning.
           We'll try to position it to match the reference.
       */}
-      <div className="absolute top-0 right-0 h-[60%] w-[55%] pointer-events-none hidden lg:block overflow-hidden">
+      <div className="absolute top-0 right-0 h-[70%] w-[55%] pointer-events-none lg:block overflow-hidden">
          <Image 
            src="/media/Q.svg" 
            alt="Background Q" 
            fill
-           className=" object-left-top scale-110 translate-x-10"
+          //  className="object-left-top scale-110 translate-x-10"
            priority
          />
+         {/* Left-bottom mist overlay - Adjust width/height/opacity as needed */}
+         <div className="absolute bottom-0 left-0 w-[100%] h-full bg-gradient-to-tr from-white via-white/30 to-transparent" />
       </div>
 
       <div className="max-w-[90%] mx-auto px-6 w-full z-10 grid lg:grid-cols-2 gap-12 items-end flex-1 pt-10 pb-20">
         {/* Left Content */}
         <div className="flex flex-col gap-8">
-          <h1 className="text-6xl sm:text-7xl md:text-8xl font-black tracking-tighter uppercase leading-[0.9] text-slate-900">
+          <h1 className="text-5xl md:text-6xl 2xl:text-8xl font-black tracking-tighter uppercase text-slate-900 font-moderniz">
             Turn Your <br/>
             Trading <br/>
             Into A <br/>
             Business.
           </h1>
           
-          <p className="text-md md:text-xl text-slate-500 max-w-lg leading-relaxed font-medium">
+          <p className="text-md md:text-xl text-slate-500 max-w-4xl leading-relaxed font-poppins font-regular">
             The all-in-one platform to master technical analysis, manage risk, and build a profitable trading career. No noise, just results.
           </p>
 

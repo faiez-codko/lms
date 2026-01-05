@@ -40,7 +40,7 @@ export default function MarketingLayout({
       <main className="h-full ">
         {children}
       </main>
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 }

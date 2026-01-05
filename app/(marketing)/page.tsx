@@ -15,7 +15,7 @@ import Hero from "@/components/animated-shader-hero";
 import { Hero2 } from "@/components/hero-2";
 import { Hero3 } from "@/components/hero-3";
 import { QHero } from "@/components/QHero";
-const bgColors = ["#263b11","#4d7722", "#99ed43","#d6f8b4","#ebfbd9","#40230D"]
+const bgColors = ["#263b11", "#4d7722", "#99ed43", "#d6f8b4", "#ebfbd9", "#40230D"]
 
 export default function LandingPage() {
 
@@ -71,12 +71,12 @@ export default function LandingPage() {
         }}
       />
       */}
-      
-     
+
+
 
 
       {/* Trusted By Strip (Marquee) */}
-      <section className="py-10 border-y border-slate-800 bg-slate-950/50 overflow-hidden">
+      {/* <section className="py-10 border-y border-slate-800 bg-slate-950/50 overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 mb-8">
           <p className="text-center text-sm font-semibold text-slate-500 uppercase tracking-widest">Trusted by 10,000+ Traders</p>
         </div>
@@ -95,10 +95,10 @@ export default function LandingPage() {
             ))}
           </motion.div>
         </div>
-      </section>
+      </section> */}
 
-            {/* Testimonials */}
-      <section className="py-32 bg-slate-900">
+      {/* Testimonials */}
+      {/* <section className="py-32 bg-slate-900">
         <div className="max-w-7xl mx-auto px-4 text-center">
           <h2 className="text-4xl md:text-5xl font-bold mb-16">Don't just take our word for it.</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -140,10 +140,10 @@ export default function LandingPage() {
             />
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* What We Do Section */}
-      <section className="py-24 bg-slate-900 relative">
+      {/* <section className="py-24 bg-slate-900 relative">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center max-w-3xl mx-auto mb-16">
             <h2 className="text-3xl md:text-5xl font-bold mb-6">What We Do</h2>
@@ -192,45 +192,52 @@ export default function LandingPage() {
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Feature Section 1: Text Left, Image Right */}
-      <FeatureSection
-        badge="Technical Analysis"
-        title="Analyze Markets with Precision"
-        description="Stop guessing. Learn to read the raw price action and identify high-probability setups with our proprietary institutional-grade charting strategies."
-        points={["Advanced Candlestick Patterns", "Multi-Timeframe Analysis", "Volume Profile & Order Flow"]}
-        imageSrc="/media/001.png"
-        imageAlt="Technical Analysis Charts"
-        reversed={false}
-      />
+      {/* {[{
+        badge: "Technical Analysis",
+        title: "Analyze Markets with Precision",
+        description: "Stop guessing. Learn to read the raw price action and identify high-probability setups with our proprietary institutional-grade charting strategies.",
+        points: ["Advanced Candlestick Patterns", "Multi-Timeframe Analysis", "Volume Profile & Order Flow"],
+        imageSrc: "/media/001.png",
+        imageAlt: "Technical Analysis Charts",
+        reversed: false,
+      }, {
+        badge: "Risk Management",
+        title: "Protect Capital like a Hedge Fund",
+        description: "The difference between gambling and trading is risk management. We provide the calculators, journals, and frameworks to keep your drawdown low and upside high.",
+        points: ["Dynamic Position Sizing", "Portfolio Correlation Matrix", "Automated Stop-Loss Strategies"],
+        imageSrc: "/media/002.png",
+        imageAlt: "Risk Management Dashboard",
+        reversed: true,
+      }, {
+        badge: "Trading Psychology",
+        title: "Master Your Mindset",
+        description: "90% of trading is psychology. Learn how to control your emotions, eliminate FOMO, and execute your plan with robotic discipline.",
+        points: ["Daily Mindfulness Routines", "Trade Journaling & Review", "Cognitive Bias Training"],
+        imageSrc: "/media/003.png",
+        imageAlt: "Trading Psychology",
+        reversed: false,
+      }].map((item, i) => (
+        <FeatureSection
+          key={i}
+          badge={item.badge}
+          title={item.title}
+          description={item.description}
+          points={item.points}
+          imageSrc={item.imageSrc}
+          imageAlt={item.imageAlt}
+          reversed={item.reversed}
+        />
+      ))
+      } */}
 
-      {/* Feature Section 2: Image Left, Text Right */}
-      <FeatureSection
-        badge="Risk Management"
-        title="Protect Capital like a Hedge Fund"
-        description="The difference between gambling and trading is risk management. We provide the calculators, journals, and frameworks to keep your drawdown low and upside high."
-        points={["Dynamic Position Sizing", "Portfolio Correlation Matrix", "Automated Stop-Loss Strategies"]}
-        imageSrc="/media/002.png"
-        imageAlt="Risk Management Dashboard"
-        reversed={true}
-      />
-
-      {/* Feature Section 3: Text Left, Image Right */}
-      <FeatureSection
-        badge="Trading Psychology"
-        title="Master Your Mindset"
-        description="90% of trading is psychology. Learn how to control your emotions, eliminate FOMO, and execute your plan with robotic discipline."
-        points={["Daily Mindfulness Routines", "Trade Journaling & Review", "Cognitive Bias Training"]}
-        imageSrc="/media/003.png"
-        imageAlt="Trading Psychology"
-        reversed={false}
-      />
 
 
 
       {/* FAQ Section */}
-      <section className="py-24 bg-slate-950 border-t border-slate-800">
+      {/* <section className="py-24 bg-slate-950 border-t border-slate-800">
         <div className="max-w-3xl mx-auto px-4">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">Frequently Asked Questions</h2>
           <Accordion type="single" collapsible className="w-full">
@@ -260,10 +267,10 @@ export default function LandingPage() {
             </AccordionItem>
           </Accordion>
         </div>
-      </section>
+      </section> */}
 
       {/* Final CTA */}
-      <section className="py-32 bg-emerald-900 relative overflow-hidden">
+      {/* <section className="py-32 bg-emerald-900 relative overflow-hidden">
         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
         <div className="max-w-4xl mx-auto px-4 text-center relative z-10">
           <h2 className="text-4xl md:text-6xl font-bold text-white mb-8">Start your profitable journey today.</h2>
@@ -277,7 +284,7 @@ export default function LandingPage() {
           </Link>
           <p className="mt-6 text-sm text-emerald-200/60">No credit card required for preview lessons.</p>
         </div>
-      </section>
+      </section> */}
 
     </div>
   );

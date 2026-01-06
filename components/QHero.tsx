@@ -5,11 +5,54 @@ import Link from "next/link";
 import { ArrowRight, Mouse } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { motion } from "framer-motion";
 
 export const QHero = () => {
   return (
     <section className="relative w-full min-h-screen  md:min-h-[70vh] xl:min-h-[calc(100vh)] bg-white text-slate-900 overflow-hidden flex flex-col justify-center">
       
+      {/* Background Animated Chart Lines */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
+        <svg className="w-full h-full opacity-40" viewBox="0 0 100 100" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="chartGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stopColor="#99ED43" stopOpacity="0" />
+              <stop offset="50%" stopColor="#4D7722" />
+              <stop offset="100%" stopColor="#1e3a0f" stopOpacity="0" />
+            </linearGradient>
+          </defs>
+          {[
+            // Line 1 - Volatile uptrend from bottom-left to top-right
+            "M 0 100 L 20 80 L 30 90 L 50 50 L 60 60 L 80 20 L 90 30 L 100 0",
+            // Line 2 - Alternative path from bottom-left to top-right
+            "M 0 100 L 15 85 L 35 95 L 45 60 L 65 50 L 85 10 L 95 15 L 100 0"
+          ].map((path, i) => (
+            <motion.path
+              key={i}
+              d={path}
+              stroke="url(#chartGradient)"
+              strokeWidth="0.2"
+              fill="none"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              initial={{ pathLength: 0, opacity: 0 }}
+              animate={{ 
+                pathLength: [0, 1, 0], 
+                opacity: [0, 1, 0],
+                x: [0, -10, 0] // Subtle horizontal movement
+              }}
+              transition={{
+                duration: 10 + i * 2,
+                repeat: Infinity,
+                ease: "linear",
+                delay: i * 3,
+                times: [0, 0.5, 1]
+              }}
+            />
+          ))}
+        </svg>
+      </div>
+
       {/* Background Graphic - Q */}
       {/* We position it absolutely on the right side. 
           Based on the SVG, it seems to have a lot of whitespace or specific positioning.

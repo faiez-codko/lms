@@ -2,25 +2,63 @@ import { db } from "@/lib/prismadb";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Plus } from "lucide-react";
+import { Pagination } from "@/components/pagination";
+import { SearchInput } from "@/components/search-input";
 
 export const dynamic = "force-dynamic";
 
-export default async function TeachersPage() {
-  const teachers = await db.user.findMany({
-    where: { role: "TEACHER" },
-    orderBy: { createdAt: "desc" },
-  });
+interface TeachersPageProps {
+  searchParams: Promise<{
+    page?: string;
+    title?: string;
+  }>;
+}
+
+export default async function TeachersPage({ searchParams }: TeachersPageProps) {
+  const resolvedSearchParams = await searchParams;
+  const page = Number(resolvedSearchParams.page) || 1;
+  const title = resolvedSearchParams.title;
+  const limit = 10;
+  const skip = (page - 1) * limit;
+
+  const where: any = {
+    role: "TEACHER"
+  };
+
+  if (title) {
+    where.OR = [
+      { name: { contains: title } },
+      { email: { contains: title } },
+    ];
+  }
+
+  const [teachers, count] = await Promise.all([
+    db.user.findMany({
+      where,
+      orderBy: { createdAt: "desc" },
+      skip,
+      take: limit,
+    }),
+    db.user.count({
+      where,
+    }),
+  ]);
+
+  const totalPages = Math.ceil(count / limit);
 
   return (
     <div className="p-6 min-h-screen">
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-bold">Teachers</h1>
-        <Link href="/admin/teachers/create">
-          <Button>
-            <Plus className="h-4 w-4 mr-2" />
-            Add Teacher
-          </Button>
-        </Link>
+        <div className="flex items-center gap-x-2">
+          <SearchInput placeholder="Search teachers..." />
+          <Link href="/admin/teachers/create">
+            <Button>
+              <Plus className="h-4 w-4 mr-2" />
+              Add Teacher
+            </Button>
+          </Link>
+        </div>
       </div>
 
       <div className="border rounded-md bg-white dark:bg-slate-900">
@@ -52,6 +90,8 @@ export default async function TeachersPage() {
           </tbody>
         </table>
       </div>
+
+      <Pagination page={page} totalPages={totalPages} />
     </div>
   );
 }

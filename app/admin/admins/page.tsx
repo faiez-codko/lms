@@ -5,38 +5,46 @@ import { Plus } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { AdminActions } from "@/components/admin/admin-actions";
 import { Pagination } from "@/components/pagination";
+import { SearchInput } from "@/components/search-input";
 
 export const dynamic = "force-dynamic";
 
 interface AdminsPageProps {
   searchParams: Promise<{
     page?: string;
+    title?: string;
   }>;
 }
 
 export default async function AdminsPage({ searchParams }: AdminsPageProps) {
   const resolvedSearchParams = await searchParams;
   const page = Number(resolvedSearchParams.page) || 1;
+  const title = resolvedSearchParams.title;
   const limit = 10;
   const skip = (page - 1) * limit;
 
+  const where: any = {
+    role: {
+      in: ["ADMIN", "SUPER_ADMIN"]
+    }
+  };
+
+  if (title) {
+    where.OR = [
+      { name: { contains: title } },
+      { email: { contains: title } },
+    ];
+  }
+
   const [admins, count] = await Promise.all([
     db.user.findMany({
-      where: { 
-          role: {
-              in: ["ADMIN", "SUPER_ADMIN"]
-          }
-      },
+      where,
       orderBy: { createdAt: "desc" },
       skip,
       take: limit,
     }),
     db.user.count({
-      where: { 
-          role: {
-              in: ["ADMIN", "SUPER_ADMIN"]
-          }
-      },
+      where,
     })
   ]);
 
@@ -46,12 +54,15 @@ export default async function AdminsPage({ searchParams }: AdminsPageProps) {
     <div className="p-6 min-h-screen">
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-bold">Admins & Moderators</h1>
-        <Link href="/admin/admins/create">
-          <Button>
-            <Plus className="h-4 w-4 mr-2" />
-            Add Admin
-          </Button>
-        </Link>
+        <div className="flex items-center gap-x-2">
+          <SearchInput placeholder="Search admins..." />
+          <Link href="/admin/admins/create">
+            <Button>
+              <Plus className="h-4 w-4 mr-2" />
+              Add Admin
+            </Button>
+          </Link>
+        </div>
       </div>
 
       <div className="border rounded-md bg-white dark:bg-slate-900">

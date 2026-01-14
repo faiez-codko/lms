@@ -5,30 +5,42 @@ import { Plus } from "lucide-react";
 import { StudentStatusToggle } from "./_components/student-status-toggle";
 import { StudentActions } from "./_components/student-actions";
 import { Pagination } from "@/components/pagination";
+import { SearchInput } from "@/components/search-input";
 
 export const dynamic = "force-dynamic";
 
 interface StudentsPageProps {
   searchParams: Promise<{
     page?: string;
+    title?: string;
   }>;
 }
 
 export default async function StudentsPage({ searchParams }: StudentsPageProps) {
   const resolvedSearchParams = await searchParams;
   const page = Number(resolvedSearchParams.page) || 1;
+  const title = resolvedSearchParams.title;
   const limit = 10;
   const skip = (page - 1) * limit;
 
+  const where: any = { role: "USER" };
+
+  if (title) {
+    where.OR = [
+      { name: { contains: title } },
+      { email: { contains: title } },
+    ];
+  }
+
   const [students, count] = await Promise.all([
     db.user.findMany({
-      where: { role: "USER" },
+      where,
       orderBy: { createdAt: "desc" },
       skip,
       take: limit,
     }),
     db.user.count({
-      where: { role: "USER" },
+      where,
     }),
   ]);
 
@@ -38,12 +50,15 @@ export default async function StudentsPage({ searchParams }: StudentsPageProps) 
     <div className="p-6 min-h-screen">
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-bold">Students</h1>
-        <Link href="/admin/students/create">
-          <Button>
-            <Plus className="h-4 w-4 mr-2" />
-            Add Student
-          </Button>
-        </Link>
+        <div className="flex items-center gap-x-2">
+          <SearchInput placeholder="Search students..." />
+          <Link href="/admin/students/create">
+            <Button>
+              <Plus className="h-4 w-4 mr-2" />
+              Add Student
+            </Button>
+          </Link>
+        </div>
       </div>
 
       <div className="border rounded-md bg-white dark:bg-slate-900">

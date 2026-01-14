@@ -3,23 +3,31 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Plus, Pencil, Eye } from "lucide-react";
 import { Pagination } from "@/components/pagination";
+import { SearchInput } from "@/components/search-input";
 
 export const dynamic = "force-dynamic";
 
 interface CoursesPageProps {
   searchParams: Promise<{
     page?: string;
+    title?: string;
   }>;
 }
 
 export default async function CoursesPage({ searchParams }: CoursesPageProps) {
   const resolvedSearchParams = await searchParams;
   const page = Number(resolvedSearchParams.page) || 1;
+  const title = resolvedSearchParams.title;
   const limit = 10;
   const skip = (page - 1) * limit;
 
+  const where = {
+    ...(title ? { title: { contains: title } } : {}),
+  };
+
   const [courses, count] = await Promise.all([
     db.course.findMany({
+      where,
       orderBy: { createdAt: "desc" },
       include: {
         category: true,
@@ -28,7 +36,7 @@ export default async function CoursesPage({ searchParams }: CoursesPageProps) {
       skip,
       take: limit,
     }),
-    db.course.count(),
+    db.course.count({ where }),
   ]);
 
   const totalPages = Math.ceil(count / limit);
@@ -37,12 +45,15 @@ export default async function CoursesPage({ searchParams }: CoursesPageProps) {
     <div className="p-6 min-h-screen">
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-bold">Courses</h1>
-        <Link href="/admin/courses/create">
-          <Button>
-            <Plus className="h-4 w-4 mr-2" />
-            Add Course
-          </Button>
-        </Link>
+        <div className="flex items-center gap-x-2">
+          <SearchInput />
+          <Link href="/admin/courses/create">
+            <Button>
+              <Plus className="h-4 w-4 mr-2" />
+              Add Course
+            </Button>
+          </Link>
+        </div>
       </div>
 
       <div className="border rounded-md bg-white dark:bg-slate-900">

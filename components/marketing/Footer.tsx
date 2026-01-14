@@ -10,7 +10,7 @@ export const Footer = () => {
   const brandName = "QUANTUM";
 
   return (
-    <footer className="bg-black text-white overflow-hidden relative">
+    <footer className="bg-[#263b11] text-white overflow-hidden relative">
       <div className="max-w-7xl mx-auto px-4 pt-20 pb-10 relative z-10">
         <div className="flex flex-col md:flex-row justify-between gap-12 mb-20">
             {/* Logo Icon */}

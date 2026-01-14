@@ -85,7 +85,7 @@ export default function LandingPage() {
           <motion.div
             className="flex gap-12 md:gap-24 items-center whitespace-nowrap"
             animate={{ x: [0, -1000] }}
-            transition={{ repeat: Infinity, duration: 30, ease: "linear" }}
+            transition={{ repeat: Infinity, duration: 15, ease: "linear" }}
           >
             {[...Array(2)].map((_, i) => (
               <div key={i} className="flex gap-12 md:gap-24">
@@ -271,7 +271,7 @@ export default function LandingPage() {
       </section>
 
       {/* Final CTA */}
-      <section className="py-32 bg-emerald-900 relative overflow-hidden">
+      <section className="py-32 bg-emerald-500 relative overflow-hidden">
         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
         <div className="max-w-4xl mx-auto px-4 text-center relative z-10">
           <h2 className="text-4xl md:text-6xl font-bold text-white mb-8">Start your profitable journey today.</h2>
@@ -286,6 +286,7 @@ export default function LandingPage() {
           <p className="mt-6 text-sm text-emerald-200/60">No credit card required for preview lessons.</p>
         </div>
       </section>
+     
 
 
       <Footer />

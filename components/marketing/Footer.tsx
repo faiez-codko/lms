@@ -65,7 +65,7 @@ export const Footer = () => {
       </div>
       
       {/* Big Brand Text with Scatter Animation */}
-      <div className="w-full bg-emerald-500 overflow-hidden cursor-default group relative h-[30vh] lg:h-auto">
+      {/* <div className="w-full bg-emerald-500 overflow-hidden cursor-default group relative h-[30vh] lg:h-auto">
           <GravityFooter />
           <motion.h1 
             className="text-[15vw] leading-none font-black text-center tracking-tighter text-black hover:text-[#383838] transition-all hover:cursor-pointer select-none flex justify-center w-full relative z-10"
@@ -93,7 +93,7 @@ export const Footer = () => {
                   </motion.span>
               ))}
           </motion.h1>
-      </div>
+      </div> */}
     </footer>
   );
 };

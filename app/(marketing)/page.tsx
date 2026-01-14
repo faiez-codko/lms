@@ -15,6 +15,7 @@ import Hero from "@/components/animated-shader-hero";
 import { Hero2 } from "@/components/hero-2";
 import { Hero3 } from "@/components/hero-3";
 import { QHero } from "@/components/QHero";
+import { Footer } from "@/components/marketing/Footer";
 const bgColors = ["#263b11", "#4d7722", "#99ed43", "#d6f8b4", "#ebfbd9", "#40230D"]
 
 export default function LandingPage() {
@@ -76,7 +77,7 @@ export default function LandingPage() {
 
 
       {/* Trusted By Strip (Marquee) */}
-      {/* <section className="py-10 border-y border-slate-800 bg-slate-950/50 overflow-hidden">
+      <section className="py-10 border-y border-slate-100 bg-white overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 mb-8">
           <p className="text-center text-sm font-semibold text-slate-500 uppercase tracking-widest">Trusted by 10,000+ Traders</p>
         </div>
@@ -89,18 +90,18 @@ export default function LandingPage() {
             {[...Array(2)].map((_, i) => (
               <div key={i} className="flex gap-12 md:gap-24">
                 {['Coinbase', 'Binance', 'TradingView', 'Bloomberg', 'Forbes', 'CNBC', 'Yahoo Finance', 'Investopedia'].map((brand) => (
-                  <span key={brand} className="text-xl md:text-3xl font-bold text-slate-600 hover:text-slate-400 transition-colors cursor-default">{brand}</span>
+                  <span key={brand} className="text-xl md:text-3xl font-bold text-slate-400 hover:text-slate-700 transition-colors cursor-default">{brand}</span>
                 ))}
               </div>
             ))}
           </motion.div>
         </div>
-      </section> */}
+      </section>
 
       {/* Testimonials */}
-      {/* <section className="py-32 bg-slate-900">
+      <section className="py-32 bg-slate-50 text-slate-900">
         <div className="max-w-7xl mx-auto px-4 text-center">
-          <h2 className="text-4xl md:text-5xl font-bold mb-16">Don't just take our word for it.</h2>
+          <h2 className="text-4xl md:text-5xl font-bold mb-16 text-slate-900">Don't just take our word for it.</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <TestimonialCard
               quote="I went from blowing accounts to funded trader in 3 months. The structure here is unlike anything else on YouTube."
@@ -140,14 +141,14 @@ export default function LandingPage() {
             />
           </div>
         </div>
-      </section> */}
+      </section>
 
       {/* What We Do Section */}
-      {/* <section className="py-24 bg-slate-900 relative">
+      <section className="py-24 bg-white relative text-slate-900">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-3xl md:text-5xl font-bold mb-6">What We Do</h2>
-            <p className="text-lg text-slate-400">
+            <h2 className="text-3xl md:text-5xl font-bold mb-6 text-slate-900">What We Do</h2>
+            <p className="text-lg text-slate-600">
               We provide a complete ecosystem for traders to learn, grow, and succeed.
             </p>
           </div>
@@ -181,21 +182,21 @@ export default function LandingPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                className="bg-slate-950 p-6 rounded-2xl border border-slate-800 hover:border-emerald-500/50 transition-colors group"
+                className="bg-slate-50 p-6 rounded-2xl border border-slate-200 hover:border-emerald-500/50 transition-colors group shadow-sm hover:shadow-md"
               >
                 <div className="h-12 w-12 bg-emerald-500/10 rounded-lg flex items-center justify-center mb-4 group-hover:bg-emerald-500/20 transition-colors">
                   <item.icon className="h-6 w-6 text-emerald-500" />
                 </div>
-                <h3 className="text-xl font-bold mb-2">{item.title}</h3>
-                <p className="text-slate-400 text-sm leading-relaxed">{item.desc}</p>
+                <h3 className="text-xl font-bold mb-2 text-slate-900">{item.title}</h3>
+                <p className="text-slate-600 text-sm leading-relaxed">{item.desc}</p>
               </motion.div>
             ))}
           </div>
         </div>
-      </section> */}
+      </section>
 
       {/* Feature Section 1: Text Left, Image Right */}
-      {/* {[{
+      {[{
         badge: "Technical Analysis",
         title: "Analyze Markets with Precision",
         description: "Stop guessing. Learn to read the raw price action and identify high-probability setups with our proprietary institutional-grade charting strategies.",
@@ -231,46 +232,46 @@ export default function LandingPage() {
           reversed={item.reversed}
         />
       ))
-      } */}
+      }
 
 
 
 
       {/* FAQ Section */}
-      {/* <section className="py-24 bg-slate-950 border-t border-slate-800">
+      <section className="py-24 bg-slate-50 border-t border-slate-200 text-slate-900">
         <div className="max-w-3xl mx-auto px-4">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">Frequently Asked Questions</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-slate-900">Frequently Asked Questions</h2>
           <Accordion type="single" collapsible className="w-full">
-            <AccordionItem value="item-1" className="border-slate-800">
-              <AccordionTrigger className="text-lg hover:text-emerald-400">Is this course suitable for beginners?</AccordionTrigger>
-              <AccordionContent className="text-slate-400">
+            <AccordionItem value="item-1" className="border-slate-200">
+              <AccordionTrigger className="text-lg text-slate-900 hover:text-emerald-600">Is this course suitable for beginners?</AccordionTrigger>
+              <AccordionContent className="text-slate-600">
                 Absolutely. We start with the basics of market structure and candlestick patterns before moving into advanced strategies. About 40% of our students start with zero experience.
               </AccordionContent>
             </AccordionItem>
-            <AccordionItem value="item-2" className="border-slate-800">
-              <AccordionTrigger className="text-lg hover:text-emerald-400">Do you provide trade signals?</AccordionTrigger>
-              <AccordionContent className="text-slate-400">
+            <AccordionItem value="item-2" className="border-slate-200">
+              <AccordionTrigger className="text-lg text-slate-900 hover:text-emerald-600">Do you provide trade signals?</AccordionTrigger>
+              <AccordionContent className="text-slate-600">
                 No. We teach you how to fish. We provide daily market analysis and setups we are watching, but the goal is to make you an independent trader, not a signal follower.
               </AccordionContent>
             </AccordionItem>
-            <AccordionItem value="item-3" className="border-slate-800">
-              <AccordionTrigger className="text-lg hover:text-emerald-400">What markets do you cover?</AccordionTrigger>
-              <AccordionContent className="text-slate-400">
+            <AccordionItem value="item-3" className="border-slate-200">
+              <AccordionTrigger className="text-lg text-slate-900 hover:text-emerald-600">What markets do you cover?</AccordionTrigger>
+              <AccordionContent className="text-slate-600">
                 Our technical analysis concepts apply to all liquid markets including Forex, Crypto, Stocks, and Futures. We have specific modules for the nuances of each asset class.
               </AccordionContent>
             </AccordionItem>
-            <AccordionItem value="item-4" className="border-slate-800">
-              <AccordionTrigger className="text-lg hover:text-emerald-400">Can I cancel my subscription?</AccordionTrigger>
-              <AccordionContent className="text-slate-400">
+            <AccordionItem value="item-4" className="border-slate-200">
+              <AccordionTrigger className="text-lg text-slate-900 hover:text-emerald-600">Can I cancel my subscription?</AccordionTrigger>
+              <AccordionContent className="text-slate-600">
                 Yes, you can cancel anytime from your dashboard. You will retain access until the end of your billing period.
               </AccordionContent>
             </AccordionItem>
           </Accordion>
         </div>
-      </section> */}
+      </section>
 
       {/* Final CTA */}
-      {/* <section className="py-32 bg-emerald-900 relative overflow-hidden">
+      <section className="py-32 bg-emerald-900 relative overflow-hidden">
         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
         <div className="max-w-4xl mx-auto px-4 text-center relative z-10">
           <h2 className="text-4xl md:text-6xl font-bold text-white mb-8">Start your profitable journey today.</h2>
@@ -284,7 +285,10 @@ export default function LandingPage() {
           </Link>
           <p className="mt-6 text-sm text-emerald-200/60">No credit card required for preview lessons.</p>
         </div>
-      </section> */}
+      </section>
+
+
+      <Footer />
 
     </div>
   );
@@ -292,7 +296,7 @@ export default function LandingPage() {
 
 function FeatureSection({ badge, title, description, points, imageSrc, imageAlt, reversed }: { badge: string, title: string, description: string, points: string[], imageSrc: string, imageAlt: string, reversed: boolean }) {
   return (
-    <section className="py-24 md:py-32 border-b border-slate-800">
+    <section className="py-24 md:py-32 border-b border-slate-200 bg-white text-slate-900">
       <div className="max-w-7xl mx-auto px-4">
         <div className={`flex flex-col md:flex-row items-center gap-16 ${reversed ? 'md:flex-row-reverse' : ''}`}>
           {/* Text Content */}
@@ -303,16 +307,16 @@ function FeatureSection({ badge, title, description, points, imageSrc, imageAlt,
             transition={{ duration: 0.6 }}
             className="flex-1 space-y-8"
           >
-            <span className="inline-block px-4 py-1 rounded-full bg-emerald-500/10 text-emerald-400 text-sm font-semibold tracking-wide uppercase">
+            <span className="inline-block px-4 py-1 rounded-full bg-emerald-500/10 text-emerald-600 text-sm font-semibold tracking-wide uppercase">
               {badge}
             </span>
-            <h2 className="text-3xl md:text-5xl font-bold leading-tight">{title}</h2>
-            <p className="text-lg text-slate-400 leading-relaxed">
+            <h2 className="text-3xl md:text-5xl font-bold leading-tight text-slate-900">{title}</h2>
+            <p className="text-lg text-slate-600 leading-relaxed">
               {description}
             </p>
             <ul className="space-y-4">
               {points.map((point, i) => (
-                <li key={i} className="flex items-center gap-3 text-slate-300">
+                <li key={i} className="flex items-center gap-3 text-slate-700">
                   <CheckCircle className="h-6 w-6 text-emerald-500 flex-shrink-0" />
                   <span className="text-lg">{point}</span>
                 </li>
@@ -328,7 +332,7 @@ function FeatureSection({ badge, title, description, points, imageSrc, imageAlt,
             transition={{ duration: 0.6, delay: 0.2 }}
             className="flex-1 w-full"
           >
-            <div className="relative rounded-2xl overflow-hidden border border-slate-800 shadow-2xl bg-slate-900 aspect-video">
+            <div className="relative rounded-2xl overflow-hidden border border-slate-200 shadow-2xl bg-slate-100 aspect-video">
               <Image
                 src={imageSrc}
                 alt={imageAlt}
@@ -345,19 +349,19 @@ function FeatureSection({ badge, title, description, points, imageSrc, imageAlt,
 
 function TestimonialCard({ quote, author, role, avatar }: { quote: string, author: string, role: string, avatar: string }) {
   return (
-    <div className="bg-slate-950 p-8 rounded-2xl border border-slate-800 text-left hover:border-emerald-500/30 transition-colors duration-300">
+    <div className="bg-white p-8 rounded-2xl border border-slate-200 text-left hover:border-emerald-500/30 transition-colors duration-300 shadow-sm hover:shadow-md">
       <div className="flex gap-1 text-emerald-500 mb-6">
         {[1, 2, 3, 4, 5].map(i => (
           <Star key={i} className="h-5 w-5 fill-emerald-500" />
         ))}
       </div>
-      <p className="text-lg text-slate-300 mb-8 font-medium leading-relaxed">"{quote}"</p>
+      <p className="text-lg text-slate-600 mb-8 font-medium leading-relaxed">"{quote}"</p>
       <div className="flex items-center gap-4">
-        <div className="relative h-12 w-12 rounded-full overflow-hidden border border-slate-700">
+        <div className="relative h-12 w-12 rounded-full overflow-hidden border border-slate-200">
           <Image src={avatar} alt={author} fill className="object-cover" />
         </div>
         <div>
-          <div className="font-bold text-white text-lg">{author}</div>
+          <div className="font-bold text-slate-900 text-lg">{author}</div>
           <div className="text-sm text-slate-500 uppercase tracking-wider font-semibold">{role}</div>
         </div>
       </div>

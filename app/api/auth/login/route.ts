@@ -4,6 +4,7 @@ import { NextResponse } from "next/server";
 import { db } from "@/lib/prismadb";
 import { loginSchema } from "@/schema/auth";
 import { verifyPassword, signAuthToken, AUTH_COOKIE_NAME } from "@/lib/auth";
+import { sendMail } from "@/lib/mail";
 
 /**
  * Handles user login with email and password.
@@ -38,6 +39,21 @@ export async function POST(req: Request) {
     }
 
     const { password: _, ...safeUser } = user;
+    
+    if (safeUser.email) {
+      const subject = "New Login Detected - QuantumAcademy";
+      const time = new Date().toLocaleString();
+      const html = `<div style="font-family:Arial,sans-serif;">
+        <h2 style="margin:0 0 12px 0;">New Login Alert</h2>
+        <p>Hello ${safeUser.name || "User"},</p>
+        <p>We detected a new login to your account on <strong>${time}</strong>.</p>
+        <p>If this was you, you can safely ignore this email.</p>
+        <p style="color: red;">If you did not log in, please contact support immediately.</p>
+      </div>`;
+      // Fire and forget email to not block login response
+      sendMail({ to: [safeUser.email], subject, text: `New login detected on your account at ${time}`, html }).catch(console.error);
+    }
+
     const token = signAuthToken({ sub: user.id, role: user.role });
     const res = NextResponse.json({ user: safeUser }, { status: 200 });
     res.cookies.set(AUTH_COOKIE_NAME, token, {

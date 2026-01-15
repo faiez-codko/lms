@@ -7,12 +7,12 @@ import { Badge } from "@/components/ui/badge";
 
 const instructors = [
   {
-    name: "Alex Rivera",
-    role: "Senior Blockchain Developer",
-    bio: "Alex is a pioneer in the DeFi space with over 8 years of experience building decentralized applications. He specializes in smart contract security and scalability.",
-    image: "/instructors/alex.jpg",
-    initials: "AR",
-    experience: ["Ex-Ethereum Foundation", "DeFi Protocol Architect", "Auditor"]
+    name: "Juniad Khan",
+    role: "Instructor",
+    bio: "Juniad is a seasoned instructor with over 10 years of experience in the crypto industry. He specializes in teaching blockchain development, smart contract security, and DeFi protocols.",
+    image: "/instructors/juniad.jpg",
+    initials: "JK",
+    experience: ["Expert Forex", "Expert Trading", "Auditor"]
   },
   {
     name: "Sarah Chen",

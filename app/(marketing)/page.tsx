@@ -391,7 +391,7 @@ function TestimonialCard({
           <Star key={i} className="h-5 w-5 fill-emerald-500" />
         ))}
       </div>
-      <p className="text-lg text-slate-300 mb-8 font-medium leading-relaxed">
+      <p className="text-lg text-slate-600 mb-8 font-medium leading-relaxed">
         "{quote}"
       </p>
       <div className="flex items-center gap-4">
@@ -399,7 +399,7 @@ function TestimonialCard({
           <Image src={avatar} alt={author} fill className="object-cover" />
         </div>
         <div>
-          <div className="font-bold text-white text-lg">{author}</div>
+          <div className="font-bold text-slate-900 text-lg">{author}</div>
           <div className="text-sm text-slate-500 uppercase tracking-wider font-semibold">
             {role}
           </div>

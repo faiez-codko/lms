@@ -2,7 +2,14 @@
 
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Star, CheckCircle, BookOpen, Users, Zap, LineChart } from "lucide-react";
+import {
+  Star,
+  CheckCircle,
+  BookOpen,
+  Users,
+  Zap,
+  LineChart,
+} from "lucide-react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import {
@@ -15,22 +22,28 @@ import Hero from "@/components/animated-shader-hero";
 import { Hero2 } from "@/components/hero-2";
 import { Hero3 } from "@/components/hero-3";
 import { QHero } from "@/components/QHero";
-import { Footer } from "@/components/marketing/Footer";
-const bgColors = ["#263b11", "#4d7722", "#99ed43", "#d6f8b4", "#ebfbd9", "#40230D"]
+const bgColors = [
+  "#263b11",
+  "#4d7722",
+  "#99ed43",
+  "#d6f8b4",
+  "#ebfbd9",
+  "#40230D",
+];
 
 export default function LandingPage() {
-
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Organization",
-    "name": "Trading Mastery LMS",
-    "url": "https://myquantumacademy.com",
-    "logo": "https://myquantumacademy.com/logo.svg",
-    "sameAs": [
+    name: "Trading Mastery LMS",
+    url: "https://myquantumacademy.com",
+    logo: "https://myquantumacademy.com/logo.svg",
+    sameAs: [
       "https://twitter.com/myquantumacademy",
-      "https://facebook.com/myquantumacademy"
+      "https://facebook.com/myquantumacademy",
     ],
-    "description": "The all-in-one platform to master technical analysis, manage risk, and build a profitable trading career."
+    description:
+      "The all-in-one platform to master technical analysis, manage risk, and build a profitable trading career.",
   };
 
   return (
@@ -41,6 +54,7 @@ export default function LandingPage() {
       />
 
       {/* Hero Section */}
+
       <QHero />
 
       {/* 
@@ -72,9 +86,6 @@ export default function LandingPage() {
         }}
       />
       */}
-
-
-
 
       {/* Trusted By Strip (Marquee) */}
       <section className="py-10 border-y border-slate-100 bg-white overflow-hidden">
@@ -234,9 +245,6 @@ export default function LandingPage() {
       ))
       }
 
-
-
-
       {/* FAQ Section */}
       <section className="py-24 bg-slate-50 border-t border-slate-200 text-slate-900">
         <div className="max-w-3xl mx-auto px-4">
@@ -285,21 +293,36 @@ export default function LandingPage() {
           </Link>
           <p className="mt-6 text-sm text-emerald-200/60">No credit card required for preview lessons.</p>
         </div>
-      </section>
-     
-
-
-      <Footer />
-
+      </section> 
     </div>
   );
 }
 
-function FeatureSection({ badge, title, description, points, imageSrc, imageAlt, reversed }: { badge: string, title: string, description: string, points: string[], imageSrc: string, imageAlt: string, reversed: boolean }) {
+function FeatureSection({
+  badge,
+  title,
+  description,
+  points,
+  imageSrc,
+  imageAlt,
+  reversed,
+}: {
+  badge: string;
+  title: string;
+  description: string;
+  points: string[];
+  imageSrc: string;
+  imageAlt: string;
+  reversed: boolean;
+}) {
   return (
     <section className="py-24 md:py-32 border-b border-slate-200 bg-white text-slate-900">
       <div className="max-w-7xl mx-auto px-4">
-        <div className={`flex flex-col md:flex-row items-center gap-16 ${reversed ? 'md:flex-row-reverse' : ''}`}>
+        <div
+          className={`flex flex-col md:flex-row items-center gap-16 ${
+            reversed ? "md:flex-row-reverse" : ""
+          }`}
+        >
           {/* Text Content */}
           <motion.div
             initial={{ opacity: 0, x: reversed ? 50 : -50 }}
@@ -311,8 +334,10 @@ function FeatureSection({ badge, title, description, points, imageSrc, imageAlt,
             <span className="inline-block px-4 py-1 rounded-full bg-emerald-500/10 text-emerald-600 text-sm font-semibold tracking-wide uppercase">
               {badge}
             </span>
-            <h2 className="text-3xl md:text-5xl font-bold leading-tight text-slate-900">{title}</h2>
-            <p className="text-lg text-slate-600 leading-relaxed">
+            <h2 className="text-3xl md:text-5xl font-bold leading-tight">
+              {title}
+            </h2>
+            <p className="text-lg text-slate-400 leading-relaxed">
               {description}
             </p>
             <ul className="space-y-4">
@@ -345,27 +370,41 @@ function FeatureSection({ badge, title, description, points, imageSrc, imageAlt,
         </div>
       </div>
     </section>
-  )
+  );
 }
 
-function TestimonialCard({ quote, author, role, avatar }: { quote: string, author: string, role: string, avatar: string }) {
+function TestimonialCard({
+  quote,
+  author,
+  role,
+  avatar,
+}: {
+  quote: string;
+  author: string;
+  role: string;
+  avatar: string;
+}) {
   return (
     <div className="bg-white p-8 rounded-2xl border border-slate-200 text-left hover:border-emerald-500/30 transition-colors duration-300 shadow-sm hover:shadow-md">
       <div className="flex gap-1 text-emerald-500 mb-6">
-        {[1, 2, 3, 4, 5].map(i => (
+        {[1, 2, 3, 4, 5].map((i) => (
           <Star key={i} className="h-5 w-5 fill-emerald-500" />
         ))}
       </div>
-      <p className="text-lg text-slate-600 mb-8 font-medium leading-relaxed">"{quote}"</p>
+      <p className="text-lg text-slate-300 mb-8 font-medium leading-relaxed">
+        "{quote}"
+      </p>
       <div className="flex items-center gap-4">
         <div className="relative h-12 w-12 rounded-full overflow-hidden border border-slate-200">
           <Image src={avatar} alt={author} fill className="object-cover" />
         </div>
         <div>
-          <div className="font-bold text-slate-900 text-lg">{author}</div>
-          <div className="text-sm text-slate-500 uppercase tracking-wider font-semibold">{role}</div>
+          <div className="font-bold text-white text-lg">{author}</div>
+          <div className="text-sm text-slate-500 uppercase tracking-wider font-semibold">
+            {role}
+          </div>
         </div>
       </div>
     </div>
-  )
+  );
 }

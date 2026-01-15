@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getCurrentUser } from "@/lib/auth";
 import { db } from "@/lib/prismadb";
+import { sendMail } from "@/lib/mail";
 
 export async function POST(req: Request) {
   try {
@@ -54,6 +55,51 @@ export async function POST(req: Request) {
           }
         });
       }
+    }
+
+    let courseTitle = "";
+    let courseOwnerEmail: string | null = null;
+    if (chapterId) {
+      const ch = await db.chapter.findUnique({
+        where: { id: chapterId },
+        include: { course: { include: { user: true } } }
+      });
+      if (ch?.course) {
+        courseTitle = ch.course.title;
+        courseOwnerEmail = ch.course.user?.email || null;
+      }
+    } else if (topicId) {
+      const tp = await db.topic.findUnique({
+        where: { id: topicId },
+        include: { chapter: { include: { course: { include: { user: true } } } } }
+      });
+      const course = tp?.chapter?.course;
+      if (course) {
+        courseTitle = course.title;
+        courseOwnerEmail = course.user?.email || null;
+      }
+    }
+
+    const adminUsers = await db.user.findMany({
+      where: { role: { in: ["ADMIN", "SUPER_ADMIN"] } },
+      select: { email: true }
+    });
+    const recipients = [
+      ...(courseOwnerEmail ? [courseOwnerEmail] : []),
+      ...adminUsers.map((u) => u.email).filter((e): e is string => !!e),
+    ];
+
+    if (recipients.length > 0) {
+      const isReply = !!parentId;
+      const subject = `New ${isReply ? "reply" : "comment"} on "${courseTitle || "Course"}"`;
+      const preview = `${text.substring(0, 120)}${text.length > 120 ? "..." : ""}`;
+      const author = user.name || "User";
+      const html = `<div style="font-family:Arial,sans-serif;">
+        <h2 style="margin:0 0 12px 0;">${subject}</h2>
+        <p style="margin:0 0 8px 0;">From: ${author}</p>
+        <p style="white-space:pre-wrap;margin:12px 0;">${preview}</p>
+      </div>`;
+      await sendMail({ to: recipients, subject, text: `${author}: ${preview}`, html });
     }
 
     return NextResponse.json(comment);

@@ -6,7 +6,7 @@ import { ArrowRight, Mouse } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export const QHero = () => {
   const [isChanged, setIsChanged] = useState(false);
@@ -141,7 +141,7 @@ export const QHero = () => {
         </svg>
       </div>
 
-      <div className="w-full h-full overflow-hidden absolute 2xl:top-[25%] top-[28%] -left-[20%] 2xl:-left-[16.2%] opacity-40 hidden lg:block">
+      <div className="w-full h-full overflow-hidden absolute xl:top-[25%] top-[28%] -left-[20%] 2xl:-left-[16.2%] opacity-40 hidden lg:block">
         <svg
           viewBox="0 0 2419 1147"
           fill="none"
@@ -227,7 +227,7 @@ export const QHero = () => {
           Based on the SVG, it seems to have a lot of whitespace or specific positioning.
           We'll try to position it to match the reference.
       */}
-      <div className="absolute top-0  w-full xl:top-0 xl:right-0 h-[70%] xl:w-[55%] pointer-events-none lg:block overflow-hidden">
+      <div className="absolute top-0  w-full h-[50%]  xl:top-0 xl:right-0 xl:h-[60%] 2xl:h-[70%] xl:w-[55%] pointer-events-none lg:block overflow-hidden">
         <Image
           src="/media/Q.svg"
           alt="Background Q"
@@ -236,17 +236,17 @@ export const QHero = () => {
           priority
         />
         {/* Left-bottom mist overlay - Adjust width/height/opacity as needed */}
-        <div className="absolute bottom-0 xl:left-[10%] w-full h-full bg-gradient-to-tr from-white via-white/30 to-transparent" />
+        <div className="absolute bottom-5 2xl:bottom-0  2xl:left-[10%] w-full h-full bg-gradient-to-tr from-white via-white/30 to-transparent" />
       </div>
 
-      <div className="2xl:max-w-[90%] mx-auto px-6 w-full z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 items-end flex-1 pt-10 pb-20">
+      <div className="mx-auto p-6 w-full h-[95vh]  flex flex-col justify-end gap-4 z-10 mb-10">
         {/* Left Content */}
         <div className="flex flex-col gap-8">
           <h1 className="text-4xl md:text-6xl 2xl:text-8xl font-black tracking-tighter uppercase text-[#383838] font-moderniz ">
             Turn Your <br />
             Trading <br />
             Into A <br />
-            Business.
+            Mobile.
           </h1>
 
           <p className="text-md md:text-xl text-slate-500 max-w-4xl leading-relaxed font-poppins font-regular">
@@ -258,7 +258,7 @@ export const QHero = () => {
             <Button
               asChild
               size="lg"
-              className="bg-[#99ed43] hover:bg-[#88d63b] text-slate-900  rounded-full px-8 py-7 text-lg transition-transform hover:scale-105"
+              className="bg-[#99ed43] hover:bg-[#88d63b] text-slate-900  rounded-full px-8 xl:py-7 text-lg transition-transform hover:scale-105"
             >
               <Link href="/register">
                 Start Free Trial <ArrowRight className="ml-2 w-5 h-5" />
@@ -268,15 +268,15 @@ export const QHero = () => {
         </div>
 
         {/* Right Content / Spacer */}
-        <div className="relative hidden lg:flex h-full items-end justify-end min-h-[600px] pointer-events-none">
+        <div className="relative  lg:flex items-end justify-end pointer-events-none">
           {/* Floating Card - re-enable pointer events for buttons */}
-          <div className="pointer-events-auto bg-white p-5 pr-8 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.1)] flex items-center gap-8 border border-slate-100 mb-10 mr-10 animate-in fade-in slide-in-from-bottom-10 duration-1000">
+          <div className="pointer-events-auto bg-white p-2 2xl:p-5 2xl:pr-8 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.1)] flex justify-between items-center gap-8 border border-slate-100 2xl:mb-10 2xl:mr-10 animate-in fade-in slide-in-from-bottom-10 duration-1000">
             <div className="flex flex-col gap-2">
               <div className="flex -space-x-4 pl-2">
                 {[1, 2, 3, 4].map((i) => (
                   <Avatar
                     key={i}
-                    className="w-12 h-12 border-2 border-white ring-2 ring-slate-50"
+                    className="2xl:w-12 2xl:h-12 border-2 border-white ring-2 ring-slate-50"
                   >
                     <AvatarImage
                       src={`https://i.pravatar.cc/150?u=${i + 20}`}
@@ -285,7 +285,7 @@ export const QHero = () => {
                   </Avatar>
                 ))}
               </div>
-              <span className="text-sm font-bold text-slate-600 pl-2">
+              <span className="text-xs 2xl:text-sm font-bold text-slate-600 pl-2">
                 100k+ Best Teacher
               </span>
             </div>
@@ -302,9 +302,8 @@ export const QHero = () => {
           </div>
         </div>
       </div>
-
       {/* Mouse Scroll Indicator */}
-      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 animate-bounce text-slate-300 hidden md:block">
+      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 animate-bounce text-slate-300">
         <Mouse className="w-8 h-8" strokeWidth={1.5} />
       </div>
     </section>

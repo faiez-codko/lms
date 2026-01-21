@@ -1,11 +1,13 @@
 type SendMailInput = {
   to: string[];
+  cc?: string[];
+  bcc?: string[];
   subject: string;
   text?: string;
   html?: string;
 };
 
-export async function sendMail({ to, subject, text, html }: SendMailInput): Promise<boolean> {
+export async function sendMail({ to, cc, bcc, subject, text, html }: SendMailInput): Promise<boolean> {
   const host = process.env.SMTP_HOST;
   const port = Number(process.env.SMTP_PORT || "0");
   const user = process.env.SMTP_USER;
@@ -32,6 +34,8 @@ export async function sendMail({ to, subject, text, html }: SendMailInput): Prom
     await transporter.sendMail({
       from,
       to: Array.from(new Set(to)).join(","),
+      cc: cc ? Array.from(new Set(cc)).join(",") : undefined,
+      bcc: bcc ? Array.from(new Set(bcc)).join(",") : undefined,
       subject,
       text,
       html,

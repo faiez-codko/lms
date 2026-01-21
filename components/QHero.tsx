@@ -176,6 +176,213 @@ export const QHero = () => {
         </defs>
       </svg>
 
+      {/* Mobile version of the first SVG */}
+      <div className="absolute opacity-40 top-[34%] left-[39%] inset-0 z-10 pointer-events-none overflow-hidden md:hidden block w-[250px] h-[250px]">
+        <svg
+          className="opacity-40 w-full h-full"
+          viewBox="0 0 412 412"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path d="" stroke="url(#paint0_radial_115_153_mobile)" />
+          <defs>
+            <radialGradient
+              id="paint0_radial_115_153_mobile"
+              cx="0"
+              cy="0"
+              r="1"
+              gradientUnits="userSpaceOnUse"
+              gradientTransform="translate(205.968 205.968) rotate(90) scale(205.968)"
+            >
+              <stop />
+              <stop offset="1" stop-opacity="0" />
+            </radialGradient>
+          </defs>
+          {["M411.936 206.441H0M205.494 411.936V0"].map((path, i) => (
+            <motion.path
+              key={i}
+              d={path}
+              stroke="url(#paint0_radial_115_153_mobile)"
+              strokeWidth="4"
+              fill="none"
+              strokeDasharray="2 , 2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              initial={{ pathLength: 0, opacity: 0, strokeDasharray: "2 ,2" }}
+              animate={{
+                strokeDasharray: "2,2",
+                pathLength: [0, 1, 0],
+                opacity: [0, 1, 1],
+              }}
+              transition={{
+                duration: 4,
+                repeat: Infinity,
+                ease: "linear",
+              }}
+            />
+          ))}
+        </svg>
+      </div>
+
+      <div className="absolute top-[49.2%] left-[40.85%] inset-0 pointer-events-none overflow-hidden z-50 md:block hidden">
+        {/* Existing circle SVG remains exactly the same */}
+        <svg
+          width="31"
+          height="31"
+          viewBox="0 0 31 31"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <motion.circle
+            cx="15.1517"
+            cy="15.1517"
+            r="15.1517"
+            fill="#99ED43"
+            initial={{ opacity: 0 }}
+            animate={{
+              opacity: [0, 1, 0],
+            }}
+            transition={{
+              duration: 4,
+              repeat: Infinity,
+              ease: "linear",
+              repeatType: "loop",
+            }}
+            stroke="#99ED43"
+            strokeWidth="2"
+          />
+        </svg>
+      </div>
+
+      {/* Mobile version of the circle */}
+      <div className="absolute top-[52%] left-[70%] pointer-events-none overflow-hidden z-50 md:hidden block w-[14px] h-[14px]">
+        <svg
+          className="w-full h-full"
+          viewBox="0 0 31 31"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <motion.circle
+            cx="15.1517"
+            cy="15.1517"
+            r="15.1517"
+            fill="#99ED43"
+            initial={{ opacity: 0 }}
+            animate={{
+              opacity: [0, 1, 0],
+            }}
+            transition={{
+              duration: 4,
+              repeat: Infinity,
+              ease: "linear",
+              repeatType: "loop",
+            }}
+            stroke="#99ED43"
+            strokeWidth="2"
+          />
+        </svg>
+      </div>
+
+      <div className="absolute top-[25%] -left-[18.3%] z-10 md:block hidden">
+        {/* Existing chart SVG remains exactly the same */}
+        <svg
+          className="opacity-40"
+          width="1900"
+          height="890"
+          viewBox="0 0 1921 890"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <defs>
+            <linearGradient
+              id="chartGradient1"
+              x1="0%"
+              y1="0%"
+              x2="100%"
+              y2="0%"
+              gradientUnits="userSpaceOnUse"
+            >
+              <stop stopColor="#4D7722" stopOpacity="0.9" />
+              <stop offset="0.5" stopColor="#99ED43" stopOpacity="1" />
+              <stop offset="1" stopColor="#4D7722" stopOpacity="0.9" />
+            </linearGradient>
+          </defs>
+
+          <motion.path
+            d="M 416 1187 L 416 1189 L 416 1190 L 497.265 884.226 L 662.134 412.803 L 827.002 381.161 L 991.871 286.237 L 1156.74 241.938 L 1321.61 450.773 L 1488.8 431.788 L 1604.99 560.359 L 1920.34 596.818 M 413 1190 L 413 1188 L 416 1190 L 523 767 L 666.262 509.822 L 833.366 560.782 L 1000.47 441.874 L 1170.07 470.186 L 1364.46 193.878 M 1157 242"
+            stroke="url(#chartGradient1)"
+            strokeWidth="2"
+            fill="none"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            initial={{ pathLength: 0, opacity: 0 }}
+            animate={{
+              pathLength: [0, 1, 0],
+              opacity: [0, 1, 1],
+            }}
+            transition={{
+              duration: 4,
+              repeat: Infinity,
+              ease: "linear",
+              repeatType: "loop",
+            }}
+            onAnimationIteration={() => {
+              setIsChanged((prev) => !prev);
+              console.log("hello");
+            }}
+          />
+        </svg>
+      </div>
+
+      {/* Mobile version of the chart */}
+      <div className="absolute top-[40%] -left-[25%] z-10 md:hidden block w-[600px] h-[300px] opacity-40">
+        <svg
+          className="w-full h-full"
+          viewBox="0 0 1921 890"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <defs>
+            <linearGradient
+              id="chartGradient1_mobile"
+              x1="0%"
+              y1="0%"
+              x2="100%"
+              y2="0%"
+              gradientUnits="userSpaceOnUse"
+            >
+              <stop stopColor="#4D7722" stopOpacity="0.9" />
+              <stop offset="0.5" stopColor="#99ED43" stopOpacity="1" />
+              <stop offset="1" stopColor="#4D7722" stopOpacity="0.9" />
+            </linearGradient>
+          </defs>
+
+          <motion.path
+            d="M 416 1187 L 416 1189 L 416 1190 L 497.265 884.226 L 662.134 412.803 L 827.002 381.161 L 991.871 286.237 L 1156.74 241.938 L 1321.61 450.773 L 1488.8 431.788 L 1604.99 560.359 L 1920.34 596.818 M 413 1190 L 413 1188 L 416 1190 L 523 767 L 666.262 509.822 L 833.366 560.782 L 1000.47 441.874 L 1170.07 470.186 L 1364.46 193.878 M 1157 242"
+            stroke="url(#chartGradient1_mobile)"
+            strokeWidth="4"
+            fill="none"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            initial={{ pathLength: 0, opacity: 0 }}
+            animate={{
+              pathLength: [0, 1, 0],
+              opacity: [0, 1, 1],
+            }}
+            transition={{
+              duration: 4,
+              repeat: Infinity,
+              ease: "linear",
+              repeatType: "loop",
+            }}
+            onAnimationIteration={() => {
+              setIsChanged((prev) => !prev);
+              console.log("hello");
+            }}
+          />
+        </svg>
+      </div>
+
       {/* Background Graphic - Q */}
       {/* We position it absolutely on the right side. 
           Based on the SVG, it seems to have a lot of whitespace or specific positioning.

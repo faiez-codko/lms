@@ -4,6 +4,7 @@ import { NextResponse } from "next/server";
 import { db } from "@/lib/prismadb";
 import { registerSchema } from "@/schema/auth";
 import { hashPassword, signAuthToken, AUTH_COOKIE_NAME } from "@/lib/auth";
+import { sendMail } from "@/lib/mail";
 
 /**
  * Handles user registration with email and password.
@@ -52,6 +53,17 @@ export async function POST(req: Request) {
         type: "General"
       }
     });
+
+    if (user.email) {
+      const subject = "Welcome to LMS - Registration Successful";
+      const html = `<div style="font-family:Arial,sans-serif;">
+        <h2 style="margin:0 0 12px 0;">Welcome, ${user.name || "User"}!</h2>
+        <p>Thank you for registering with our Learning Management System.</p>
+        <p>Your account has been successfully created.</p>
+        <p>You can now log in and start learning!</p>
+      </div>`;
+      await sendMail({ to: [user.email], subject, text: "Welcome to LMS! Your account has been created.", html });
+    }
 
     const token = signAuthToken({ sub: user.id, role: user.role });
     const res = NextResponse.json({ user }, { status: 201 });

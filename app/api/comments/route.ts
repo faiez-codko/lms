@@ -84,22 +84,43 @@ export async function POST(req: Request) {
       where: { role: { in: ["ADMIN", "SUPER_ADMIN"] } },
       select: { email: true }
     });
-    const recipients = [
+    
+    // To: Course Owner + Commenter
+    const toRecipients = [
       ...(courseOwnerEmail ? [courseOwnerEmail] : []),
-      ...adminUsers.map((u) => u.email).filter((e): e is string => !!e),
-    ];
+      user.email,
+    ].filter((email): email is string => !!email);
 
-    if (recipients.length > 0) {
+    // CC: Admins (excluding those already in To list)
+    const adminEmails = adminUsers
+      .map((u) => u.email)
+      .filter((e): e is string => !!e && !toRecipients.includes(e));
+
+    const uniqueTo = Array.from(new Set(toRecipients));
+    const uniqueCc = Array.from(new Set(adminEmails));
+
+    if (uniqueTo.length > 0 || uniqueCc.length > 0) {
       const isReply = !!parentId;
       const subject = `New ${isReply ? "reply" : "comment"} on "${courseTitle || "Course"}"`;
       const preview = `${text.substring(0, 120)}${text.length > 120 ? "..." : ""}`;
       const author = user.name || "User";
+      
       const html = `<div style="font-family:Arial,sans-serif;">
         <h2 style="margin:0 0 12px 0;">${subject}</h2>
-        <p style="margin:0 0 8px 0;">From: ${author}</p>
-        <p style="white-space:pre-wrap;margin:12px 0;">${preview}</p>
+        <p style="margin:0 0 8px 0;"><strong>${author}</strong> posted:</p>
+        <blockquote style="border-left: 4px solid #ccc; margin: 12px 0; padding-left: 12px; color: #555;">
+          ${preview}
+        </blockquote>
+        <p style="font-size: 12px; color: #888;">You are receiving this notification because you are the author, an admin, or the poster of this comment.</p>
       </div>`;
-      await sendMail({ to: recipients, subject, text: `${author}: ${preview}`, html });
+      
+      await sendMail({ 
+        to: uniqueTo, 
+        cc: uniqueCc,
+        subject, 
+        text: `${author}: ${preview}`, 
+        html 
+      });
     }
 
     return NextResponse.json(comment);

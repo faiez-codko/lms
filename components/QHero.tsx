@@ -27,15 +27,14 @@ export const QHero = () => {
         <motion.path
           d="M1610.94 373.441H1199M1404.49 578.936V167"
           stroke="url(#paint0_radial_273_22)"
-          strokeDasharray="2 2"
+          strokeDasharray="4 4"
           strokeWidth="2"
           fill="none"
           strokeLinecap="round"
           strokeLinejoin="round"
-          initial={{ pathLength: 0, opacity: 0 }}
+          initial={{ opacity: 0 }}
           animate={{
-            pathLength: [0, 1, 0],
-            opacity: [0, 1, 1],
+            opacity: [0, 1, 0],
           }}
           transition={{
             duration: 4,
@@ -68,11 +67,13 @@ export const QHero = () => {
           cy="372.5"
           r="15.5"
           fill="#99ED43"
-          initial={{ opacity: 0 }}
+          initial={{ opacity: 0, pathLength: 0 }}
           animate={{
+            pathLength: [0, 1, 0],
             opacity: [0, 1, 0],
           }}
           transition={{
+            delay: 0.4,
             duration: 4,
             repeat: Infinity,
             ease: "linear",
@@ -183,15 +184,40 @@ export const QHero = () => {
           We'll try to position it to match the reference.
       */}
 
-      <div className="absolute w-full  top-0 md:right-0 h-1/2 md:h-[70%] md:w-[50%] pointer-events-none lg:block md:overflow-hidden opacity-50 ">
+      <div className="absolute w-full  top-0 md:right-0 h-1/2 md:h-[70%] md:w-[50%] pointer-events-none lg:block md:overflow-hidden  ">
         <Image
           src="/media/Q.svg"
           alt="Background Q"
           fill
-          //  className="object-left-top scale-110 translate-x-10"
+          className="object-left-top scale-110 translate-x-10"
           priority
         />
-        <div className="absolute bottom-0 block md:hidden 2xl:left-[10%] w-full h-full bg-gradient-to-tr from-white via-white/30 to-transparent" />
+        <div className="relative w-full h-full">
+          {/* Video element */}
+          {/* <video
+            className="w-full h-full object-cover"
+            autoPlay
+            muted
+            loop
+            playsInline
+            style={{
+              maskImage: "url(/media/Q.svg)",
+              WebkitMaskImage: "url(/media/Q.svg)",
+              maskRepeat: "no-repeat",
+              WebkitMaskRepeat: "no-repeat",
+              maskSize: "contain",
+              WebkitMaskSize: "contain",
+              maskPosition: "center",
+              WebkitMaskPosition: "center",
+            }}
+          >
+            <source
+              src="/media/7102266-hd_1920_1080_30fps.mp4"
+              type="video/mp4"
+            />
+          </video> */}
+        </div>
+        <div className="absolute bottom-0 2xl:left-[6%]  w-full h-full bg-gradient-to-t from-white to-white/30 " />
         {/* Left-bottom mist overlay - Adjust width/height/opacity as needed */}
       </div>
 

@@ -22,6 +22,7 @@ import Hero from "@/components/animated-shader-hero";
 import { Hero2 } from "@/components/hero-2";
 import { Hero3 } from "@/components/hero-3";
 import { QHero } from "@/components/QHero";
+import Banner from "@/components/Banner";
 const bgColors = [
   "#263b11",
   "#4d7722",
@@ -90,7 +91,9 @@ export default function LandingPage() {
       {/* Trusted By Strip (Marquee) */}
       <section className="py-10 border-y border-slate-100 bg-white overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 mb-8">
-          <p className="text-center text-sm font-semibold text-slate-500 uppercase tracking-widest">Trusted by 10,000+ Traders</p>
+          <p className="text-center text-sm font-semibold text-slate-500 uppercase tracking-widest">
+            Trusted by 10,000+ Traders
+          </p>
         </div>
         <div className="flex relative w-full">
           <motion.div
@@ -100,8 +103,22 @@ export default function LandingPage() {
           >
             {[...Array(2)].map((_, i) => (
               <div key={i} className="flex gap-12 md:gap-24">
-                {['Coinbase', 'Binance', 'TradingView', 'Bloomberg', 'Forbes', 'CNBC', 'Yahoo Finance', 'Investopedia'].map((brand) => (
-                  <span key={brand} className="text-xl md:text-3xl font-bold text-slate-400 hover:text-slate-700 transition-colors cursor-default">{brand}</span>
+                {[
+                  "Coinbase",
+                  "Binance",
+                  "TradingView",
+                  "Bloomberg",
+                  "Forbes",
+                  "CNBC",
+                  "Yahoo Finance",
+                  "Investopedia",
+                ].map((brand) => (
+                  <span
+                    key={brand}
+                    className="text-xl md:text-3xl font-bold text-slate-400 hover:text-slate-700 transition-colors cursor-default"
+                  >
+                    {brand}
+                  </span>
                 ))}
               </div>
             ))}
@@ -112,7 +129,9 @@ export default function LandingPage() {
       {/* Testimonials */}
       <section className="py-32 bg-slate-50 text-slate-900">
         <div className="max-w-7xl mx-auto px-4 text-center">
-          <h2 className="text-4xl md:text-5xl font-bold mb-16 text-slate-900">Don't just take our word for it.</h2>
+          <h2 className="text-4xl md:text-5xl font-bold mb-16 text-slate-900">
+            Don't just take our word for it.
+          </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <TestimonialCard
               quote="I went from blowing accounts to funded trader in 3 months. The structure here is unlike anything else on YouTube."
@@ -158,9 +177,12 @@ export default function LandingPage() {
       <section className="py-24 bg-white relative text-slate-900">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-3xl md:text-5xl font-bold mb-6 text-slate-900">What We Do</h2>
+            <h2 className="text-3xl md:text-5xl font-bold mb-6 text-slate-900">
+              What We Do
+            </h2>
             <p className="text-lg text-slate-600">
-              We provide a complete ecosystem for traders to learn, grow, and succeed.
+              We provide a complete ecosystem for traders to learn, grow, and
+              succeed.
             </p>
           </div>
 
@@ -169,23 +191,23 @@ export default function LandingPage() {
               {
                 icon: BookOpen,
                 title: "Structured Education",
-                desc: "Comprehensive courses taking you from beginner to institutional competence."
+                desc: "Comprehensive courses taking you from beginner to institutional competence.",
               },
               {
                 icon: Users,
                 title: "Live Mentorship",
-                desc: "Daily live streams and Q&A sessions with professional traders."
+                desc: "Daily live streams and Q&A sessions with professional traders.",
               },
               {
                 icon: Zap,
                 title: "Real-time Signals",
-                desc: "High-probability trade setups and market analysis delivered daily."
+                desc: "High-probability trade setups and market analysis delivered daily.",
               },
               {
                 icon: LineChart,
                 title: "Advanced Analytics",
-                desc: "Proprietary tools to track your performance and journal your trades."
-              }
+                desc: "Proprietary tools to track your performance and journal your trades.",
+              },
             ].map((item, i) => (
               <motion.div
                 key={i}
@@ -198,8 +220,12 @@ export default function LandingPage() {
                 <div className="h-12 w-12 bg-emerald-500/10 rounded-lg flex items-center justify-center mb-4 group-hover:bg-emerald-500/20 transition-colors">
                   <item.icon className="h-6 w-6 text-emerald-500" />
                 </div>
-                <h3 className="text-xl font-bold mb-2 text-slate-900">{item.title}</h3>
-                <p className="text-slate-600 text-sm leading-relaxed">{item.desc}</p>
+                <h3 className="text-xl font-bold mb-2 text-slate-900">
+                  {item.title}
+                </h3>
+                <p className="text-slate-600 text-sm leading-relaxed">
+                  {item.desc}
+                </p>
               </motion.div>
             ))}
           </div>
@@ -207,31 +233,50 @@ export default function LandingPage() {
       </section>
 
       {/* Feature Section 1: Text Left, Image Right */}
-      {[{
-        badge: "Technical Analysis",
-        title: "Analyze Markets with Precision",
-        description: "Stop guessing. Learn to read the raw price action and identify high-probability setups with our proprietary institutional-grade charting strategies.",
-        points: ["Advanced Candlestick Patterns", "Multi-Timeframe Analysis", "Volume Profile & Order Flow"],
-        imageSrc: "/media/001.png",
-        imageAlt: "Technical Analysis Charts",
-        reversed: false,
-      }, {
-        badge: "Risk Management",
-        title: "Protect Capital like a Hedge Fund",
-        description: "The difference between gambling and trading is risk management. We provide the calculators, journals, and frameworks to keep your drawdown low and upside high.",
-        points: ["Dynamic Position Sizing", "Portfolio Correlation Matrix", "Automated Stop-Loss Strategies"],
-        imageSrc: "/media/002.png",
-        imageAlt: "Risk Management Dashboard",
-        reversed: true,
-      }, {
-        badge: "Trading Psychology",
-        title: "Master Your Mindset",
-        description: "90% of trading is psychology. Learn how to control your emotions, eliminate FOMO, and execute your plan with robotic discipline.",
-        points: ["Daily Mindfulness Routines", "Trade Journaling & Review", "Cognitive Bias Training"],
-        imageSrc: "/media/003.png",
-        imageAlt: "Trading Psychology",
-        reversed: false,
-      }].map((item, i) => (
+      {[
+        {
+          badge: "Technical Analysis",
+          title: "Analyze Markets with Precision",
+          description:
+            "Stop guessing. Learn to read the raw price action and identify high-probability setups with our proprietary institutional-grade charting strategies.",
+          points: [
+            "Advanced Candlestick Patterns",
+            "Multi-Timeframe Analysis",
+            "Volume Profile & Order Flow",
+          ],
+          imageSrc: "/media/001.png",
+          imageAlt: "Technical Analysis Charts",
+          reversed: false,
+        },
+        {
+          badge: "Risk Management",
+          title: "Protect Capital like a Hedge Fund",
+          description:
+            "The difference between gambling and trading is risk management. We provide the calculators, journals, and frameworks to keep your drawdown low and upside high.",
+          points: [
+            "Dynamic Position Sizing",
+            "Portfolio Correlation Matrix",
+            "Automated Stop-Loss Strategies",
+          ],
+          imageSrc: "/media/002.png",
+          imageAlt: "Risk Management Dashboard",
+          reversed: true,
+        },
+        {
+          badge: "Trading Psychology",
+          title: "Master Your Mindset",
+          description:
+            "90% of trading is psychology. Learn how to control your emotions, eliminate FOMO, and execute your plan with robotic discipline.",
+          points: [
+            "Daily Mindfulness Routines",
+            "Trade Journaling & Review",
+            "Cognitive Bias Training",
+          ],
+          imageSrc: "/media/003.png",
+          imageAlt: "Trading Psychology",
+          reversed: false,
+        },
+      ].map((item, i) => (
         <FeatureSection
           key={i}
           badge={item.badge}
@@ -242,58 +287,85 @@ export default function LandingPage() {
           imageAlt={item.imageAlt}
           reversed={item.reversed}
         />
-      ))
-      }
+      ))}
 
       {/* FAQ Section */}
       <section className="py-24 bg-slate-50 border-t border-slate-200 text-slate-900">
         <div className="max-w-3xl mx-auto px-4">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-slate-900">Frequently Asked Questions</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-slate-900">
+            Frequently Asked Questions
+          </h2>
           <Accordion type="single" collapsible className="w-full">
             <AccordionItem value="item-1" className="border-slate-200">
-              <AccordionTrigger className="text-lg text-slate-900 hover:text-emerald-600">Is this course suitable for beginners?</AccordionTrigger>
+              <AccordionTrigger className="text-lg text-slate-900 hover:text-emerald-600">
+                Is this course suitable for beginners?
+              </AccordionTrigger>
               <AccordionContent className="text-slate-600">
-                Absolutely. We start with the basics of market structure and candlestick patterns before moving into advanced strategies. About 40% of our students start with zero experience.
+                Absolutely. We start with the basics of market structure and
+                candlestick patterns before moving into advanced strategies.
+                About 40% of our students start with zero experience.
               </AccordionContent>
             </AccordionItem>
             <AccordionItem value="item-2" className="border-slate-200">
-              <AccordionTrigger className="text-lg text-slate-900 hover:text-emerald-600">Do you provide trade signals?</AccordionTrigger>
+              <AccordionTrigger className="text-lg text-slate-900 hover:text-emerald-600">
+                Do you provide trade signals?
+              </AccordionTrigger>
               <AccordionContent className="text-slate-600">
-                No. We teach you how to fish. We provide daily market analysis and setups we are watching, but the goal is to make you an independent trader, not a signal follower.
+                No. We teach you how to fish. We provide daily market analysis
+                and setups we are watching, but the goal is to make you an
+                independent trader, not a signal follower.
               </AccordionContent>
             </AccordionItem>
             <AccordionItem value="item-3" className="border-slate-200">
-              <AccordionTrigger className="text-lg text-slate-900 hover:text-emerald-600">What markets do you cover?</AccordionTrigger>
+              <AccordionTrigger className="text-lg text-slate-900 hover:text-emerald-600">
+                What markets do you cover?
+              </AccordionTrigger>
               <AccordionContent className="text-slate-600">
-                Our technical analysis concepts apply to all liquid markets including Forex, Crypto, Stocks, and Futures. We have specific modules for the nuances of each asset class.
+                Our technical analysis concepts apply to all liquid markets
+                including Forex, Crypto, Stocks, and Futures. We have specific
+                modules for the nuances of each asset class.
               </AccordionContent>
             </AccordionItem>
             <AccordionItem value="item-4" className="border-slate-200">
-              <AccordionTrigger className="text-lg text-slate-900 hover:text-emerald-600">Can I cancel my subscription?</AccordionTrigger>
+              <AccordionTrigger className="text-lg text-slate-900 hover:text-emerald-600">
+                Can I cancel my subscription?
+              </AccordionTrigger>
               <AccordionContent className="text-slate-600">
-                Yes, you can cancel anytime from your dashboard. You will retain access until the end of your billing period.
+                Yes, you can cancel anytime from your dashboard. You will retain
+                access until the end of your billing period.
               </AccordionContent>
             </AccordionItem>
           </Accordion>
         </div>
+      </section>
+      <section className="w-full">
+        <Banner />
       </section>
 
       {/* Final CTA */}
       <section className="py-32 bg-emerald-500 relative overflow-hidden">
         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
         <div className="max-w-4xl mx-auto px-4 text-center relative z-10">
-          <h2 className="text-4xl md:text-6xl font-bold text-white mb-8">Start your profitable journey today.</h2>
+          <h2 className="text-4xl md:text-6xl font-bold text-white mb-8">
+            Start your profitable journey today.
+          </h2>
           <p className="text-xl text-emerald-100 mb-12 max-w-2xl mx-auto">
-            Join the #1 platform for traders who treat this as a business, not a hobby. 14-day free trial, cancel anytime.
+            Join the #1 platform for traders who treat this as a business, not a
+            hobby. 14-day free trial, cancel anytime.
           </p>
           <Link href="/browse">
-            <Button size="lg" className="bg-white text-emerald-900 hover:bg-slate-100 h-16 px-12 text-xl rounded-full font-bold shadow-xl">
+            <Button
+              size="lg"
+              className="bg-white text-emerald-900 hover:bg-slate-100 h-16 px-12 text-xl rounded-full font-bold shadow-xl"
+            >
               Get Started for Free
             </Button>
           </Link>
-          <p className="mt-6 text-sm text-emerald-200/60">No credit card required for preview lessons.</p>
+          <p className="mt-6 text-sm text-emerald-200/60">
+            No credit card required for preview lessons.
+          </p>
         </div>
-      </section> 
+      </section>
     </div>
   );
 }

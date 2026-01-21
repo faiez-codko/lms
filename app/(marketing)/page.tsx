@@ -89,7 +89,7 @@ export default function LandingPage() {
       */}
 
       {/* Trusted By Strip (Marquee) */}
-      <section className="py-10 border-y border-slate-100 bg-white overflow-hidden">
+      {/* <section className="py-10 border-y border-slate-100 bg-white overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 mb-8">
           <p className="text-center text-sm font-semibold text-slate-500 uppercase tracking-widest">
             Trusted by 10,000+ Traders
@@ -124,12 +124,12 @@ export default function LandingPage() {
             ))}
           </motion.div>
         </div>
-      </section>
+      </section> */}
 
       {/* Testimonials */}
       <section className="py-32 bg-slate-50 text-slate-900">
         <div className="max-w-7xl mx-auto px-4 text-center">
-          <h2 className="text-4xl md:text-5xl font-bold mb-16 text-slate-900">
+          <h2 className="text-4xl md:text-5xl font-bold mb-16 text-[#383838]">
             Don't just take our word for it.
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -177,7 +177,7 @@ export default function LandingPage() {
       <section className="py-24 bg-white relative text-slate-900">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-3xl md:text-5xl font-bold mb-6 text-slate-900">
+            <h2 className="text-3xl md:text-5xl font-bold mb-6 text-[#383838]">
               What We Do
             </h2>
             <p className="text-lg text-slate-600">
@@ -220,7 +220,7 @@ export default function LandingPage() {
                 <div className="h-12 w-12 bg-emerald-500/10 rounded-lg flex items-center justify-center mb-4 group-hover:bg-emerald-500/20 transition-colors">
                   <item.icon className="h-6 w-6 text-emerald-500" />
                 </div>
-                <h3 className="text-xl font-bold mb-2 text-slate-900">
+                <h3 className="text-xl font-bold mb-2 text-[#383838]">
                   {item.title}
                 </h3>
                 <p className="text-slate-600 text-sm leading-relaxed">
@@ -290,14 +290,14 @@ export default function LandingPage() {
       ))}
 
       {/* FAQ Section */}
-      <section className="py-24 bg-slate-50 border-t border-slate-200 text-slate-900">
+      <section className="py-24 bg-slate-50 border-t border-slate-200 text-[#383838]">
         <div className="max-w-3xl mx-auto px-4">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-slate-900">
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-[#383838]">
             Frequently Asked Questions
           </h2>
           <Accordion type="single" collapsible className="w-full">
             <AccordionItem value="item-1" className="border-slate-200">
-              <AccordionTrigger className="text-lg text-slate-900 hover:text-emerald-600">
+              <AccordionTrigger className="text-lg text-[#383838] hover:text-emerald-600">
                 Is this course suitable for beginners?
               </AccordionTrigger>
               <AccordionContent className="text-slate-600">
@@ -307,7 +307,7 @@ export default function LandingPage() {
               </AccordionContent>
             </AccordionItem>
             <AccordionItem value="item-2" className="border-slate-200">
-              <AccordionTrigger className="text-lg text-slate-900 hover:text-emerald-600">
+              <AccordionTrigger className="text-lg text-[#383838] hover:text-emerald-600">
                 Do you provide trade signals?
               </AccordionTrigger>
               <AccordionContent className="text-slate-600">
@@ -317,7 +317,7 @@ export default function LandingPage() {
               </AccordionContent>
             </AccordionItem>
             <AccordionItem value="item-3" className="border-slate-200">
-              <AccordionTrigger className="text-lg text-slate-900 hover:text-emerald-600">
+              <AccordionTrigger className="text-lg text-[#383838] hover:text-emerald-600">
                 What markets do you cover?
               </AccordionTrigger>
               <AccordionContent className="text-slate-600">
@@ -327,7 +327,7 @@ export default function LandingPage() {
               </AccordionContent>
             </AccordionItem>
             <AccordionItem value="item-4" className="border-slate-200">
-              <AccordionTrigger className="text-lg text-slate-900 hover:text-emerald-600">
+              <AccordionTrigger className="text-lg text-[#383838] hover:text-emerald-600">
                 Can I cancel my subscription?
               </AccordionTrigger>
               <AccordionContent className="text-slate-600">
@@ -382,7 +382,7 @@ function FeatureSection({
             <span className="inline-block px-4 py-1 rounded-full bg-emerald-500/10 text-emerald-600 text-sm font-semibold tracking-wide uppercase">
               {badge}
             </span>
-            <h2 className="text-3xl md:text-5xl font-bold leading-tight">
+            <h2 className="text-3xl md:text-5xl font-bold leading-tight text-[#383838]">
               {title}
             </h2>
             <p className="text-lg text-slate-400 leading-relaxed">
@@ -390,7 +390,7 @@ function FeatureSection({
             </p>
             <ul className="space-y-4">
               {points.map((point, i) => (
-                <li key={i} className="flex items-center gap-3 text-slate-700">
+                <li key={i} className="flex items-center gap-3 text-[#383838]">
                   <CheckCircle className="h-6 w-6 text-emerald-500 flex-shrink-0" />
                   <span className="text-lg">{point}</span>
                 </li>
@@ -447,7 +447,7 @@ function TestimonialCard({
           <Image src={avatar} alt={author} fill className="object-cover" />
         </div>
         <div>
-          <div className="font-bold text-slate-900 text-lg">{author}</div>
+          <div className="font-bold text-[#383838] text-lg">{author}</div>
           <div className="text-sm text-slate-500 uppercase tracking-wider font-semibold">
             {role}
           </div>

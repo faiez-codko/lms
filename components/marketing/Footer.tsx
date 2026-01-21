@@ -10,60 +10,115 @@ export const Footer = () => {
   const brandName = "QUANTUM";
 
   return (
-    <footer className="bg-[#263b11] text-white overflow-hidden relative">
+    <footer className="bg-[#383838] text-white overflow-hidden relative">
       <div className="max-w-7xl mx-auto px-4 pt-20 pb-10 relative z-10">
         <div className="flex flex-col md:flex-row justify-between gap-12 mb-20">
-            {/* Logo Icon */}
-            <div className="mb-8 md:mb-0">
-                <div className="h-10   rounded-lg flex items-center justify-center">
-                     <Image src="/logo-white.png" alt="Quantum" width={150} height={32} />
-                </div>
+          {/* Logo Icon */}
+          <div className="mb-8 md:mb-0">
+            <div className="h-10   rounded-lg flex items-center justify-center">
+              <Image
+                src="/logo-white.png"
+                alt="Quantum"
+                width={150}
+                height={32}
+              />
+            </div>
+          </div>
+
+          {/* Links Columns */}
+          <div className="flex flex-wrap gap-12 md:gap-24">
+            <div className="flex flex-col gap-4">
+              <h4 className="font-semibold text-gray-500 mb-2">Terms</h4>
+              <Link
+                href="#"
+                className="hover:text-emerald-400 transition-colors"
+              >
+                Terms of Service
+              </Link>
+              <Link
+                href="#"
+                className="hover:text-emerald-400 transition-colors"
+              >
+                Privacy Policy
+              </Link>
+              <Link
+                href="#"
+                className="hover:text-emerald-400 transition-colors"
+              >
+                Cookie Policy
+              </Link>
             </div>
 
-            {/* Links Columns */}
-            <div className="flex flex-wrap gap-12 md:gap-24">
-                <div className="flex flex-col gap-4">
-                    <h4 className="font-semibold text-gray-500 mb-2">Terms</h4>
-                    <Link href="#" className="hover:text-emerald-400 transition-colors">Terms of Service</Link>
-                    <Link href="#" className="hover:text-emerald-400 transition-colors">Privacy Policy</Link>
-                    <Link href="#" className="hover:text-emerald-400 transition-colors">Cookie Policy</Link>
-                </div>
-                
-                <div className="flex flex-col gap-4">
-                    <h4 className="font-semibold text-gray-500 mb-2">Resources</h4>
-                    <Link href="/about" className="hover:text-emerald-400 transition-colors">About Us</Link>
-                    <Link href="#" className="hover:text-emerald-400 transition-colors">Blog</Link>
-                </div>
-                
-                <div className="flex flex-col gap-4">
-                    <h4 className="font-semibold text-gray-500 mb-2">Connect</h4>
-                    <Link href="#" className="hover:text-emerald-400 transition-colors">Feedback</Link>
-                    <Link href="#" className="hover:text-emerald-400 transition-colors">Discord</Link>
-                    <Link href="#" className="hover:text-emerald-400 transition-colors">Reddit</Link>
-                    <Link href="#" className="hover:text-emerald-400 transition-colors">Partnerships</Link>
-                </div>
+            <div className="flex flex-col gap-4">
+              <h4 className="font-semibold text-gray-500 mb-2">Resources</h4>
+              <Link
+                href="/about"
+                className="hover:text-emerald-400 transition-colors"
+              >
+                About Us
+              </Link>
+              <Link
+                href="#"
+                className="hover:text-emerald-400 transition-colors"
+              >
+                Blog
+              </Link>
             </div>
+
+            <div className="flex flex-col gap-4">
+              <h4 className="font-semibold text-gray-500 mb-2">Connect</h4>
+              <Link
+                href="#"
+                className="hover:text-emerald-400 transition-colors"
+              >
+                Feedback
+              </Link>
+              <Link
+                href="#"
+                className="hover:text-emerald-400 transition-colors"
+              >
+                Discord
+              </Link>
+              <Link
+                href="#"
+                className="hover:text-emerald-400 transition-colors"
+              >
+                Reddit
+              </Link>
+              <Link
+                href="#"
+                className="hover:text-emerald-400 transition-colors"
+              >
+                Partnerships
+              </Link>
+            </div>
+          </div>
         </div>
-        
+
         {/* Bottom Bar */}
         <div className="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-gray-800 gap-4">
-            <div className="text-gray-500 text-sm">
-                © {new Date().getFullYear()} {brandName}. All rights reserved.
-            </div>
-            
-            <div className="flex gap-4">
-                <Link href="#" className="text-gray-400 hover:text-white transition-colors">
-                    <Twitter className="h-5 w-5" />
-                </Link>
-             
-            </div>
-            
-             <Link href="#header" className="text-gray-500 text-sm hover:text-white flex items-center gap-1">
-                Back to top
+          <div className="text-gray-500 text-sm">
+            © {new Date().getFullYear()} {brandName}. All rights reserved.
+          </div>
+
+          <div className="flex gap-4">
+            <Link
+              href="#"
+              className="text-gray-400 hover:text-white transition-colors"
+            >
+              <Twitter className="h-5 w-5" />
             </Link>
+          </div>
+
+          <Link
+            href="#header"
+            className="text-gray-500 text-sm hover:text-white flex items-center gap-1"
+          >
+            Back to top
+          </Link>
         </div>
       </div>
-      
+
       {/* Big Brand Text with Scatter Animation */}
       {/* <div className="w-full bg-emerald-500 overflow-hidden cursor-default group relative h-[30vh] lg:h-auto">
           <GravityFooter />

@@ -341,31 +341,7 @@ export default function LandingPage() {
       <section className="w-full">
         <Banner />
       </section>
-
-      {/* Final CTA */}
-      <section className="py-32 bg-emerald-500 relative overflow-hidden">
-        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
-        <div className="max-w-4xl mx-auto px-4 text-center relative z-10">
-          <h2 className="text-4xl md:text-6xl font-bold text-white mb-8">
-            Start your profitable journey today.
-          </h2>
-          <p className="text-xl text-emerald-100 mb-12 max-w-2xl mx-auto">
-            Join the #1 platform for traders who treat this as a business, not a
-            hobby. 14-day free trial, cancel anytime.
-          </p>
-          <Link href="/browse">
-            <Button
-              size="lg"
-              className="bg-white text-emerald-900 hover:bg-slate-100 h-16 px-12 text-xl rounded-full font-bold shadow-xl"
-            >
-              Get Started for Free
-            </Button>
-          </Link>
-          <p className="mt-6 text-sm text-emerald-200/60">
-            No credit card required for preview lessons.
-          </p>
-        </div>
-      </section>
+   
     </div>
   );
 }

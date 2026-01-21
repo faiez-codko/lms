@@ -18,7 +18,7 @@ const Banner = () => {
 
       {/* Left Content */}
       <div className="w-full lg:w-1/2 h-full flex flex-col gap-4 py-6 md:py-12 lg:py-24">
-        <h1 className="text-black font-moderniz text-3xl sm:text-4xl md:text-5xl lg:text-[52px] leading-tight">
+        <h1 className="text-[#383838] font-moderniz text-3xl sm:text-4xl md:text-5xl lg:text-[52px] leading-tight">
           Start your profitable journey today.
         </h1>
 

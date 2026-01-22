@@ -6,7 +6,7 @@ import { ArrowRight, Mouse } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export const QHero = () => {
   const [isChanged, setIsChanged] = useState(false);
@@ -32,9 +32,10 @@ export const QHero = () => {
           fill="none"
           strokeLinecap="round"
           strokeLinejoin="round"
-          initial={{ opacity: 0 }}
+          initial={{ scale: 0 }}
           animate={{
-            opacity: [0, 1, 0],
+            scale: [0, 1, 0],
+            transformOrigin: "center center",
           }}
           transition={{
             duration: 4,
@@ -67,13 +68,12 @@ export const QHero = () => {
           cy="372.5"
           r="15.5"
           fill="#99ED43"
-          initial={{ opacity: 0, pathLength: 0 }}
+          initial={{ scale: 0 }}
           animate={{
-            pathLength: [0, 1, 0],
-            opacity: [0, 1, 0],
+            scale: [0, 1, 0],
+            transformOrigin: "center center",
           }}
           transition={{
-            delay: 0.4,
             duration: 4,
             repeat: Infinity,
             ease: "linear",
@@ -107,15 +107,15 @@ export const QHero = () => {
         <motion.path
           d="M1610.94 373.441H1199M1404.49 578.936V167"
           stroke="url(#paint0_radial_273_22)"
-          strokeDasharray="2 2"
+          strokeDasharray="4 4"
           strokeWidth="2"
           fill="none"
           strokeLinecap="round"
           strokeLinejoin="round"
-          initial={{ pathLength: 0, opacity: 0 }}
+          initial={{ scale: 0 }}
           animate={{
-            pathLength: [0, 1, 0],
-            opacity: [0, 1, 1],
+            scale: [0, 1, 1],
+            transformOrigin: "center center",
           }}
           transition={{
             duration: 4,
@@ -148,9 +148,10 @@ export const QHero = () => {
           cy="372.5"
           r="15.5"
           fill="#99ED43"
-          initial={{ opacity: 0 }}
+          initial={{ scale: 0 }}
           animate={{
-            opacity: [0, 1, 0],
+            scale: [0, 1, 0],
+            transformOrigin: "center center",
           }}
           transition={{
             duration: 4,

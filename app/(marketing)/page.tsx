@@ -341,7 +341,6 @@ export default function LandingPage() {
       <section className="w-full">
         <Banner />
       </section>
-   
     </div>
   );
 }
